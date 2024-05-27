@@ -1,0 +1,34 @@
+name: Lint & Test Frontend code
+
+on:
+  push:
+    branches: ['main', 'develop']
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches: ['*']
+    paths:
+      - 'frontend/**'
+
+jobs:
+  lint-front:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: use pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          package_json_file: 'frontend/package.json'
+
+      - name: Install Dependencies
+        run: pnpm i
+
+      - name: Lint code
+        run: pnpm lint
