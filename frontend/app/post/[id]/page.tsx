@@ -1,3 +1,11 @@
-export default function DetailPage({ params }: { params: { id: string } }) {
-  return <div>My Post: {params.id}</div>;
-}
+import { NextPage } from "next";
+
+const PostDetailPage: NextPage = () => {
+  return (
+    <div>
+      <h1>Post Detail Page</h1>
+    </div>
+  );
+};
+
+export default PostDetailPage;
