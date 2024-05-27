@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { mockData} from "@/constans/mock";
+import { mockData} from "@/constants/mock";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 
