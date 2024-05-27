@@ -10,8 +10,8 @@ const PostListPage: NextPage = () => {
       <section className="p-2">
         {mockData.map((md) => {
           return (
-            <div className="p-1">
-              <Link href={`/post/${md.id}`} key={md.id}>
+            <div className="p-1" key={md.id}>
+              <Link href={`/post/${md.id}`}>
                 <Card className="flex justify-between p-2">
                   <div>
                     {md.title}
