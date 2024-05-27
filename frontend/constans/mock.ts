@@ -1,4 +1,4 @@
-const mockData = [
+export const mockData = [
   {
     id: 1,
     title: "Post 1",
@@ -50,5 +50,3 @@ const mockData = [
     body: "This is the body of post 10",
   },
 ];
-
-export default mockData;
