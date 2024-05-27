@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package post.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "backend/gen/post/v1;postv1";
+
+service PostService {
+  rpc Post(google.protobuf.Empty) returns (PostResponse) {}
+}
+
+message PostRequest {}
+
+message PostResponse { PostData post = 1; }
+
+message PostData {
+  int32 id = 1;
+  string title = 2;
+  string body = 3;
+  int32 user_id = 4;
+  repeated Comment comments = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message Comment {
+  int32 id = 1;
+  string body = 2;
+  int32 user_id = 3;
+  int32 post_id = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
