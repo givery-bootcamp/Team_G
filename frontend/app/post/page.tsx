@@ -2,10 +2,14 @@ import { NextPage } from "next";
 import { mockData } from "@/constants/mock";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import { postClient } from "@/lib/connect";
 
-const PostListPage: NextPage = () => {
+const PostListPage: NextPage = async () => {
+  const res = await postClient.post({});
+  console.log(res.post);
+
   return (
-    <main>
+    <main className="min-h-screen">
       <h1>Post List Page</h1>
       <section className="p-2">
         {mockData.map((md) => {
