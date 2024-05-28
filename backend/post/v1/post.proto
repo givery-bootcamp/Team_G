@@ -13,7 +13,7 @@ service PostService {
 
 message PostRequest {}
 
-message PostResponse { PostData post = 1; }
+message PostResponse { repeated PostData post = 1; }
 
 message PostData {
   int32 id = 1;

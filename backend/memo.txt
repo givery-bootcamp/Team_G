@@ -1,0 +1,27 @@
+db.Employee.insert(
+  {
+   	"Title" : "Hello, World!",
+    "Body" : "This is a test post.",
+    "UserId" : 1,
+    "Comments" : []*postv1.Comment{},
+    "CreatedAt": &timestamppb.Timestamp{},
+    "UpdatedAt": &timestamppb.Timestamp{}
+  }
+)
+
+db.Post.insert(
+  {
+   	"title" : "Hello, World!",
+    "body" : "This is a test post.",
+    "user_id" : 1,
+    "comments" : [],
+    "created_at": {
+      "seconds": "0",
+      "nanos": 0
+    },
+    "updated_at": {
+      "seconds": "0",
+      "nanos": 0
+    }
+  }
+)
