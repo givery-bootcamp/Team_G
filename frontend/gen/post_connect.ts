@@ -21,5 +21,5 @@ export const PostService = {
       O: PostResponse,
       kind: MethodKind.Unary,
     },
-  }
+  },
 } as const;

@@ -6,7 +6,8 @@ const HeroSection = () => {
         <span className="bg-gradient-to-r from-green-400 to-green-700 bg-clip-text text-transparent">Your Moments</span>
       </h1>
       <p className="mt-4 px-8 text-sm text-slate-600 md:text-base">
-        Dive into a world where your stories and experiences come alive. Share your life’s highlights with friends and family on our social platform.
+        Dive into a world where your stories and experiences come alive. Share your life’s highlights with friends and
+        family on our social platform.
       </p>
     </section>
   );

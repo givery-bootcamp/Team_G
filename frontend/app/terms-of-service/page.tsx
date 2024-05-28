@@ -1,7 +1,7 @@
 const TermsOfServicePage = () => {
   return (
     <main className="mx-auto min-h-screen max-w-xl pt-4">
-      <h1 className="text-2xl font-bold mb-2">利用規約</h1>
+      <h1 className="mb-2 text-2xl font-bold">利用規約</h1>
       <section className="text-sm leading-relaxed">
         <p>
           By accessing or using our services, you agree to be bound by these terms. If you do not agree to these terms,

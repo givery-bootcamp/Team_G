@@ -23,17 +23,20 @@ const features = [
   },
   {
     title: "Interactive Media",
-    description: "Bring your stories to life with dynamic media tools that allow for interactive and engaging visual posts.",
+    description:
+      "Bring your stories to life with dynamic media tools that allow for interactive and engaging visual posts.",
     icon: "eye",
   },
   {
     title: "Privacy First",
-    description: "Your privacy matters. Count on our robust privacy settings to keep your personal information safe and secure.",
+    description:
+      "Your privacy matters. Count on our robust privacy settings to keep your personal information safe and secure.",
     icon: "workflow",
   },
   {
     title: "Smart Suggestions",
-    description: "Enhance your posting experience with AI-driven suggestions tailored to your interests and interactions.",
+    description:
+      "Enhance your posting experience with AI-driven suggestions tailored to your interests and interactions.",
     icon: "brain",
   },
 ] as Feature[];
