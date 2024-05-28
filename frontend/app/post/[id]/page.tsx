@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Image from "next/image";
+import BreadCrumb from "../_components/breadCrumb";
 
 interface Props {
   params: {
@@ -12,6 +13,7 @@ const PostDetailPage: NextPage<Props> = ({ params }) => {
 
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
+      <BreadCrumb />
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
       <div className="flex flex-col items-center">
         <Image src="/images/noimage.png" alt="Post Image" className="mb-4" width={400} height={400} />
