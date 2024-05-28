@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Providers from "./providers";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
@@ -35,6 +36,7 @@ const RootLayout = ({
         <Header />
         <Providers>{children}</Providers>
         <Footer />
+        <Toaster />
       </body>
     </html>
   );
