@@ -3,14 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type {
-  BinaryReadOptions,
-  FieldList,
-  JsonReadOptions,
-  JsonValue,
-  PartialMessage,
-  PlainMessage,
-} from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
@@ -24,7 +17,8 @@ export class PostRequest extends Message<PostRequest> {
 
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.PostRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => []);
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostRequest {
     return new PostRequest().fromBinary(bytes, options);
@@ -38,10 +32,7 @@ export class PostRequest extends Message<PostRequest> {
     return new PostRequest().fromJsonString(jsonString, options);
   }
 
-  static equals(
-    a: PostRequest | PlainMessage<PostRequest> | undefined,
-    b: PostRequest | PlainMessage<PostRequest> | undefined,
-  ): boolean {
+  static equals(a: PostRequest | PlainMessage<PostRequest> | undefined, b: PostRequest | PlainMessage<PostRequest> | undefined): boolean {
     return proto3.util.equals(PostRequest, a, b);
   }
 }
@@ -51,9 +42,9 @@ export class PostRequest extends Message<PostRequest> {
  */
 export class PostResponse extends Message<PostResponse> {
   /**
-   * @generated from field: post.v1.PostData post = 1;
+   * @generated from field: repeated post.v1.PostData post = 1;
    */
-  post?: PostData;
+  post: PostData[] = [];
 
   constructor(data?: PartialMessage<PostResponse>) {
     super();
@@ -63,7 +54,7 @@ export class PostResponse extends Message<PostResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.PostResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "post", kind: "message", T: PostData },
+    { no: 1, name: "post", kind: "message", T: PostData, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostResponse {
@@ -78,10 +69,7 @@ export class PostResponse extends Message<PostResponse> {
     return new PostResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(
-    a: PostResponse | PlainMessage<PostResponse> | undefined,
-    b: PostResponse | PlainMessage<PostResponse> | undefined,
-  ): boolean {
+  static equals(a: PostResponse | PlainMessage<PostResponse> | undefined, b: PostResponse | PlainMessage<PostResponse> | undefined): boolean {
     return proto3.util.equals(PostResponse, a, b);
   }
 }
@@ -91,9 +79,9 @@ export class PostResponse extends Message<PostResponse> {
  */
 export class PostData extends Message<PostData> {
   /**
-   * @generated from field: int32 id = 1;
+   * @generated from field: string id = 1;
    */
-  id = 0;
+  id = "";
 
   /**
    * @generated from field: string title = 2;
@@ -133,7 +121,7 @@ export class PostData extends Message<PostData> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.PostData";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "user_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
@@ -154,10 +142,7 @@ export class PostData extends Message<PostData> {
     return new PostData().fromJsonString(jsonString, options);
   }
 
-  static equals(
-    a: PostData | PlainMessage<PostData> | undefined,
-    b: PostData | PlainMessage<PostData> | undefined,
-  ): boolean {
+  static equals(a: PostData | PlainMessage<PostData> | undefined, b: PostData | PlainMessage<PostData> | undefined): boolean {
     return proto3.util.equals(PostData, a, b);
   }
 }
@@ -167,9 +152,9 @@ export class PostData extends Message<PostData> {
  */
 export class Comment extends Message<Comment> {
   /**
-   * @generated from field: int32 id = 1;
+   * @generated from field: string id = 1;
    */
-  id = 0;
+  id = "";
 
   /**
    * @generated from field: string body = 2;
@@ -204,7 +189,7 @@ export class Comment extends Message<Comment> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.Comment";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "user_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 4, name: "post_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
@@ -224,10 +209,8 @@ export class Comment extends Message<Comment> {
     return new Comment().fromJsonString(jsonString, options);
   }
 
-  static equals(
-    a: Comment | PlainMessage<Comment> | undefined,
-    b: Comment | PlainMessage<Comment> | undefined,
-  ): boolean {
+  static equals(a: Comment | PlainMessage<Comment> | undefined, b: Comment | PlainMessage<Comment> | undefined): boolean {
     return proto3.util.equals(Comment, a, b);
   }
 }
+
