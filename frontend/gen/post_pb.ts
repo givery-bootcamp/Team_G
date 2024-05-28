@@ -3,7 +3,14 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type {
+  BinaryReadOptions,
+  FieldList,
+  JsonReadOptions,
+  JsonValue,
+  PartialMessage,
+  PlainMessage,
+} from "@bufbuild/protobuf";
 import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
@@ -17,8 +24,7 @@ export class PostRequest extends Message<PostRequest> {
 
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.PostRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-  ]);
+  static readonly fields: FieldList = proto3.util.newFieldList(() => []);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostRequest {
     return new PostRequest().fromBinary(bytes, options);
@@ -32,7 +38,10 @@ export class PostRequest extends Message<PostRequest> {
     return new PostRequest().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PostRequest | PlainMessage<PostRequest> | undefined, b: PostRequest | PlainMessage<PostRequest> | undefined): boolean {
+  static equals(
+    a: PostRequest | PlainMessage<PostRequest> | undefined,
+    b: PostRequest | PlainMessage<PostRequest> | undefined,
+  ): boolean {
     return proto3.util.equals(PostRequest, a, b);
   }
 }
@@ -69,7 +78,10 @@ export class PostResponse extends Message<PostResponse> {
     return new PostResponse().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PostResponse | PlainMessage<PostResponse> | undefined, b: PostResponse | PlainMessage<PostResponse> | undefined): boolean {
+  static equals(
+    a: PostResponse | PlainMessage<PostResponse> | undefined,
+    b: PostResponse | PlainMessage<PostResponse> | undefined,
+  ): boolean {
     return proto3.util.equals(PostResponse, a, b);
   }
 }
@@ -142,7 +154,10 @@ export class PostData extends Message<PostData> {
     return new PostData().fromJsonString(jsonString, options);
   }
 
-  static equals(a: PostData | PlainMessage<PostData> | undefined, b: PostData | PlainMessage<PostData> | undefined): boolean {
+  static equals(
+    a: PostData | PlainMessage<PostData> | undefined,
+    b: PostData | PlainMessage<PostData> | undefined,
+  ): boolean {
     return proto3.util.equals(PostData, a, b);
   }
 }
@@ -209,8 +224,10 @@ export class Comment extends Message<Comment> {
     return new Comment().fromJsonString(jsonString, options);
   }
 
-  static equals(a: Comment | PlainMessage<Comment> | undefined, b: Comment | PlainMessage<Comment> | undefined): boolean {
+  static equals(
+    a: Comment | PlainMessage<Comment> | undefined,
+    b: Comment | PlainMessage<Comment> | undefined,
+  ): boolean {
     return proto3.util.equals(Comment, a, b);
   }
 }
-

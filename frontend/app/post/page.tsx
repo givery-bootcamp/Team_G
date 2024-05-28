@@ -1,30 +1,28 @@
 import { NextPage } from "next";
 import { mockData } from "@/constants/mock";
 import { Card } from "@/components/ui/card";
-import Link from "next/link";
 import { postClient } from "@/lib/connect";
+import Link from "next/link";
+import Image from "next/image";
 
 const PostListPage: NextPage = async () => {
   const res = await postClient.post({});
   console.log(res.post);
 
   return (
-    <main className="min-h-screen">
-      <h1>Post List Page</h1>
-      <section className="p-2">
+    <main className="mx-auto min-h-screen max-w-xl pt-4">
+      <h1 className="mb-2 text-2xl font-bold">投稿一覧</h1>
+      <section className="grid grid-cols-2 gap-2 p-2">
         {mockData.map((md) => {
           return (
-            <div className="p-1" key={md.id}>
-              <Link href={`/post/${md.id}`}>
-                <Card className="flex justify-between p-2">
-                  <div>
-                    {md.title}
-                    {md.body}
-                  </div>
-                  <div>{md.createdAt.toUTCString()}</div>
-                </Card>
-              </Link>
-            </div>
+            <Link href={`/post/${md.id}`} key={md.id} className="w-full text-center">
+              <Card className="mx-auto max-w-fit p-3">
+                <Image src="/images/noimage.png" alt={md.title} width={300} height={300} />
+                <p className="text-xl font-bold">{md.title}</p>
+                <p className="text-sm">{md.body}</p>
+                <div className="text-xs">{md.createdAt.toLocaleDateString()}</div>
+              </Card>
+            </Link>
           );
         })}
       </section>
