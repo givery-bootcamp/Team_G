@@ -1,3 +1,4 @@
+import { APP_NAME } from "@/constants";
 import Link from "next/link";
 
 const Footer = () => {
@@ -5,7 +6,7 @@ const Footer = () => {
     <footer className="bg-white p-4">
       <div className="flex items-center justify-center">
         <Link href="/" className="text-xl font-bold text-gray-800">
-          App Name
+          {APP_NAME}
         </Link>
       </div>
       <nav>
