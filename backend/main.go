@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"connectrpc.com/connect"
@@ -48,9 +49,9 @@ type Timestamp struct {
 	Nanos   int32 `bson:"nanos"`
 }
 
-func convertPosts(posts []Post) []*postv1.PostData {
+func convertPostList(postlist []Post) []*postv1.PostData {
 	var res []*postv1.PostData
-	for _, post := range posts {
+	for _, post := range postlist {
 		comments := []*postv1.Comment{}
 		for _, comment := range post.Comments {
 			comments = append(comments, &postv1.Comment{
@@ -76,11 +77,82 @@ func convertPosts(posts []Post) []*postv1.PostData {
 	return res
 }
 
-// json か バイナリ
 func (s *PostServer) Post(
 	ctx context.Context,
-	req *connect.Request[emptypb.Empty],
+	req *connect.Request[postv1.PostRequest],
 ) (*connect.Response[postv1.PostResponse], error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	// reqからIDを取り出す
+	idStr := req.Msg.Id
+	// 取り出したIDで検索
+	id, err := primitive.ObjectIDFromHex(idStr)
+	filter := bson.M{"_id": id}
+	var result Post
+	err = coll.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, err
+		}
+		panic(err)
+	}
+
+	// PostList := []Post{}
+
+	// for cur.Next(context.TODO()) {
+	// 	var res Post
+	// 	cur.Decode(&res)
+	// 	// fmt.Println(res)
+	// 	PostList = append(PostList, res)
+	// }
+
+	// fmt.Println(Posts)
+	// fmt.Println(Posts[0].Id.Hex())
+
+	fmt.Println(result)
+
+	comments := []*postv1.Comment{}
+	for _, comment := range result.Comments {
+		comments = append(comments, &postv1.Comment{
+			Id:        comment.Id.Hex(),
+			Body:      comment.Body,
+			UserId:    comment.UserId,
+			PostId:    comment.PostId,
+			CreatedAt: &timestamppb.Timestamp{Seconds: comment.CreatedAt.Seconds, Nanos: comment.CreatedAt.Nanos},
+			UpdatedAt: &timestamppb.Timestamp{Seconds: comment.UpdatedAt.Seconds, Nanos: comment.UpdatedAt.Nanos},
+		})
+	}
+
+	res := connect.NewResponse(&postv1.PostResponse{
+		Post: &postv1.PostData{
+			Id:        result.Id.Hex(),
+			Title:     result.Title,
+			Body:      result.Body,
+			UserId:    result.UserId,
+			Comments:  comments,
+			CreatedAt: &timestamppb.Timestamp{Seconds: result.CreatedAt.Seconds, Nanos: result.CreatedAt.Nanos},
+			UpdatedAt: &timestamppb.Timestamp{Seconds: result.UpdatedAt.Seconds, Nanos: result.UpdatedAt.Nanos},
+		},
+	})
+	return res, nil
+}
+
+// json か バイナリ
+func (s *PostServer) PostList(
+	ctx context.Context,
+	req *connect.Request[emptypb.Empty],
+) (*connect.Response[postv1.PostListResponse], error) {
 	// log.Println("Request headers: ", req.Header())
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 
@@ -102,20 +174,20 @@ func (s *PostServer) Post(
 		panic(err)
 	}
 
-	Posts := []Post{}
+	PostList := []Post{}
 
 	for cur.Next(context.TODO()) {
 		var res Post
 		cur.Decode(&res)
 		// fmt.Println(res)
-		Posts = append(Posts, res)
+		PostList = append(PostList, res)
 	}
 
 	// fmt.Println(Posts)
 	// fmt.Println(Posts[0].Id.Hex())
 
-	res := connect.NewResponse(&postv1.PostResponse{
-		Post: convertPosts(Posts),
+	res := connect.NewResponse(&postv1.PostListResponse{
+		Post: convertPostList(PostList),
 	})
 	return res, nil
 }

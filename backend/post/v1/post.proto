@@ -7,13 +7,19 @@ import "google/protobuf/empty.proto";
 
 option go_package = "backend/gen/post/v1;postv1";
 
+// 
 service PostService {
-  rpc Post(google.protobuf.Empty) returns (PostResponse) {}
+  //リスト
+  rpc PostList(google.protobuf.Empty) returns (PostListResponse) {}
+  //詳細
+  rpc Post(PostRequest) returns (PostResponse) {}
 }
 
-message PostRequest {}
+message PostRequest { string id = 1;}
 
-message PostResponse { repeated PostData post = 1; }
+message PostResponse { PostData post = 1; }
+
+message PostListResponse { repeated PostData post = 1; }
 
 message PostData {
   string id = 1;
