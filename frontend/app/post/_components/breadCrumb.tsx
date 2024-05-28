@@ -5,6 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
 const BreadCrumb = ({ breadcrumbItems }: { breadcrumbItems: { name: string; href: string }[] }) => {
   return (
@@ -13,8 +14,10 @@ const BreadCrumb = ({ breadcrumbItems }: { breadcrumbItems: { name: string; href
         {breadcrumbItems.map((item, i) => {
           return (
             <>
-              <BreadcrumbItem>
-                <BreadcrumbLink href={item.href}>{item.name}</BreadcrumbLink>
+              <BreadcrumbItem key={i}>
+                <BreadcrumbLink asChild>
+                  <Link href={item.href}>{item.name}</Link>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               {i !== breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
             </>
