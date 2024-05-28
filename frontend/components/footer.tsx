@@ -11,8 +11,8 @@ const Footer = () => {
       <nav>
         <ul className="flex items-center justify-center">
           <li className="p-2">
-            <Link href="/" className="text-gray-800">
-              Home
+            <Link href="/post" className="text-gray-800">
+              投稿一覧
             </Link>
           </li>
           <li className="p-2">
