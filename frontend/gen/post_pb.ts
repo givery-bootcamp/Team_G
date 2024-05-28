@@ -10,6 +10,11 @@ import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
  * @generated from message post.v1.PostRequest
  */
 export class PostRequest extends Message<PostRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
   constructor(data?: PartialMessage<PostRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -18,6 +23,7 @@ export class PostRequest extends Message<PostRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.PostRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostRequest {
@@ -42,9 +48,9 @@ export class PostRequest extends Message<PostRequest> {
  */
 export class PostResponse extends Message<PostResponse> {
   /**
-   * @generated from field: repeated post.v1.PostData post = 1;
+   * @generated from field: post.v1.PostData post = 1;
    */
-  post: PostData[] = [];
+  post?: PostData;
 
   constructor(data?: PartialMessage<PostResponse>) {
     super();
@@ -54,7 +60,7 @@ export class PostResponse extends Message<PostResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "post.v1.PostResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "post", kind: "message", T: PostData, repeated: true },
+    { no: 1, name: "post", kind: "message", T: PostData },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostResponse {
@@ -71,6 +77,43 @@ export class PostResponse extends Message<PostResponse> {
 
   static equals(a: PostResponse | PlainMessage<PostResponse> | undefined, b: PostResponse | PlainMessage<PostResponse> | undefined): boolean {
     return proto3.util.equals(PostResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message post.v1.PostListResponse
+ */
+export class PostListResponse extends Message<PostListResponse> {
+  /**
+   * @generated from field: repeated post.v1.PostData post = 1;
+   */
+  post: PostData[] = [];
+
+  constructor(data?: PartialMessage<PostListResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.PostListResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "post", kind: "message", T: PostData, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostListResponse {
+    return new PostListResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PostListResponse {
+    return new PostListResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PostListResponse {
+    return new PostListResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PostListResponse | PlainMessage<PostListResponse> | undefined, b: PostListResponse | PlainMessage<PostListResponse> | undefined): boolean {
+    return proto3.util.equals(PostListResponse, a, b);
   }
 }
 

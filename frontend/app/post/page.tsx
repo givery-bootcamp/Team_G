@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const PostListPage: NextPage = async () => {
-  const { post } = await postClient.post({});
+  const { post } = await postClient.postList({});
 
   return (
     <main className="mx-auto min-h-screen max-w-xl pt-4">

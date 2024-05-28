@@ -5,11 +5,32 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { PostResponse } from "./post_pb.js";
+import { PostListResponse, PostRequest, PostResponse } from "./post_pb";
 
 export const typeName = "post.v1.PostService";
 
 /**
+ * リスト
+ *
+ * @generated from rpc post.v1.PostService.PostList
+ */
+export const postList = createQueryService({
+  service: {
+    methods: {
+      postList: {
+        name: "PostList",
+        kind: MethodKind.Unary,
+        I: Empty,
+        O: PostListResponse,
+      },
+    },
+    typeName: "post.v1.PostService",
+  },
+}).postList;
+
+/**
+ * 詳細
+ *
  * @generated from rpc post.v1.PostService.Post
  */
 export const post = createQueryService({
@@ -18,7 +39,7 @@ export const post = createQueryService({
       post: {
         name: "Post",
         kind: MethodKind.Unary,
-        I: Empty,
+        I: PostRequest,
         O: PostResponse,
       },
     },
