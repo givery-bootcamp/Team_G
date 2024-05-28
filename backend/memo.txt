@@ -25,3 +25,20 @@ db.Post.insert(
     }
   }
 )
+
+db.Post.insert(
+  {
+   	"title" : "Hello, Hell!",
+    "body" : "This is a second test post.",
+    "user_id" : 2,
+    "comments" : [],
+    "created_at": {
+      "seconds": "0",
+      "nanos": 0
+    },
+    "updated_at": {
+      "seconds": "0",
+      "nanos": 0
+    }
+  }
+)

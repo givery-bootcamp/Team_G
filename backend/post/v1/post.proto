@@ -16,7 +16,7 @@ message PostRequest {}
 message PostResponse { repeated PostData post = 1; }
 
 message PostData {
-  int32 id = 1;
+  string id = 1;
   string title = 2;
   string body = 3;
   int32 user_id = 4;
@@ -26,7 +26,7 @@ message PostData {
 }
 
 message Comment {
-  int32 id = 1;
+  string id = 1;
   string body = 2;
   int32 user_id = 3;
   int32 post_id = 4;
