@@ -54,11 +54,11 @@ db.Post.insert(
     "user_id" : 1,
     "comments" : [],
     "created_at": {
-      "seconds": "0",
+      "seconds": 0,
       "nanos": 0
     },
     "updated_at": {
-      "seconds": "0",
+      "seconds": 0,
       "nanos": 0
     }
   }
@@ -72,13 +72,19 @@ db.Post.insert(
     "user_id" : 2,
     "comments" : [],
     "created_at": {
-      "seconds": "0",
+      "seconds": 0,
       "nanos": 0
     },
     "updated_at": {
-      "seconds": "0",
+      "seconds": 0,
       "nanos": 0
     }
   }
 )
+
+# 削除
+db.Post.deleteMany({})
+
+# 検索
+db.Post.find()
 ```
