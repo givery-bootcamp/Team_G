@@ -23,7 +23,7 @@ import (
 type PostServer struct{}
 
 // Connection URI
-const uri = "mongodb://0.0.0.0:27017"
+const uri = "mongodb://root:password@mongoserver:27017"
 
 type Post struct {
 	Id        primitive.ObjectID `bson:"_id"`
