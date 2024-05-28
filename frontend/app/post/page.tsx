@@ -11,7 +11,7 @@ const PostListPage: NextPage = async () => {
 
   return (
     <main className="mx-auto min-h-screen max-w-xl pt-4">
-      <h1 className="mb-2 text-2xl font-bold">Post List Page</h1>
+      <h1 className="mb-2 text-2xl font-bold">投稿一覧</h1>
       <section className="grid grid-cols-2 gap-2 p-2">
         {mockData.map((md) => {
           return (
