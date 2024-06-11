@@ -1,0 +1,19 @@
+# ワークフローの名前
+name: Golangci-lint ReviewDog 
+
+on:
+  pull_request:
+
+# ジョブ定義
+jobs:
+  # lint
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: golangci-lint
+        uses: reviewdog/action-golangci-lint@v2
