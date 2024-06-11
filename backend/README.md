@@ -184,7 +184,7 @@ brew tap mongodb/brew
 brew install mongodb-community
 ```
 
-## MondoDB 初期データの生成
+## MongoDB 初期データの生成
 
 MongoDB シェル内で初期データを生成する手順
 
