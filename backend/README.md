@@ -51,13 +51,13 @@ mongosh
 buf generate
 ```
 
-### サーバーの起動
+#### サーバーの起動
 
 ```bash
 go run main.go
 ```
 
-### gRPC リクエストの送信
+#### gRPC リクエストの送信
 
 ```bash
 // 投稿の一覧を取得
@@ -69,13 +69,13 @@ grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d0804
 
 ## grpcurl コマンド使用方法
 
-### 投稿の一覧を取得
+#### 投稿の一覧を取得
 
 ```bash
 grpcurl -protoset <(buf build -o -) -plaintext localhost:8080 post.v1.PostService/PostList
 ```
 
-### 特定の投稿を取得
+#### 特定の投稿を取得
 
 ```bash
 grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d080476e"}' localhost:8080 post.v1.PostService/Post
@@ -83,19 +83,19 @@ grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d0804
 
 ## MongoDB 関連ツールの使用方法
 
-### MongoDB サービスの起動
+#### MongoDB サービスの起動
 
 ```bash
 brew services start mongodb/brew/mongodb-community
 ```
 
-### MongoDB シェルの起動
+#### MongoDB シェルの起動
 
 ```bash
 mongosh
 ```
 
-### MongoDB サービスの停止
+#### MongoDB サービスの停止
 
 ```bash
  brew services stop mongodb/brew/mongodb-community
@@ -103,13 +103,13 @@ mongosh
 
 ## MongoDB 　シェル内のコマンド
 
-### SNS データベースの作成および使用
+#### SNS データベースの作成および使用
 
 ```bash
 use SNS
 ```
 
-### データの挿入
+#### データの挿入
 
 ```bash
 db.Post.insert({
@@ -128,13 +128,13 @@ db.Post.insert({
 })
 ```
 
-### データの削除
+#### データの削除
 
 ```bash
 db.Post.deleteMany({})
 ```
 
-### データの検索
+#### データの検索
 
 ```bash
 db.Post.find()
@@ -144,25 +144,25 @@ db.Post.find()
 
 開発に必要な Go 言語関連ツールをインストールする手順
 
-### buf: プロトコルバッファ管理ツール
+#### buf: プロトコルバッファ管理ツール
 
 ```bash
 go install github.com/bufbuild/buf/cmd/buf@latest
 ```
 
-### grpcurl: gRPC サービスと対話するツール
+#### grpcurl: gRPC サービスと対話するツール
 
 ```bash
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 ```
 
-### protoc-gen-go: Protocol Buffers の Go 言語用プラグイン
+#### protoc-gen-go: Protocol Buffers の Go 言語用プラグイン
 
 ```bash
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 ```
 
-### protoc-gen-connect-go: ConnectRPC の Go 言語用プラグイン
+#### protoc-gen-connect-go: ConnectRPC の Go 言語用プラグイン
 
 ```bash
 go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
@@ -172,13 +172,13 @@ go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 
 Homebrew を使用して MongoDB をインストールおよび設定する手順
 
-### Homebrew タップの追加
+#### Homebrew タップの追加
 
 ```bash
 brew tap mongodb/brew
 ```
 
-### MongoDB Community Edition のインストール
+#### MongoDB Community Edition のインストール
 
 ```bash
 brew install mongodb-community
@@ -188,13 +188,13 @@ brew install mongodb-community
 
 MongoDB シェル内で初期データを生成する手順
 
-### SNS データベースの作成および使用
+#### SNS データベースの作成および使用
 
 ```bash
 use SNS
 ```
 
-### 初期データの挿入
+#### 初期データの挿入
 
 ```bash
 // 初期データの挿入①
