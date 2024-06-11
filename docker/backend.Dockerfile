@@ -16,5 +16,3 @@ RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 RUN go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 
 RUN go install github.com/cosmtrek/air@v1.51.0
-
-WORKDIR /workspace

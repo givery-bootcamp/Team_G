@@ -1,5 +1,4 @@
-version: '3.9'
-services:
+ services:
   backend:
     build:
       context: ./docker
@@ -8,7 +7,7 @@ services:
       - "127.0.0.1:8080:8080"
     volumes:
       - ./backend:/go/src/myapp
-    command: "go run main.go"
+    command: sh -c 'go mod tidy && air'
     depends_on:
       - mongodb
     environment:
@@ -16,7 +15,8 @@ services:
   mongodb:
     container_name: "mongodb"
     hostname: mongodb
-    image: mongo
-    restart: always
+    build:
+      context: ./docker
+      dockerfile: mongodb.Dockerfile
     ports:
-      - "127.0.0.1:27017:27017"
+      - "27017:27017"

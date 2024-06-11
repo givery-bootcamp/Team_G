@@ -8,7 +8,7 @@ services:
       - "127.0.0.1:8080:8080"
     volumes:
       - ../:/go/src/myapp
-    command: "sleep infinity"
+    command: "air"
     depends_on:
       - mongodb
     environment:
@@ -16,7 +16,8 @@ services:
   mongodb:
     container_name: "mongodb"
     hostname: mongodb
-    image: mongo
-    restart: always
+    build:
+      context: ../../docker
+      dockerfile: mongodb.Dockerfile
     ports:
-      - "127.0.0.1:27017:27017"
+      - "27017:27017"
