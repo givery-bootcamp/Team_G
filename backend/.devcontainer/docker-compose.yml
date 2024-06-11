@@ -5,11 +5,11 @@ services:
       context: ../../docker
       dockerfile: backend.Dockerfile
     ports:
-      - '8080:8080'
+      #- '8080:8080'
       - "127.0.0.1:8080:8080"
     volumes:
       - ../:/go/src/myapp
-    command: "air"
+    command: "sleep infinity"
     depends_on:
       - mongodb
     environment:
@@ -21,7 +21,7 @@ services:
       context: ../../docker
       dockerfile: frontend.Dockerfile
     ports:
-      - '8000:8000'
+      #- '8000:8000'
       - "127.0.0.1:8000:8000"
     volumes:
       - ../frontend:/home/myapp
@@ -37,11 +37,11 @@ services:
     image: mongo
     restart: always
     ports:
-      - 27017:27017
+      #- 27017:27017
       - "127.0.0.1:27017:27017"
-    volumes:
-      - ./db:/data/db
-      - ./configdb:/data/configdb
+     # volumes:
+     # - ./db:/data/db
+     # - ./configdb:/data/configdb
     networks:
       - net_i
 networks:
