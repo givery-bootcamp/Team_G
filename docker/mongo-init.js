@@ -1,13 +1,6 @@
-db.Employee.insert(
-  {
-   	"Title" : "Hello, World!",
-    "Body" : "This is a test post.",
-    "UserId" : 1,
-    "Comments" : []*postv1.Comment{},
-    "CreatedAt": &timestamppb.Timestamp{},
-    "UpdatedAt": &timestamppb.Timestamp{}
-  }
-)
+db = db.getSiblingDB('SNS');
+
+db.createCollection('Post', {capped: false});
 
 db.Post.insert(
   {
@@ -24,7 +17,7 @@ db.Post.insert(
       "nanos": 0
     }
   }
-)
+);
 
 db.Post.insert(
   {
@@ -41,4 +34,4 @@ db.Post.insert(
       "nanos": 0
     }
   }
-)
+);

@@ -49,9 +49,10 @@ var (
 
 // PostServiceClient is a client for the post.v1.PostService service.
 type PostServiceClient interface {
-	// リスト
+	// Post一覧API
+	// リクエストは空
 	PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error)
-	// 詳細
+	// Post詳細API
 	Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error)
 }
 
@@ -98,9 +99,10 @@ func (c *postServiceClient) Post(ctx context.Context, req *connect.Request[v1.Po
 
 // PostServiceHandler is an implementation of the post.v1.PostService service.
 type PostServiceHandler interface {
-	// リスト
+	// Post一覧API
+	// リクエストは空
 	PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error)
-	// 詳細
+	// Post詳細API
 	Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error)
 }
 
