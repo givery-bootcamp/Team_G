@@ -34,18 +34,18 @@
 
 ## 開発の始め方（ローカル）
 
-### 初期データ生成（初めのみ）
+#### 初期データ生成（初めのみ）
 
 [MongoDB 初期データの生成](#mongodb-初期データの生成)
 
-### MongoDB サービスの起動
+#### MongoDB サービスの起動
 
 ```bash
 brew services start mongodb/brew/mongodb-community
 mongosh
 ```
 
-### Protocol Buffers ファイルの生成
+#### Protocol Buffers ファイルの生成
 
 ```bash
 buf generate
