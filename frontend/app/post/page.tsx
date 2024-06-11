@@ -1,13 +1,13 @@
 import { NextPage } from "next";
 import { mockData } from "@/constants/mock";
 import { Card } from "@/components/ui/card";
-import { postClient } from "@/lib/connect";
+// import { postClient } from "@/lib/connect";
 import Link from "next/link";
 import Image from "next/image";
 
 const PostListPage: NextPage = async () => {
-  const res = await postClient.post({});
-  console.log(res.post);
+  // const res = await postClient.post({});
+  // console.log({res});
 
   return (
     <main className="mx-auto min-h-screen max-w-xl pt-4">
