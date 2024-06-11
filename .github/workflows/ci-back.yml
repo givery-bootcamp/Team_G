@@ -15,7 +15,7 @@ jobs:
         uses: reviewdog/action-golangci-lint@v2
         with:
           workdir: backend
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           go_version: ^1.22
           reporter: github-pr-review
           level: warning
