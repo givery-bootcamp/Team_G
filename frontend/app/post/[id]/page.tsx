@@ -3,6 +3,8 @@ import { mockData } from "@/constants/mock";
 import { NextPage } from "next";
 import Image from "next/image";
 import BreadCrumb from "../_components/breadCrumb";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   params: {
@@ -31,6 +33,13 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
         <Image src="/images/noimage.png" alt="Post Image" className="mb-4" width={400} height={400} />
         <h2 className="text-xl font-semibold">{post.title}</h2>
         <p className="text-md mt-2">{post.body}</p>
+      </div>
+      <div className="p-5">
+        <p className="text-left text-xl font-semibold">Post Message</p>
+        <div className="flex flex-col items-center space-y-2">
+          <Textarea placeholder="Type your message here." />
+          <Button variant="outline">Post</Button>
+        </div>
       </div>
     </main>
   );
