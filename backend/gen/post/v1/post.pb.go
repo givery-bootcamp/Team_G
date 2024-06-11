@@ -22,100 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type PostRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (x *PostRequest) Reset() {
-	*x = PostRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[0]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PostRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PostRequest) ProtoMessage() {}
-
-func (x *PostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[0]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PostRequest.ProtoReflect.Descriptor instead.
-func (*PostRequest) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *PostRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type PostResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Post *PostData `protobuf:"bytes,1,opt,name=post,proto3" json:"post,omitempty"`
-}
-
-func (x *PostResponse) Reset() {
-	*x = PostResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PostResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PostResponse) ProtoMessage() {}
-
-func (x *PostResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PostResponse.ProtoReflect.Descriptor instead.
-func (*PostResponse) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *PostResponse) GetPost() *PostData {
-	if x != nil {
-		return x.Post
-	}
-	return nil
-}
-
+// Post一覧APIのレスポンス
 type PostListResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -127,7 +34,7 @@ type PostListResponse struct {
 func (x *PostListResponse) Reset() {
 	*x = PostListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[2]
+		mi := &file_post_v1_post_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -140,7 +47,7 @@ func (x *PostListResponse) String() string {
 func (*PostListResponse) ProtoMessage() {}
 
 func (x *PostListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[2]
+	mi := &file_post_v1_post_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -153,7 +60,7 @@ func (x *PostListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostListResponse.ProtoReflect.Descriptor instead.
 func (*PostListResponse) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{2}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *PostListResponse) GetPost() []*PostData {
@@ -163,6 +70,112 @@ func (x *PostListResponse) GetPost() []*PostData {
 	return nil
 }
 
+// Post詳細APIのリクエスト
+type PostRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *PostRequest) Reset() {
+	*x = PostRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_post_v1_post_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PostRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostRequest) ProtoMessage() {}
+
+func (x *PostRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_post_v1_post_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostRequest.ProtoReflect.Descriptor instead.
+func (*PostRequest) Descriptor() ([]byte, []int) {
+	return file_post_v1_post_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *PostRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+// Post詳細APIのレスポンス
+type PostResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Post *PostData `protobuf:"bytes,1,opt,name=post,proto3" json:"post,omitempty"`
+}
+
+func (x *PostResponse) Reset() {
+	*x = PostResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_post_v1_post_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PostResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PostResponse) ProtoMessage() {}
+
+func (x *PostResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_post_v1_post_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PostResponse.ProtoReflect.Descriptor instead.
+func (*PostResponse) Descriptor() ([]byte, []int) {
+	return file_post_v1_post_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *PostResponse) GetPost() *PostData {
+	if x != nil {
+		return x.Post
+	}
+	return nil
+}
+
+// Postデータ
+// 詳細
+//
+//	id: 投稿ID
+//	title: タイトル
+//	body: 本文
+//	user_id: ユーザID
+//	comments: コメント配列
+//	created_at: 作成日時
+//	updated_at: 更新日時
 type PostData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -258,6 +271,15 @@ func (x *PostData) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// コメントデータ
+// 詳細
+//
+//	id: コメントID
+//	body: コメント本文
+//	user_id: ユーザID
+//	post_id: 投稿ID
+//	created_at: 作成日時
+//	updated_at: 更新日時
 type Comment struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -353,15 +375,15 @@ var file_post_v1_post_proto_rawDesc = []byte{
 	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74,
 	0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b,
 	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
-	0x65, 0x6d, 0x70, 0x74, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x1d, 0x0a, 0x0b, 0x50,
-	0x6f, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x35, 0x0a, 0x0c, 0x50, 0x6f,
-	0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x04, 0x70, 0x6f,
-	0x73, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x70, 0x6f, 0x73, 0x74, 0x2e,
-	0x76, 0x31, 0x2e, 0x50, 0x6f, 0x73, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x70, 0x6f, 0x73,
-	0x74, 0x22, 0x39, 0x0a, 0x10, 0x50, 0x6f, 0x73, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73,
+	0x65, 0x6d, 0x70, 0x74, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x39, 0x0a, 0x10, 0x50,
+	0x6f, 0x73, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x25, 0x0a, 0x04, 0x70, 0x6f, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e,
+	0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x6f, 0x73, 0x74, 0x44, 0x61, 0x74, 0x61,
+	0x52, 0x04, 0x70, 0x6f, 0x73, 0x74, 0x22, 0x1d, 0x0a, 0x0b, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x35, 0x0a, 0x0c, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x04, 0x70, 0x6f, 0x73, 0x74, 0x18, 0x01, 0x20,
-	0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x6f,
+	0x01, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x6f,
 	0x73, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x70, 0x6f, 0x73, 0x74, 0x22, 0x81, 0x02, 0x0a,
 	0x08, 0x50, 0x6f, 0x73, 0x74, 0x44, 0x61, 0x74, 0x61, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74,
@@ -420,26 +442,26 @@ func file_post_v1_post_proto_rawDescGZIP() []byte {
 
 var file_post_v1_post_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_post_v1_post_proto_goTypes = []interface{}{
-	(*PostRequest)(nil),           // 0: post.v1.PostRequest
-	(*PostResponse)(nil),          // 1: post.v1.PostResponse
-	(*PostListResponse)(nil),      // 2: post.v1.PostListResponse
+	(*PostListResponse)(nil),      // 0: post.v1.PostListResponse
+	(*PostRequest)(nil),           // 1: post.v1.PostRequest
+	(*PostResponse)(nil),          // 2: post.v1.PostResponse
 	(*PostData)(nil),              // 3: post.v1.PostData
 	(*Comment)(nil),               // 4: post.v1.Comment
 	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
 	(*emptypb.Empty)(nil),         // 6: google.protobuf.Empty
 }
 var file_post_v1_post_proto_depIdxs = []int32{
-	3, // 0: post.v1.PostResponse.post:type_name -> post.v1.PostData
-	3, // 1: post.v1.PostListResponse.post:type_name -> post.v1.PostData
+	3, // 0: post.v1.PostListResponse.post:type_name -> post.v1.PostData
+	3, // 1: post.v1.PostResponse.post:type_name -> post.v1.PostData
 	4, // 2: post.v1.PostData.comments:type_name -> post.v1.Comment
 	5, // 3: post.v1.PostData.created_at:type_name -> google.protobuf.Timestamp
 	5, // 4: post.v1.PostData.updated_at:type_name -> google.protobuf.Timestamp
 	5, // 5: post.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
 	5, // 6: post.v1.Comment.updated_at:type_name -> google.protobuf.Timestamp
 	6, // 7: post.v1.PostService.PostList:input_type -> google.protobuf.Empty
-	0, // 8: post.v1.PostService.Post:input_type -> post.v1.PostRequest
-	2, // 9: post.v1.PostService.PostList:output_type -> post.v1.PostListResponse
-	1, // 10: post.v1.PostService.Post:output_type -> post.v1.PostResponse
+	1, // 8: post.v1.PostService.Post:input_type -> post.v1.PostRequest
+	0, // 9: post.v1.PostService.PostList:output_type -> post.v1.PostListResponse
+	2, // 10: post.v1.PostService.Post:output_type -> post.v1.PostResponse
 	9, // [9:11] is the sub-list for method output_type
 	7, // [7:9] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name
@@ -454,7 +476,7 @@ func file_post_v1_post_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_post_v1_post_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostRequest); i {
+			switch v := v.(*PostListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -466,7 +488,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostResponse); i {
+			switch v := v.(*PostRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -478,7 +500,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostListResponse); i {
+			switch v := v.(*PostResponse); i {
 			case 0:
 				return &v.state
 			case 1:
