@@ -1,4 +1,5 @@
-import { postClient } from "@/lib/connect";
+// import { postClient } from "@/lib/connect";
+import { mockData } from "@/constants/mock";
 import { NextPage } from "next";
 import Image from "next/image";
 
@@ -10,7 +11,8 @@ interface Props {
 
 const PostDetailPage: NextPage<Props> = async ({ params }) => {
   const { id } = params;
-  const { post } = await postClient.post({ id });
+  // const { post } = await postClient.post({ id });
+  const post = mockData.find((md) => md.id === Number(id));
 
   if (!post) return;
 
