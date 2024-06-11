@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ../../docker
+      dockerfile: backend.Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ../:/go/src/myapp
+    command: "air"
+    depends_on:
+      - mongodb
+    environment:
+      TZ: Asia/Tokyo
+  mongodb:
+    container_name: "mongodb"
+    hostname: mongodb
+    build:
+      context: ../../docker
+      dockerfile: mongodb.Dockerfile
+    ports:
+      - "27017:27017"

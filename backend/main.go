@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	"connectrpc.com/connect"
+	"github.com/joho/godotenv"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -23,7 +25,7 @@ import (
 type PostServer struct{}
 
 // Connection URI
-const uri = "mongodb://0.0.0.0:27017"
+const uri = "mongodb://mongodb:27017"
 
 type Post struct {
 	Id        primitive.ObjectID `bson:"_id"`
@@ -193,12 +195,17 @@ func (s *PostServer) PostList(
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	poster := &PostServer{}
 	mux := http.NewServeMux()
 	path, handler := postv1connect.NewPostServiceHandler(poster)
 	mux.Handle(path, handler)
 	http.ListenAndServe(
-		"localhost:8080",
+		"0.0.0.0:8080",
 		// Use h2c so we can serve HTTP/2 without TLS.
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
