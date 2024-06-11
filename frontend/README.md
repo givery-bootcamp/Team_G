@@ -14,6 +14,14 @@ pnpm dev
 bun dev
 ```
 
+初回クローン時に、frontend直下に、.env.localを作る。
+
+main pullした後に、importの系のエラーが出たら、以下のコマンドを実行する。
+
+```bash
+pnpm install
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
