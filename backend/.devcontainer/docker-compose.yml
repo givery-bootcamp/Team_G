@@ -5,7 +5,6 @@ services:
       context: ../../docker
       dockerfile: backend.Dockerfile
     ports:
-      #- '8080:8080'
       - "127.0.0.1:8080:8080"
     volumes:
       - ../:/go/src/myapp
@@ -14,53 +13,10 @@ services:
       - mongodb
     environment:
       TZ: Asia/Tokyo
-    networks:
-      - net_i
-  # frontend:
-  #   build:
-  #     context: ../../docker
-  #     dockerfile: frontend.Dockerfile
-  #   ports:
-  #     #- '8000:8000'
-  #     - "127.0.0.1:8000:8000"
-  #   volumes:
-  #     - ../frontend:/home/myapp
-  #     - /home/myapp/node_modules
-  #   command: "pnpm dev"
-  #   environment:
-  #     TZ: Asia/Tokyo
-  #   networks:
-  #     - net_i
   mongodb:
     container_name: "mongodb"
     hostname: mongodb
     image: mongo
     restart: always
     ports:
-      #- 27017:27017
       - "127.0.0.1:27017:27017"
-     # volumes:
-     # - ./db:/data/db
-     # - ./configdb:/data/configdb
-    networks:
-      - net_i
-networks:
-  net_i:
-    internal: true
-    external: true
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: password
-  # db:
-  #   build:
-  #     context: ../docker
-  #     dockerfile: mysql.Dockerfile
-  #   volumes:
-  #     - ../docker/mysql:/var/lib/mysql
-  #     - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-  #     - ./mysql/sql:/sqlscripts
-  #   ports:
-  #     - '3306:3306'
-  #   environment:
-  #     - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-  #     - MYSQL_DATABASE=training
