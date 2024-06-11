@@ -1,12 +1,9 @@
-# ワークフローの名前
 name: Golangci-lint ReviewDog 
 
 on:
   pull_request:
 
-# ジョブ定義
 jobs:
-  # lint
   golangci-lint:
     runs-on: ubuntu-latest
     steps:
@@ -17,5 +14,6 @@ jobs:
       - name: cd
         run: |
           cd backend
+          pwd
       - name: golangci-lint
         uses: reviewdog/action-golangci-lint@v2
