@@ -34,19 +34,25 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// PostServicePostListProcedure is the fully-qualified name of the PostService's PostList RPC.
+	PostServicePostListProcedure = "/post.v1.PostService/PostList"
 	// PostServicePostProcedure is the fully-qualified name of the PostService's Post RPC.
 	PostServicePostProcedure = "/post.v1.PostService/Post"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	postServiceServiceDescriptor    = v1.File_post_v1_post_proto.Services().ByName("PostService")
-	postServicePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("Post")
+	postServiceServiceDescriptor        = v1.File_post_v1_post_proto.Services().ByName("PostService")
+	postServicePostListMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("PostList")
+	postServicePostMethodDescriptor     = postServiceServiceDescriptor.Methods().ByName("Post")
 )
 
 // PostServiceClient is a client for the post.v1.PostService service.
 type PostServiceClient interface {
-	Post(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostResponse], error)
+	// リスト
+	PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error)
+	// 詳細
+	Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error)
 }
 
 // NewPostServiceClient constructs a client for the post.v1.PostService service. By default, it uses
@@ -59,7 +65,13 @@ type PostServiceClient interface {
 func NewPostServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PostServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &postServiceClient{
-		post: connect.NewClient[emptypb.Empty, v1.PostResponse](
+		postList: connect.NewClient[emptypb.Empty, v1.PostListResponse](
+			httpClient,
+			baseURL+PostServicePostListProcedure,
+			connect.WithSchema(postServicePostListMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		post: connect.NewClient[v1.PostRequest, v1.PostResponse](
 			httpClient,
 			baseURL+PostServicePostProcedure,
 			connect.WithSchema(postServicePostMethodDescriptor),
@@ -70,17 +82,26 @@ func NewPostServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // postServiceClient implements PostServiceClient.
 type postServiceClient struct {
-	post *connect.Client[emptypb.Empty, v1.PostResponse]
+	postList *connect.Client[emptypb.Empty, v1.PostListResponse]
+	post     *connect.Client[v1.PostRequest, v1.PostResponse]
+}
+
+// PostList calls post.v1.PostService.PostList.
+func (c *postServiceClient) PostList(ctx context.Context, req *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error) {
+	return c.postList.CallUnary(ctx, req)
 }
 
 // Post calls post.v1.PostService.Post.
-func (c *postServiceClient) Post(ctx context.Context, req *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostResponse], error) {
+func (c *postServiceClient) Post(ctx context.Context, req *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error) {
 	return c.post.CallUnary(ctx, req)
 }
 
 // PostServiceHandler is an implementation of the post.v1.PostService service.
 type PostServiceHandler interface {
-	Post(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostResponse], error)
+	// リスト
+	PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error)
+	// 詳細
+	Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error)
 }
 
 // NewPostServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -89,6 +110,12 @@ type PostServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewPostServiceHandler(svc PostServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	postServicePostListHandler := connect.NewUnaryHandler(
+		PostServicePostListProcedure,
+		svc.PostList,
+		connect.WithSchema(postServicePostListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	postServicePostHandler := connect.NewUnaryHandler(
 		PostServicePostProcedure,
 		svc.Post,
@@ -97,6 +124,8 @@ func NewPostServiceHandler(svc PostServiceHandler, opts ...connect.HandlerOption
 	)
 	return "/post.v1.PostService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case PostServicePostListProcedure:
+			postServicePostListHandler.ServeHTTP(w, r)
 		case PostServicePostProcedure:
 			postServicePostHandler.ServeHTTP(w, r)
 		default:
@@ -108,6 +137,10 @@ func NewPostServiceHandler(svc PostServiceHandler, opts ...connect.HandlerOption
 // UnimplementedPostServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedPostServiceHandler struct{}
 
-func (UnimplementedPostServiceHandler) Post(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostResponse], error) {
+func (UnimplementedPostServiceHandler) PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.PostService.PostList is not implemented"))
+}
+
+func (UnimplementedPostServiceHandler) Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.PostService.Post is not implemented"))
 }
