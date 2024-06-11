@@ -1,9 +1,9 @@
 import { NextPage } from "next";
-import { mockData } from "@/constants/mock";
 import { Card } from "@/components/ui/card";
 // import { postClient } from "@/lib/connect";
 import Link from "next/link";
 import Image from "next/image";
+import { mockData } from "@/constants/mock";
 
 const PostListPage: NextPage = async () => {
   // const res = await postClient.post({});
@@ -20,7 +20,7 @@ const PostListPage: NextPage = async () => {
                 <Image src="/images/noimage.png" alt={md.title} width={300} height={300} />
                 <p className="text-xl font-bold">{md.title}</p>
                 <p className="text-sm">{md.body}</p>
-                <div className="text-xs">{md.createdAt.toLocaleDateString()}</div>
+                <div className="text-xs">{md.createdAt?.toLocaleDateString()}</div>
               </Card>
             </Link>
           );

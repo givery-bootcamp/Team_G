@@ -4,22 +4,37 @@
 // @ts-nocheck
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { PostResponse } from "./post_pb";
+import { PostListResponse, PostRequest, PostResponse } from "./post_pb";
 
 /**
+ *
+ *
  * @generated from service post.v1.PostService
  */
 export const PostService = {
   typeName: "post.v1.PostService",
   methods: {
     /**
+     * リスト
+     *
+     * @generated from rpc post.v1.PostService.PostList
+     */
+    postList: {
+      name: "PostList",
+      I: Empty,
+      O: PostListResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * 詳細
+     *
      * @generated from rpc post.v1.PostService.Post
      */
     post: {
       name: "Post",
-      I: Empty,
+      I: PostRequest,
       O: PostResponse,
       kind: MethodKind.Unary,
     },
-  },
+  }
 } as const;
