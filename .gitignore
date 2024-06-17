@@ -6,3 +6,5 @@ backend/myapp
 .vscode/
 .metals
 .env
+terraform-konishi-san
+terraform/.terraform
