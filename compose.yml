@@ -1,10 +1,10 @@
- services:
+services:
   backend:
     build:
       context: ./docker
       dockerfile: backend.Dockerfile
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:80:80"
     volumes:
       - ./backend:/go/src/myapp
     command: sh -c 'go mod tidy && air'
@@ -12,6 +12,7 @@
       - mongodb
     environment:
       TZ: Asia/Tokyo
+      PORT: 80
   mongodb:
     container_name: "mongodb"
     hostname: mongodb

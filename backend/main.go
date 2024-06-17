@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"connectrpc.com/connect"
-	"github.com/joho/godotenv"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -25,7 +25,7 @@ import (
 type PostServer struct{}
 
 // Connection URI
-const uri = "mongodb://mongodb:27017"
+const uri = "mongodb://db:27017"
 
 type Post struct {
 	Id        primitive.ObjectID `bson:"_id"`
@@ -110,18 +110,6 @@ func (s *PostServer) Post(
 		panic(err)
 	}
 
-	// PostList := []Post{}
-
-	// for cur.Next(context.TODO()) {
-	// 	var res Post
-	// 	cur.Decode(&res)
-	// 	// fmt.Println(res)
-	// 	PostList = append(PostList, res)
-	// }
-
-	// fmt.Println(Posts)
-	// fmt.Println(Posts[0].Id.Hex())
-
 	fmt.Println(result)
 
 	comments := []*postv1.Comment{}
@@ -181,12 +169,8 @@ func (s *PostServer) PostList(
 	for cur.Next(context.TODO()) {
 		var res Post
 		cur.Decode(&res)
-		// fmt.Println(res)
 		PostList = append(PostList, res)
 	}
-
-	// fmt.Println(Posts)
-	// fmt.Println(Posts[0].Id.Hex())
 
 	res := connect.NewResponse(&postv1.PostListResponse{
 		Post: convertPostList(PostList),
@@ -195,18 +179,29 @@ func (s *PostServer) PostList(
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	// PORT環境変数の値を取得
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "80"
 	}
 
 	poster := &PostServer{}
 	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Team 7 200 OK"))
+	})
+
 	path, handler := postv1connect.NewPostServiceHandler(poster)
 	mux.Handle(path, handler)
-	http.ListenAndServe(
-		"0.0.0.0:8080",
-		// Use h2c so we can serve HTTP/2 without TLS.
+
+	log.Printf("Server listening on port %s", port)
+	err := http.ListenAndServe(
+		fmt.Sprintf("0.0.0.0:%s", port),
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
 }
