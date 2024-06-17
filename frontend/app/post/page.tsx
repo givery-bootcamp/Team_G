@@ -1,9 +1,9 @@
-import { NextPage } from "next";
 import { Card } from "@/components/ui/card";
+import { NextPage } from "next";
 // import { postClient } from "@/lib/connect";
-import Link from "next/link";
-import Image from "next/image";
 import { mockData } from "@/constants/mock";
+import Image from "next/image";
+import Link from "next/link";
 
 const PostListPage: NextPage = async () => {
   // const res = await postClient.post({});
