@@ -8,7 +8,13 @@ COPY backend /app
 RUN GOOS=linux GOARCH=amd64 go build -o main main.go
 RUN chmod +x /app/main
 
+FROM --platform=linux/amd64 alpine:3.14
+
 EXPOSE 80
+
+WORKDIR /app
+
+COPY backend/main /app/main
 
 # バイナリ指定
 ENTRYPOINT ["./main"]
