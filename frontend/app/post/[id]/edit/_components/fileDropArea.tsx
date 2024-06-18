@@ -1,0 +1,75 @@
+import Image from "next/image";
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+
+interface IFileWithPreview extends File {
+  preview: string;
+}
+
+export default function DropArea() {
+  const [files, setFiles] = useState<IFileWithPreview[]>([]);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles(
+      acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        }),
+      ),
+    );
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const removeFile = (fileToRemove: IFileWithPreview) => {
+    setFiles(files.filter((file) => file.name !== fileToRemove.name));
+    URL.revokeObjectURL(fileToRemove.preview);
+  };
+
+  const previews = files.map((file: IFileWithPreview) => (
+    <div key={file.name} className="relative">
+      <img
+        src={file.preview}
+        alt={file.name}
+        width={200}
+        height={200}
+        className="mb-2"
+        onLoad={() => {
+          URL.revokeObjectURL(file.preview);
+        }}
+      />
+      <button
+        onClick={() => removeFile(file)}
+        className="absolute right-0 top-0 flex items-center justify-center rounded-full bg-red-500 p-1 text-xs text-white"
+        style={{ width: "30px", height: "30px" }}
+      >
+        ×
+      </button>
+    </div>
+  ));
+
+  return (
+    <div className="flex flex-col items-center justify-center p-4">
+      <div
+        {...getRootProps()}
+        className="border-coral-400 w-50 h-38 mb-4 cursor-pointer items-center justify-center border p-4 text-center"
+      >
+        <input {...getInputProps()} id="dropzone-input" />
+        <p>ここにファイルをドラッグ&ドロップ</p>
+        <p className="p-2">または</p>
+        <button
+          className="rounded bg-primary px-4 py-2 font-bold text-white hover:bg-gray-300"
+          onClick={() => document.getElementById("dropzone-input")!.click()}
+        >
+          ファイルを選択
+        </button>
+      </div>
+
+      {files.length > 0 ? (
+        <div className="w-50 mt-4">{previews}</div>
+      ) : (
+        <Image src="/images/noimage.png" alt="No Image Available" className="mb-4" width={400} height={400} />
+      )}
+    </div>
+  );
+}

@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { mockData } from "@/constants/mock";
 
 import { NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import BreadCrumb from "../../_components/breadCrumb";
+import DropArea from "./_components/fileDropArea";
 
 interface Props {
   params: {
@@ -45,7 +45,8 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
 
       <div className="flex flex-col items-center">
-        <Image src="/images/noimage.png" alt="Post Image" className="mb-4" width={400} height={400}></Image>
+        <DropArea></DropArea>
+        {/* <Image src="/images/noimage.png" alt="Post Image" className="mb-4" width={400} height={400}></Image> */}
         <Input
           type="title"
           placeholder="タイトル"
