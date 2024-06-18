@@ -11,7 +11,7 @@ resource "aws_lb" "ecs_alb" {
 }
 
 resource "aws_lb_target_group" "ecs_tg" {
-  name             = "ecs-target-group-team-7"
+  name             = "ecs-target-group-team-7-ex"
   port             = 80
   protocol         = "HTTP"
   protocol_version = "GRPC"
