@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { mockData } from "@/constants/mock";
 import BreadCrumb from "./_components/breadCrumb";
-import TestButton from "./_components/TestButton";
 
 const PostListPage: NextPage = async () => {
   // const res = await postClient.post({});
@@ -20,7 +19,7 @@ const PostListPage: NextPage = async () => {
     <main className="mx-auto min-h-screen max-w-xl pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
       <h1 className="mb-2 text-2xl font-bold">投稿一覧</h1>
-      <TestButton comment="test!!" />
+
       <section className="grid grid-cols-2 gap-2 p-2">
         {mockData.map((md) => {
           return (
