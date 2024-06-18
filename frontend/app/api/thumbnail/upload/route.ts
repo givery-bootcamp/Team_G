@@ -1,5 +1,5 @@
+import { PutObjectCommand, PutObjectCommandInput, S3Client } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-import { S3Client, PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 
 //Upload image to AWS S3
 export async function POST(request: Request) {
@@ -12,9 +12,12 @@ export async function POST(request: Request) {
       secretAccessKey: SECRET_ACCESS_KEY || "",
     },
   });
+  console.log("request:", request);
 
   const { searchParams } = new URL(request.url);
-  const fileName = searchParams.get("filename");
+
+  const fileName = "a/" + searchParams.get("filename");
+  console.log("fileName:", fileName);
 
   const formData = await request.formData();
   const file = formData.get("file") as File;
@@ -31,10 +34,12 @@ export async function POST(request: Request) {
   };
 
   try {
+    console.log("Uploading image to S3...");
     const command = new PutObjectCommand(uploadParams);
     const uploadResult = await s3Client.send(command);
     console.log("Upload success:", uploadResult);
     const imageUrl = `https://${S3_BUCKET_NAME}.s3.${REGION}.amazonaws.com/${fileName}`;
+    console.log("imageUrl:", imageUrl);
     return NextResponse.json({ imageUrl });
   } catch (err) {
     console.error(err);

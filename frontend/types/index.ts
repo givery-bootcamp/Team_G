@@ -24,3 +24,7 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export interface IFileWithPreview extends File {
+  preview: string;
+}

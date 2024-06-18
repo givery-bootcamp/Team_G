@@ -8,7 +8,9 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
 import BreadCrumb from "../../_components/breadCrumb";
-import DropArea from "./_components/fileDropArea";
+
+import { DropArea } from "./_components/fileDropArea";
+import useFileDrop from "./_hooks/useFileDrop";
 
 interface Props {
   params: {
@@ -20,6 +22,8 @@ interface Props {
 
 const PostEditPage: NextPage<Props> = ({ params }) => {
   const { id, title, body } = params;
+  const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
+
   // const { post } = await postClient.post({ id });
   const post = mockData.find((md) => md.id === Number(id));
   const [postTitle, setPostTitle] = useState(post?.title);
@@ -39,14 +43,16 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
     { name: `${post.title}`, href: `/post/${id}` },
   ];
 
+  console.log({ files });
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
 
       <div className="flex flex-col items-center">
-        <DropArea></DropArea>
-        {/* <Image src="/images/noimage.png" alt="Post Image" className="mb-4" width={400} height={400}></Image> */}
+        <DropArea files={files} getRootProps={getRootProps} getInputProps={getInputProps} setFiles={setFiles} />
+        <div>アップロードされたファイル数: {files.length}</div>
+        <div>アップロードされたファイル: {files.map((file) => file.name).join(", ")}</div>
         <Input
           type="title"
           placeholder="タイトル"
@@ -62,7 +68,21 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
           className="mb-4"
         ></Input>
         <Link href={`/post/${id}`}>
-          <Button className="w-full">更新</Button>
+          <Button
+            className="w-full"
+            onClick={async () => {
+              var formData = new FormData();
+              formData.append("file", files[0], files[0].name);
+
+              formData.append("filename", files[0].name);
+              console.log("filename" + files[0].name);
+              console.log(formData.get("file"));
+
+              uploadFile(null, formData);
+            }}
+          >
+            更新
+          </Button>
         </Link>
       </div>
     </main>
@@ -70,3 +90,24 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
 };
 
 export default PostEditPage;
+const uploadFile = async (prevState: string | null, formData: FormData) => {
+  console.log({ formData });
+  console.log("uploadFile.....");
+  if (!formData.get("file")) {
+    return prevState;
+  }
+  console.log("formData.get(filename):" + formData.get("filename"));
+
+  try {
+    const response = await fetch("/api/thumbnail/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    console.log(data);
+
+    return data.imageUrl;
+  } catch (error) {
+    console.error(error);
+  }
+};

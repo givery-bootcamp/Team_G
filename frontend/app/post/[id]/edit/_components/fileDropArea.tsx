@@ -1,26 +1,16 @@
 import Image from "next/image";
-import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
 
 interface IFileWithPreview extends File {
   preview: string;
 }
+interface DropAreaProps {
+  files: IFileWithPreview[];
+  getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
+  getInputProps: () => { ref: React.RefObject<HTMLInputElement> };
+  setFiles: React.Dispatch<React.SetStateAction<IFileWithPreview[]>>;
+}
 
-export default function DropArea() {
-  const [files, setFiles] = useState<IFileWithPreview[]>([]);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        }),
-      ),
-    );
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
+export const DropArea: React.FC<DropAreaProps> = ({ files, getRootProps, getInputProps, setFiles }) => {
   const removeFile = (fileToRemove: IFileWithPreview) => {
     setFiles(files.filter((file) => file.name !== fileToRemove.name));
     URL.revokeObjectURL(fileToRemove.preview);
@@ -72,4 +62,4 @@ export default function DropArea() {
       )}
     </div>
   );
-}
+};
