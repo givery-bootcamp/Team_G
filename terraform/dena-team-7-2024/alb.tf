@@ -2,8 +2,8 @@ resource "aws_lb" "ecs_alb" {
   name               = "ecs-team-7-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_c.id]
+  security_groups    = [data.aws_security_group.alb_sg.id]
+  subnets            = [data.aws_subnet.public_subnet_a.id, data.aws_subnet.public_subnet_c.id]
 
   tags = {
     Name = "ECS ALB"
