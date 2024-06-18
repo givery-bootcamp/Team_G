@@ -1,10 +1,8 @@
-// import { postClient } from "@/lib/connect";
 import { mockData } from "@/constants/mock";
 import { NextPage } from "next";
 import Image from "next/image";
 import BreadCrumb from "../_components/breadCrumb";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import FormArea from "../_components/formArea";
 
 interface Props {
   params: {
@@ -36,10 +34,7 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
       </div>
       <div className="p-5">
         <p className="text-left text-xl font-semibold">Post Message</p>
-        <div className="flex flex-col items-center space-y-2">
-          <Textarea placeholder="Type your message here." />
-          <Button variant="outline">Post</Button>
-        </div>
+        <FormArea pageId={id} />
       </div>
     </main>
   );
