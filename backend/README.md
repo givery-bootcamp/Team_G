@@ -57,28 +57,34 @@ buf generate
 go run main.go
 ```
 
-#### gRPC リクエストの送信
-
-```bash
-// 投稿の一覧を取得
-grpcurl -protoset <(buf build -o -) -plaintext localhost:8080 post.v1.PostService/PostList
-
-// 特定の投稿を取得 (id値は任意の値に変更)
-grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d080476e"}' localhost:8080 post.v1.PostService/Post
-```
-
 ## grpcurl コマンド使用方法
+
+### ローカル環境
 
 #### 投稿の一覧を取得
 
 ```bash
-grpcurl -protoset <(buf build -o -) -plaintext localhost:8080 post.v1.PostService/PostList
+grpcurl -protoset <(buf build -o -) -plaintext localhost:80 post.v1.PostService/PostList
 ```
 
 #### 特定の投稿を取得
 
 ```bash
-grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d080476e"}' localhost:8080 post.v1.PostService/Post
+grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d080476e"}' localhost:80 post.v1.PostService/Post
+```
+
+### デプロイ環境
+
+#### 投稿の一覧を取得
+
+```bash
+grpcurl -protoset <(buf build -o -) team-7_bk.member0005.track-bootcamp.run:443 post.v1.PostService/PostList
+```
+
+#### 特定の投稿を取得
+
+```bash
+grpcurl -protoset <(buf build -o -) -d '{"id": "6667bf839a410579d080476e"}' team-7_bk.member0005.track-bootcamp.run:443 post.v1.PostService/Pos
 ```
 
 ## MongoDB 関連ツールの使用方法
@@ -229,3 +235,30 @@ db.Post.insert({
   }
 })
 ```
+
+### デプロイ
+
+#### バックエンド
+
+```bash
+$ bash deploy-backend.sh タスクリビジョン番号
+```
+
+#### DB
+
+```bash
+$ cd docker
+$ bash deploy-db.sh タスクリビジョン番号
+```
+
+[タスクリビジョン番号の確認](https://ap-northeast-1.console.aws.amazon.com/ecs/v2/task-definitions/dena-training-2024-team-7?status=ACTIVE&region=ap-northeast-1)
+
+#### AWSでのデプロイ
+Amazon Elastic Container Service
+→クラスター
+→dena-training-2024
+→サービス
+→dena-training-2024-team-7
+→デプロイ
+→サービスの更新
+→新しいデプロイの強制
