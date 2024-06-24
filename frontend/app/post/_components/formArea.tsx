@@ -3,16 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuid4 } from "uuid";
 //import { v4 as uuid4 } from "uuid";
+import { Post, Comment } from "@/types";
+import { backend } from "@/lib/backend";
 
 const FormArea = ({ pageId }: { pageId: string }) => {
   const clickAction = (formData: FormData) => {
-    const comment = {
+    const comment: Comment = {
       id: "1",
       body: "sample comment",
-      user_id: "0",
-      post_id: "0",
-      created_at: "0-0-0-0:0:0",
-      updated_at: "0-0-0-0:0:0",
+      userId: "0",
+      postId: "0",
+      createdAt: new Date(2024, 6, 24),
+      updatedAt: new Date(2024, 6, 24),
     };
 
     const text = formData.get("body");
@@ -21,15 +23,16 @@ const FormArea = ({ pageId }: { pageId: string }) => {
     if (text && text != null) {
       comment.id = String(uniqueId);
       comment.body = String(text);
-      comment.post_id = pageId;
+      comment.postId = pageId;
       const createdAt = new Date();
-      const formatCreatedAt = `${createdAt.getFullYear()}-${createdAt.getMonth()}-${createdAt.getDate()}-${createdAt.getHours()}:${createdAt.getMinutes()}:${createdAt.getSeconds()}`;
-      comment.created_at = String(formatCreatedAt);
+      comment.createdAt = createdAt;
+      comment.updatedAt = createdAt;
       console.log(uniqueId);
       console.log(comment.body);
-      console.log(comment.post_id);
-      console.log(comment.created_at);
-      console.log(comment.updated_at);
+      console.log(comment.postId);
+      console.log(comment.createdAt);
+      console.log(comment.updatedAt);
+      backend.comment.postComment(comment);
     } else {
       console.log("null text");
     }
