@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useState } from "react";
 import BreadCrumb from "../../_components/breadCrumb";
 
-import { IFileWithPreview } from "@/types";
 import { DropArea } from "./_components/fileDropArea";
 import useFileDrop from "./_hooks/useFileDrop";
 
@@ -45,12 +44,10 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
   ];
 
   console.log({ files });
-  if (post.imageUrl.length > 0) {
-    const file = new File([], post.imageUrl) as IFileWithPreview;
-    file.preview = post.imageUrl;
-    files.push(file);
-    // post.imageUrl = "";
-  }
+  // if (post.imageUrl.length > 0) {
+
+  //   // post.imageUrl = "";
+  // }
 
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
@@ -58,7 +55,13 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
 
       <div className="flex flex-col items-center">
-        <DropArea files={files} getRootProps={getRootProps} getInputProps={getInputProps} setFiles={setFiles} />
+        <DropArea
+          imageUrl={post.imageUrl}
+          files={files}
+          getRootProps={getRootProps}
+          getInputProps={getInputProps}
+          setFiles={setFiles}
+        />
         <div>アップロードされたファイル数: {files.length}</div>
         <div>アップロードされたファイル: {files.map((file) => file.name).join(", ")}</div>
         <Input

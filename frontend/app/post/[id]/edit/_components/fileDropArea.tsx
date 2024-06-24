@@ -4,19 +4,27 @@ interface IFileWithPreview extends File {
   preview: string;
 }
 interface DropAreaProps {
+  imageUrl: string;
   files: IFileWithPreview[];
   getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
   getInputProps: () => { ref: React.RefObject<HTMLInputElement> };
   setFiles: React.Dispatch<React.SetStateAction<IFileWithPreview[]>>;
 }
 
-export const DropArea: React.FC<DropAreaProps> = ({ files, getRootProps, getInputProps, setFiles }) => {
+export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, files, getRootProps, getInputProps, setFiles }) => {
+  var removeFileName = "";
   const removeFile = (fileToRemove: IFileWithPreview) => {
+    removeFileName = fileToRemove.name;
     setFiles(files.filter((file) => file.name !== fileToRemove.name));
     URL.revokeObjectURL(fileToRemove.preview);
-    console.log("removeFile:", fileToRemove);
   };
-
+  if (imageUrl.length > 0 && removeFileName != imageUrl) {
+    if (files.filter((file) => file.name == imageUrl).length == 0) {
+      const file = new File([], imageUrl) as IFileWithPreview;
+      file.preview = imageUrl;
+      files.push(file);
+    }
+  }
   const previews = files.map((file: IFileWithPreview) => (
     <div key={file.name} className="relative">
       <img
