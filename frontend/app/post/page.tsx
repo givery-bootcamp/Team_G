@@ -25,7 +25,12 @@ const PostListPage: NextPage = async () => {
           return (
             <Link href={`/post/${md.id}`} key={md.id} className="w-full text-center">
               <Card className="mx-auto max-w-fit p-3">
-                <Image src="/images/noimage.png" alt={md.title} width={300} height={300} />
+                <Image
+                  src={md.imageUrl.length > 0 ? md.imageUrl : "/images/noimage.png"}
+                  alt={md.title}
+                  width={300}
+                  height={300}
+                />
                 <p className="text-xl font-bold">{md.title}</p>
                 <p className="text-sm">{md.body}</p>
                 <div className="text-xs">{md.createdAt?.toLocaleDateString()}</div>

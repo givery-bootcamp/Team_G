@@ -12,6 +12,7 @@ export type Post = {
   title: string;
   body: string;
   userId: number;
+  imageUrl: string;
   comments: Comment[];
   createdAt: Date;
   updatedAt: Date;

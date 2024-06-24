@@ -14,6 +14,7 @@ export const DropArea: React.FC<DropAreaProps> = ({ files, getRootProps, getInpu
   const removeFile = (fileToRemove: IFileWithPreview) => {
     setFiles(files.filter((file) => file.name !== fileToRemove.name));
     URL.revokeObjectURL(fileToRemove.preview);
+    console.log("removeFile:", fileToRemove);
   };
 
   const previews = files.map((file: IFileWithPreview) => (

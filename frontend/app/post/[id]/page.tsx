@@ -35,8 +35,12 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
             <Image src="/images/mode_edit.png" alt="edit pencil" className="" width={400} height={400} />
           </Button>
         </Link>
-
-        <Image src="/images/noimage.png" alt="Post Image" className="mb-4" width={400} height={400} />
+        <Image
+          src={post.imageUrl.length > 0 ? post.imageUrl : "/images/noimage.png"}
+          alt={post.title}
+          width={400}
+          height={400}
+        />{" "}
         <h2 className="text-xl font-semibold">{post.title}</h2>
         <p className="text-md mt-2">{post.body}</p>
       </div>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useState } from "react";
 import BreadCrumb from "../../_components/breadCrumb";
 
+import { IFileWithPreview } from "@/types";
 import { DropArea } from "./_components/fileDropArea";
 import useFileDrop from "./_hooks/useFileDrop";
 
@@ -23,9 +24,9 @@ interface Props {
 const PostEditPage: NextPage<Props> = ({ params }) => {
   const { id, title, body } = params;
   const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
-
-  // const { post } = await postClient.post({ id });
   const post = mockData.find((md) => md.id === Number(id));
+  if (!post) return;
+
   const [postTitle, setPostTitle] = useState(post?.title);
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
@@ -44,6 +45,13 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
   ];
 
   console.log({ files });
+  if (post.imageUrl.length > 0) {
+    const file = new File([], post.imageUrl) as IFileWithPreview;
+    file.preview = post.imageUrl;
+    files.push(file);
+    // post.imageUrl = "";
+  }
+
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
@@ -73,11 +81,7 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
             onClick={async () => {
               var formData = new FormData();
               formData.append("file", files[0], files[0].name);
-
               formData.append("filename", files[0].name);
-              console.log("filename" + files[0].name);
-              console.log(formData.get("file"));
-
               uploadFile(null, formData);
             }}
           >
@@ -96,8 +100,6 @@ const uploadFile = async (prevState: string | null, formData: FormData) => {
   if (!formData.get("file")) {
     return prevState;
   }
-  console.log("formData.get(filename):" + formData.get("filename"));
-
   try {
     const response = await fetch("/api/thumbnail/upload", {
       method: "POST",

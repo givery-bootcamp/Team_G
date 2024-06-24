@@ -12,15 +12,13 @@ export async function POST(request: Request) {
       secretAccessKey: SECRET_ACCESS_KEY || "",
     },
   });
-  console.log("request:", request);
+  console.log("request:", request.url);
 
   const { searchParams } = new URL(request.url);
 
-  const fileName = "a/" + searchParams.get("filename");
-  console.log("fileName:", fileName);
-
   const formData = await request.formData();
   const file = formData.get("file") as File;
+  const fileName = formData.get("filename") as string;
 
   // convert File to Buffer to show image correctly in the browser
   const buffer = Buffer.from(await file?.arrayBuffer());
