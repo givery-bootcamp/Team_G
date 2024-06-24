@@ -8,4 +8,4 @@ COPY ./mongod.conf /etc/mongod.conf
 
 EXPOSE 27017
 
-ENTRYPOINT ["mongod"]
+CMD ["mongod", "--bind_ip", "0.0.0.0"]
