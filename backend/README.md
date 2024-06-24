@@ -253,12 +253,19 @@ $ bash deploy-db.sh タスクリビジョン番号
 
 [タスクリビジョン番号の確認](https://ap-northeast-1.console.aws.amazon.com/ecs/v2/task-definitions/dena-training-2024-team-7?status=ACTIVE&region=ap-northeast-1)
 
-#### AWSでのデプロイ
+#### AWS でのデプロイ
+
 Amazon Elastic Container Service
-→クラスター
+→ クラスター
 →dena-training-2024
-→サービス
+→ サービス
 →dena-training-2024-team-7
-→デプロイ
-→サービスの更新
-→新しいデプロイの強制
+→ デプロイ
+→ サービスの更新
+→ 新しいデプロイの強制
+
+### ECS Target Group 変更
+
+```bash
+$ aws ecs update-service --cluster dena-training-2024 --service dena-training-2024-team-7 --load-balancers targetGroupArn=arn:aws:elasticloadbalancing:ap-northeast-1:101501319743:targetgroup/ecs-target-group-team-7-ex/14ce63dbe1e6d2eb,containerName=backend,containerPort=80
+```

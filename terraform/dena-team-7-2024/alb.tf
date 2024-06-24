@@ -10,11 +10,11 @@ resource "aws_lb" "ecs_alb" {
   }
 }
 
-resource "aws_lb_target_group" "ecs_tg" {
-  name             = "ecs-target-group-team-7-ex"
+resource "aws_lb_target_group" "ecs_tg_final" {
+  name             = "ecs-target-group-team-7-final"
   port             = 80
   protocol         = "HTTP"
-  protocol_version = "GRPC"
+  protocol_version = "HTTP2"
   // VPCのID
   vpc_id = data.aws_vpc.default.id
   // ターゲットのタイプ
@@ -57,7 +57,7 @@ resource "aws_lb_listener" "https" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ecs_tg.arn
+    target_group_arn = aws_lb_target_group.ecs_tg_final.arn
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_lb_listener_rule" "host_header_rule_backend" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ecs_tg.arn
+    target_group_arn = aws_lb_target_group.ecs_tg_final.arn
   }
 
   condition {
