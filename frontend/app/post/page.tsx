@@ -4,13 +4,20 @@ import { NextPage } from "next";
 import { mockData } from "@/constants/mock";
 import Image from "next/image";
 import Link from "next/link";
+import BreadCrumb from "./_components/breadCrumb";
 
 const PostListPage: NextPage = async () => {
   // const res = await postClient.post({});
   // console.log({res});
 
+  const breadcrumbItems = [
+    { name: "Home", href: "/" },
+    { name: "投稿一覧", href: "/post" },
+  ];
+
   return (
     <main className="mx-auto min-h-screen max-w-xl pt-4">
+      <BreadCrumb breadcrumbItems={breadcrumbItems} />
       <h1 className="mb-2 text-2xl font-bold">投稿一覧</h1>
       <section className="grid grid-cols-2 gap-2 p-2">
         {mockData.map((md) => {
