@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuid4 } from "uuid";
 //import { v4 as uuid4 } from "uuid";
-import { Post, Comment } from "@/types";
+import { Comment } from "@/types";
 import { backend } from "@/lib/backend";
 
 const FormArea = ({ pageId }: { pageId: string }) => {
