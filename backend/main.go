@@ -25,7 +25,7 @@ import (
 type PostServer struct{}
 
 // Connection URI
-const uri = "mongodb://127.0.0.1:27017"
+var uri = os.Getenv("MONGODB_URI")
 
 type Post struct {
 	Id        primitive.ObjectID `bson:"_id"`
@@ -84,30 +84,34 @@ func (s *PostServer) Post(
 	req *connect.Request[postv1.PostRequest],
 ) (*connect.Response[postv1.PostResponse], error) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
 	if err != nil {
-		panic(err)
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
+			log.Fatalf("MongoDB切断エラー: %v", err)
 		}
 	}()
 
 	coll := client.Database("SNS").Collection("Post")
 
-	// reqからIDを取り出す
 	idStr := req.Msg.Id
-	// 取り出したIDで検索
 	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	filter := bson.M{"_id": id}
 	var result Post
 	err = coll.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, err
+			return nil, connect.NewError(connect.CodeNotFound, err)
 		}
-		panic(err)
+		log.Printf("ドキュメント取得エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	fmt.Println(result)
@@ -143,37 +147,42 @@ func (s *PostServer) PostList(
 	ctx context.Context,
 	req *connect.Request[emptypb.Empty],
 ) (*connect.Response[postv1.PostListResponse], error) {
-	// log.Println("Request headers: ", req.Header())
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
 	if err != nil {
-		panic(err)
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
+			log.Fatalf("MongoDB切断エラー: %v", err)
 		}
 	}()
 
 	coll := client.Database("SNS").Collection("Post")
 
-	// filter := bson.D{{"<<fieldName>>", bson.D{{"$eq", "hoge"}}}}
-
 	cur, err := coll.Find(context.TODO(), bson.D{{}})
 	if err != nil {
-		panic(err)
+		log.Printf("ドキュメント検索エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	PostList := []Post{}
-
+	var postList []Post
 	for cur.Next(context.TODO()) {
-		var res Post
-		cur.Decode(&res)
-		PostList = append(PostList, res)
+		var post Post
+		if err := cur.Decode(&post); err != nil {
+			log.Printf("ドキュメントデコードエラー: %v", err)
+			continue
+		}
+		postList = append(postList, post)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Printf("カーソルエラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	res := connect.NewResponse(&postv1.PostListResponse{
-		Post: convertPostList(PostList),
+		Post: convertPostList(postList),
 	})
 	return res, nil
 }
@@ -201,7 +210,8 @@ func main() {
 		fmt.Sprintf("0.0.0.0:%s", port),
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
+
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("サーバーの起動に失敗しました: %v", err)
 	}
 }

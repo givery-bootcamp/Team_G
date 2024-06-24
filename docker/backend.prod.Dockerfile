@@ -1,20 +1,26 @@
-FROM golang:1.22
+# ビルドステージ
+FROM golang:1.22 AS builder
 
 WORKDIR /app
-# 親の階層は見に行けない
-COPY backend /app
 
-# 権限付与
-RUN GOOS=linux GOARCH=amd64 go build -o main main.go
-RUN chmod +x /app/main
+# 必要なファイルをコピー
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
 
-FROM --platform=linux/amd64 alpine:3.14
+COPY backend ./
+
+# バイナリをビルド
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main main.go
+
+# 実行ステージ
+FROM alpine:3.14
 
 EXPOSE 80
 
 WORKDIR /app
 
-COPY backend/main /app/main
+# ビルドしたバイナリをコピー
+COPY --from=builder /app/main /app/main
 
-# バイナリ指定
+# バイナリを実行
 ENTRYPOINT ["./main"]

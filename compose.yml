@@ -1,10 +1,11 @@
 services:
   backend:
+    container_name: "team-7-backend"
     build:
       context: ./docker
       dockerfile: backend.Dockerfile
     ports:
-      - "127.0.0.1:80:80"
+      - "80:80"
     volumes:
       - ./backend:/go/src/myapp
     command: sh -c 'go mod tidy && air'
@@ -13,11 +14,14 @@ services:
     environment:
       TZ: Asia/Tokyo
       PORT: 80
+      MONGODB_URI: "mongodb://mongodb:27017"
+
   mongodb:
-    container_name: "mongodb"
+    container_name: "team-7-mongodb"
     hostname: mongodb
     build:
       context: ./docker
       dockerfile: mongodb.Dockerfile
     ports:
       - "27017:27017"
+    command: ["mongod", "--bind_ip", "0.0.0.0"]
