@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"connectrpc.com/connect"
-	"github.com/joho/godotenv"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -25,7 +25,7 @@ import (
 type PostServer struct{}
 
 // Connection URI
-const uri = "mongodb://mongodb:27017"
+var uri = os.Getenv("MONGODB_URI")
 
 type Post struct {
 	Id        primitive.ObjectID `bson:"_id"`
@@ -84,43 +84,35 @@ func (s *PostServer) Post(
 	req *connect.Request[postv1.PostRequest],
 ) (*connect.Response[postv1.PostResponse], error) {
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
 	if err != nil {
-		panic(err)
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
+			log.Fatalf("MongoDB切断エラー: %v", err)
 		}
 	}()
 
 	coll := client.Database("SNS").Collection("Post")
 
-	// reqからIDを取り出す
 	idStr := req.Msg.Id
-	// 取り出したIDで検索
 	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	filter := bson.M{"_id": id}
 	var result Post
 	err = coll.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			return nil, err
+			return nil, connect.NewError(connect.CodeNotFound, err)
 		}
-		panic(err)
+		log.Printf("ドキュメント取得エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-
-	// PostList := []Post{}
-
-	// for cur.Next(context.TODO()) {
-	// 	var res Post
-	// 	cur.Decode(&res)
-	// 	// fmt.Println(res)
-	// 	PostList = append(PostList, res)
-	// }
-
-	// fmt.Println(Posts)
-	// fmt.Println(Posts[0].Id.Hex())
 
 	fmt.Println(result)
 
@@ -155,58 +147,71 @@ func (s *PostServer) PostList(
 	ctx context.Context,
 	req *connect.Request[emptypb.Empty],
 ) (*connect.Response[postv1.PostListResponse], error) {
-	// log.Println("Request headers: ", req.Header())
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
 	if err != nil {
-		panic(err)
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
+			log.Fatalf("MongoDB切断エラー: %v", err)
 		}
 	}()
 
 	coll := client.Database("SNS").Collection("Post")
 
-	// filter := bson.D{{"<<fieldName>>", bson.D{{"$eq", "hoge"}}}}
-
 	cur, err := coll.Find(context.TODO(), bson.D{{}})
 	if err != nil {
-		panic(err)
+		log.Printf("ドキュメント検索エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	PostList := []Post{}
-
+	var postList []Post
 	for cur.Next(context.TODO()) {
-		var res Post
-		cur.Decode(&res)
-		// fmt.Println(res)
-		PostList = append(PostList, res)
+		var post Post
+		if err := cur.Decode(&post); err != nil {
+			log.Printf("ドキュメントデコードエラー: %v", err)
+			continue
+		}
+		postList = append(postList, post)
 	}
 
-	// fmt.Println(Posts)
-	// fmt.Println(Posts[0].Id.Hex())
+	if err := cur.Err(); err != nil {
+		log.Printf("カーソルエラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
 
 	res := connect.NewResponse(&postv1.PostListResponse{
-		Post: convertPostList(PostList),
+		Post: convertPostList(postList),
 	})
 	return res, nil
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	// PORT環境変数の値を取得
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "80"
 	}
 
 	poster := &PostServer{}
 	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Team 7 200 OK"))
+	})
+
 	path, handler := postv1connect.NewPostServiceHandler(poster)
 	mux.Handle(path, handler)
-	http.ListenAndServe(
-		"0.0.0.0:8080",
-		// Use h2c so we can serve HTTP/2 without TLS.
+
+	log.Printf("Server listening on port %s", port)
+	err := http.ListenAndServe(
+		fmt.Sprintf("0.0.0.0:%s", port),
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
+
+	if err != nil {
+		log.Fatalf("サーバーの起動に失敗しました: %v", err)
+	}
 }
