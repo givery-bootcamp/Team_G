@@ -7,7 +7,7 @@ import { Empty, MethodKind } from "@bufbuild/protobuf";
 import { PostListResponse, PostRequest, PostResponse } from "./post_pb";
 
 /**
- *
+ * Postサービスの定義
  *
  * @generated from service post.v1.PostService
  */
@@ -15,7 +15,8 @@ export const PostService = {
   typeName: "post.v1.PostService",
   methods: {
     /**
-     * リスト
+     * Post一覧API
+     * リクエストは空
      *
      * @generated from rpc post.v1.PostService.PostList
      */
@@ -26,7 +27,7 @@ export const PostService = {
       kind: MethodKind.Unary,
     },
     /**
-     * 詳細
+     * Post詳細API
      *
      * @generated from rpc post.v1.PostService.Post
      */
