@@ -106,6 +106,13 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/UpdatePost
 ```
 
+#### 削除更新
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+        "id": "667a802a6e2d7b033265fb63"}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/DeletePost
+```
+
 ## MongoDB 関連ツールの使用方法
 
 #### MongoDB サービスの起動
