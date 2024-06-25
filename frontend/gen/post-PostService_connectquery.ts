@@ -10,7 +10,8 @@ import { PostListResponse, PostRequest, PostResponse } from "./post_pb";
 export const typeName = "post.v1.PostService";
 
 /**
- * リスト
+ * Post一覧API
+ * リクエストは空
  *
  * @generated from rpc post.v1.PostService.PostList
  */
@@ -29,7 +30,7 @@ export const postList = createQueryService({
 }).postList;
 
 /**
- * 詳細
+ * Post詳細API
  *
  * @generated from rpc post.v1.PostService.Post
  */

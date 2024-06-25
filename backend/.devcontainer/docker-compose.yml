@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   backend:
     build:
@@ -20,4 +19,4 @@ services:
       context: ../../docker
       dockerfile: mongodb.Dockerfile
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"

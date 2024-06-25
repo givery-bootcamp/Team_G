@@ -4,7 +4,6 @@ go 1.22.3
 
 require (
 	connectrpc.com/connect v1.16.2
-	github.com/joho/godotenv v1.5.1
 	go.mongodb.org/mongo-driver v1.15.0
 	golang.org/x/net v0.25.0
 	google.golang.org/protobuf v1.33.0
