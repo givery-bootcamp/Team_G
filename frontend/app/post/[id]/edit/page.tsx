@@ -35,19 +35,11 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
     setPostBody(value);
   };
 
-  if (!post) return;
-
   const breadcrumbItems = [
     { name: "Home", href: "/" },
     { name: "投稿一覧", href: "/post" },
     { name: `${post.title}`, href: `/post/${id}` },
   ];
-
-  console.log({ files });
-  // if (post.imageUrl.length > 0) {
-
-  //   // post.imageUrl = "";
-  // }
 
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
@@ -86,6 +78,7 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
               formData.append("file", files[0], files[0].name);
               formData.append("filename", files[0].name);
               uploadFile(null, formData);
+              //TODO:UPDATEのAPIを叩く
             }}
           >
             更新

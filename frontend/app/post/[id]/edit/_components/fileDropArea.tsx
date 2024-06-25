@@ -12,13 +12,11 @@ interface DropAreaProps {
 }
 
 export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, files, getRootProps, getInputProps, setFiles }) => {
-  var removeFileName = "";
   const removeFile = (fileToRemove: IFileWithPreview) => {
-    removeFileName = fileToRemove.name;
     setFiles(files.filter((file) => file.name !== fileToRemove.name));
     URL.revokeObjectURL(fileToRemove.preview);
   };
-  if (imageUrl.length > 0 && removeFileName != imageUrl) {
+  if (imageUrl.length > 0) {
     if (files.filter((file) => file.name == imageUrl).length == 0) {
       const file = new File([], imageUrl) as IFileWithPreview;
       file.preview = imageUrl;
