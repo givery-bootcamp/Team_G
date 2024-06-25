@@ -96,6 +96,16 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/CreatePost
 ```
 
+#### 投稿更新
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+	"id": "667a802a6e2d7b033265fb63",
+	"title": "Asuma CreatePost Test222222222222222222222",
+	"body": "Asuma CreatePost Test Body222222222222222222222"
+}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/UpdatePost
+```
+
 ## MongoDB 関連ツールの使用方法
 
 #### MongoDB サービスの起動

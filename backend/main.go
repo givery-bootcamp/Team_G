@@ -210,6 +210,49 @@ func (s *PostServer) CreatePost(
 	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
+func (s *PostServer) UpdatePost(
+	ctx context.Context,
+	req *connect.Request[postv1.UpdatePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			log.Fatalf("MongoDB切断エラー: %v", err)
+		}
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	idStr := req.Msg.Id
+	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"title":      req.Msg.Title,
+			"body":       req.Msg.Body,
+			"updated_at": domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+		},
+	}
+
+	_, err = coll.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		log.Printf("ドキュメント更新エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
+}
+
 func main() {
 	// PORT環境変数の値を取得
 	port := os.Getenv("PORT")

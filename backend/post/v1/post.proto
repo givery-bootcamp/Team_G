@@ -20,6 +20,9 @@ service PostService {
 
   // Post作成API
   rpc CreatePost(CreatePostRequest) returns (google.protobuf.Empty) {}
+
+  // Post更新API
+  rpc UpdatePost(UpdatePostRequest) returns (google.protobuf.Empty) {}
 }
 
 // Post一覧APIのレスポンス
@@ -35,6 +38,13 @@ message PostResponse { PostData post = 1; }
 message CreatePostRequest {
   string title = 1;
   string body = 2;
+}
+
+// Post更新APIのリクエスト
+message UpdatePostRequest {
+  string id = 1;
+  string title = 2;
+  string body = 3;
 }
 
 // Postデータ
