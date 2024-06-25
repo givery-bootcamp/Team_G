@@ -1,30 +1,33 @@
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface IFileWithPreview extends File {
   preview: string;
 }
 interface DropAreaProps {
-  imageUrl: string;
-  files: IFileWithPreview[];
+  imageUrls: string[];
   getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
   getInputProps: () => { ref: React.RefObject<HTMLInputElement> };
   setFiles: React.Dispatch<React.SetStateAction<IFileWithPreview[]>>;
 }
 
-export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, files, getRootProps, getInputProps, setFiles }) => {
+export const DropArea: React.FC<DropAreaProps> = ({ imageUrls, getRootProps, getInputProps }) => {
   const inputRef = useRef(null);
+  const [files, setFiles] = useState<IFileWithPreview[]>([]);
+
   const removeFile = (fileToRemove: IFileWithPreview) => {
     setFiles(files.filter((file) => file.name !== fileToRemove.name));
     URL.revokeObjectURL(fileToRemove.preview);
   };
-  if (imageUrl.length > 0 && files.length == 0) {
-    if (files.filter((file) => file.name == imageUrl).length == 0) {
-      const file = new File([], imageUrl) as IFileWithPreview;
-      file.preview = imageUrl;
-      files.push(file);
-    }
-  }
+
+  useEffect(() => {
+    const newFiles = imageUrls.map((imageUrl) =>
+      Object.assign(new File([""], imageUrl), {
+        preview: imageUrl,
+      }),
+    );
+    setFiles(newFiles);
+  }, [imageUrls]);
   const previews = files.map((file: IFileWithPreview) => (
     <div key={file.name} className="relative">
       <img

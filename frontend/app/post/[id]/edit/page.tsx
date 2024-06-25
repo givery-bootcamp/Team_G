@@ -25,6 +25,13 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
   const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
   const post = mockData.find((md) => md.id === Number(id));
   if (!post) return;
+  let imageUrls = [];
+  if (post.imageUrl) {
+    imageUrls.push(post.imageUrl);
+  }
+  files.map((file) => {
+    imageUrls.push(file.preview);
+  });
 
   const [postTitle, setPostTitle] = useState(post?.title);
   const handleChangeTitle = (value: string) => {
@@ -47,13 +54,7 @@ const PostEditPage: NextPage<Props> = ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
 
       <div className="flex flex-col items-center">
-        <DropArea
-          imageUrl={post.imageUrl}
-          files={files}
-          getRootProps={getRootProps}
-          getInputProps={getInputProps}
-          setFiles={setFiles}
-        />
+        <DropArea imageUrls={imageUrls} getRootProps={getRootProps} getInputProps={getInputProps} setFiles={setFiles} />
         <div>アップロードされたファイル数: {files.length}</div>
         <div>アップロードされたファイル: {files.map((file) => file.name).join(", ")}</div>
         <Input
