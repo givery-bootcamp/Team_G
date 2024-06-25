@@ -16,10 +16,13 @@ const CommentList = ({}) => {
     <main>
       {mockComments.map((cm) => {
         return (
-          <div className="text-left">
-            <p>{cm.id}</p>
-            <p>{createDateString(cm.createdAt)}</p>
-            <p>{cm.body}</p>
+          <div className="p-2">
+            <div className="flex justify-between p-1">
+              <p className="text-m">{cm.id}</p>
+              <p className="text-m text-gray-500">{createDateString(cm.createdAt)}</p>
+            </div>
+
+            <p className="text-sm">{cm.body}</p>
           </div>
         );
       })}
