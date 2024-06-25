@@ -12,7 +12,7 @@ export async function SignOut() {
     <form
       action={async () => {
         "use server";
-        await signOut();
+        await signOut({ redirectTo: "/" });
       }}
     >
       <Button type="submit" className="items-center p-4 pl-3 text-lg font-bold">
