@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRef } from "react";
 
 interface IFileWithPreview extends File {
   preview: string;
@@ -12,6 +13,7 @@ interface DropAreaProps {
 }
 
 export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, files, getRootProps, getInputProps, setFiles }) => {
+  const inputRef = useRef(null);
   const removeFile = (fileToRemove: IFileWithPreview) => {
     setFiles(files.filter((file) => file.name !== fileToRemove.name));
     URL.revokeObjectURL(fileToRemove.preview);
@@ -51,12 +53,12 @@ export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, files, getRootProp
         {...getRootProps()}
         className="border-coral-400 w-50 h-38 mb-4 cursor-pointer items-center justify-center border p-4 text-center"
       >
-        <input {...getInputProps()} id="dropzone-input" />
+        <input {...getInputProps()} ref={inputRef} />
         <p>ここにファイルをドラッグ&ドロップ</p>
         <p className="p-2">または</p>
         <button
           className="rounded bg-primary px-4 py-2 font-bold text-white hover:bg-gray-300"
-          onClick={() => document.getElementById("dropzone-input")!.click()}
+          onClick={() => (inputRef.current as HTMLInputElement | null)?.click()}
         >
           ファイルを選択
         </button>
