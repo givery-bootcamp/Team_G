@@ -24,8 +24,8 @@ service PostService {
   // Post更新API
   rpc UpdatePost(UpdatePostRequest) returns (google.protobuf.Empty) {}
 
-  //   // Post削除API
-  //   rpc DeletePost(DeletePostRequest) returns (google.protobuf.Empty) {}
+  // Post削除API
+  rpc DeletePost(DeletePostRequest) returns (google.protobuf.Empty) {}
 }
 
 // Post一覧APIのレスポンス
@@ -50,7 +50,7 @@ message UpdatePostRequest {
   string body = 3;
 }
 
-// message DeletePostRequest { string id = 1; }
+message DeletePostRequest { string id = 1; }
 
 // Postデータ
 // 詳細

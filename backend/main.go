@@ -274,10 +274,63 @@ func (s *PostServer) UpdatePost(
 	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
-// func (s *PostServer) DeletePost(
-// 	ctx context.Context,
-// 	req *connect.Request[postv1.DeletePostRequest],
-// ) (*connect.Response[emptypb.Empty], error) {
+func (s *PostServer) DeletePost(
+	ctx context.Context,
+	req *connect.Request[postv1.DeletePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+
+	if err != nil {
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			log.Fatalf("MongoDB切断エラー: %v", err)
+		}
+
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	idStr := req.Msg.Id
+	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+
+	}
+
+	filter := bson.M{"_id": id}
+	var result domain.Post
+	err = coll.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, connect.NewError(connect.CodeNotFound, err)
+		}
+		log.Printf("ドキュメント取得エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	if result.UserId != userID {
+		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("権限がありません"))
+	}
+
+	_, err = coll.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		log.Printf("ドキュメント削除エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
+}
 
 func main() {
 	// PORT環境変数の値を取得

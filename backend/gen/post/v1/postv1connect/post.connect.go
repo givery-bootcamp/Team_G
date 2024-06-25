@@ -42,6 +42,8 @@ const (
 	PostServiceCreatePostProcedure = "/post.v1.PostService/CreatePost"
 	// PostServiceUpdatePostProcedure is the fully-qualified name of the PostService's UpdatePost RPC.
 	PostServiceUpdatePostProcedure = "/post.v1.PostService/UpdatePost"
+	// PostServiceDeletePostProcedure is the fully-qualified name of the PostService's DeletePost RPC.
+	PostServiceDeletePostProcedure = "/post.v1.PostService/DeletePost"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -51,6 +53,7 @@ var (
 	postServicePostMethodDescriptor       = postServiceServiceDescriptor.Methods().ByName("Post")
 	postServiceCreatePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("CreatePost")
 	postServiceUpdatePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("UpdatePost")
+	postServiceDeletePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("DeletePost")
 )
 
 // PostServiceClient is a client for the post.v1.PostService service.
@@ -64,6 +67,8 @@ type PostServiceClient interface {
 	CreatePost(context.Context, *connect.Request[v1.CreatePostRequest]) (*connect.Response[emptypb.Empty], error)
 	// Post更新API
 	UpdatePost(context.Context, *connect.Request[v1.UpdatePostRequest]) (*connect.Response[emptypb.Empty], error)
+	// Post削除API
+	DeletePost(context.Context, *connect.Request[v1.DeletePostRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewPostServiceClient constructs a client for the post.v1.PostService service. By default, it uses
@@ -100,6 +105,12 @@ func NewPostServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(postServiceUpdatePostMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		deletePost: connect.NewClient[v1.DeletePostRequest, emptypb.Empty](
+			httpClient,
+			baseURL+PostServiceDeletePostProcedure,
+			connect.WithSchema(postServiceDeletePostMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -109,6 +120,7 @@ type postServiceClient struct {
 	post       *connect.Client[v1.PostRequest, v1.PostResponse]
 	createPost *connect.Client[v1.CreatePostRequest, emptypb.Empty]
 	updatePost *connect.Client[v1.UpdatePostRequest, emptypb.Empty]
+	deletePost *connect.Client[v1.DeletePostRequest, emptypb.Empty]
 }
 
 // PostList calls post.v1.PostService.PostList.
@@ -131,6 +143,11 @@ func (c *postServiceClient) UpdatePost(ctx context.Context, req *connect.Request
 	return c.updatePost.CallUnary(ctx, req)
 }
 
+// DeletePost calls post.v1.PostService.DeletePost.
+func (c *postServiceClient) DeletePost(ctx context.Context, req *connect.Request[v1.DeletePostRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.deletePost.CallUnary(ctx, req)
+}
+
 // PostServiceHandler is an implementation of the post.v1.PostService service.
 type PostServiceHandler interface {
 	// Post一覧API
@@ -142,6 +159,8 @@ type PostServiceHandler interface {
 	CreatePost(context.Context, *connect.Request[v1.CreatePostRequest]) (*connect.Response[emptypb.Empty], error)
 	// Post更新API
 	UpdatePost(context.Context, *connect.Request[v1.UpdatePostRequest]) (*connect.Response[emptypb.Empty], error)
+	// Post削除API
+	DeletePost(context.Context, *connect.Request[v1.DeletePostRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewPostServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -174,6 +193,12 @@ func NewPostServiceHandler(svc PostServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(postServiceUpdatePostMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	postServiceDeletePostHandler := connect.NewUnaryHandler(
+		PostServiceDeletePostProcedure,
+		svc.DeletePost,
+		connect.WithSchema(postServiceDeletePostMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/post.v1.PostService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PostServicePostListProcedure:
@@ -184,6 +209,8 @@ func NewPostServiceHandler(svc PostServiceHandler, opts ...connect.HandlerOption
 			postServiceCreatePostHandler.ServeHTTP(w, r)
 		case PostServiceUpdatePostProcedure:
 			postServiceUpdatePostHandler.ServeHTTP(w, r)
+		case PostServiceDeletePostProcedure:
+			postServiceDeletePostHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -207,4 +234,8 @@ func (UnimplementedPostServiceHandler) CreatePost(context.Context, *connect.Requ
 
 func (UnimplementedPostServiceHandler) UpdatePost(context.Context, *connect.Request[v1.UpdatePostRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.PostService.UpdatePost is not implemented"))
+}
+
+func (UnimplementedPostServiceHandler) DeletePost(context.Context, *connect.Request[v1.DeletePostRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.PostService.DeletePost is not implemented"))
 }
