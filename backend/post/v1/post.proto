@@ -10,11 +10,16 @@ option go_package = "backend/gen/post/v1;postv1";
 
 // Postサービスの定義
 service PostService {
+
   // Post一覧API
   // リクエストは空
   rpc PostList(google.protobuf.Empty) returns (PostListResponse) {}
+
   // Post詳細API
   rpc Post(PostRequest) returns (PostResponse) {}
+
+  // Post作成API
+  rpc CreatePost(CreatePostRequest) returns (google.protobuf.Empty) {}
 }
 
 // Post一覧APIのレスポンス
@@ -25,6 +30,12 @@ message PostRequest { string id = 1; }
 
 // Post詳細APIのレスポンス
 message PostResponse { PostData post = 1; }
+
+// Post作成APIのリクエスト
+message CreatePostRequest {
+  string title = 1;
+  string body = 2;
+}
 
 // Postデータ
 // 詳細

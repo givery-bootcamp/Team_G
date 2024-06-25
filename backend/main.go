@@ -10,6 +10,7 @@ import (
 	"connectrpc.com/connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
+	"google.golang.org/api/oauth2/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -163,6 +164,50 @@ func (s *PostServer) PostList(
 		Post: convertPostList(postList),
 	})
 	return res, nil
+}
+
+func (s *PostServer) CreatePost(
+	ctx context.Context,
+	req *connect.Request[postv1.CreatePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			log.Fatalf("MongoDB切断エラー: %v", err)
+		}
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	// ユーザIDをコンテキストから取得
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	post := domain.Post{
+		Id:        primitive.NewObjectID(),
+		Title:     req.Msg.Title,
+		Body:      req.Msg.Body,
+		UserId:    userID,
+		Comments:  []domain.Comment{},
+		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+		UpdatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+	}
+
+	_, err = coll.InsertOne(context.TODO(), post)
+	if err != nil {
+		log.Printf("ドキュメント挿入エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
 func main() {

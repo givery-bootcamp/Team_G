@@ -87,6 +87,15 @@ grpcurl -protoset <(buf build -o -) team-7_bk.member0005.track-bootcamp.run:443 
 grpcurl -protoset <(buf build -o -) -d '{"id": "6667bf839a410579d080476e"}' team-7_bk.member0005.track-bootcamp.run:443 post.v1.PostService/Pos
 ```
 
+#### 新規投稿
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+        "title": "Team 7 CreatePost Test",
+        "body": "Team 7 CreatePost Test Body"
+}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/CreatePost
+```
+
 ## MongoDB 関連ツールの使用方法
 
 #### MongoDB サービスの起動
