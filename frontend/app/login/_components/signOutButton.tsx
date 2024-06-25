@@ -1,9 +1,13 @@
 import { auth, signOut } from "@/auth";
+import { Button } from "@/components/ui/button";
 
 export async function SignOut() {
   console.log("SignOut");
   const session = await auth();
-  console.log("sessiona", session);
+  if (!session) {
+    return;
+  }
+
   return (
     <form
       action={async () => {
@@ -11,9 +15,9 @@ export async function SignOut() {
         await signOut();
       }}
     >
-      <button type="submit" className="pl-3 text-lg font-bold">
-        Sign Out
-      </button>
+      <Button type="submit" className="items-center p-4 pl-3 text-lg font-bold">
+        サインアウトする
+      </Button>
     </form>
   );
 }

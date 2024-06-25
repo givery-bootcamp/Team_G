@@ -1,5 +1,4 @@
 import { auth, signIn } from "@/auth";
-import Image from "next/image";
 
 export async function SignIn() {
   const session = await auth();
@@ -7,8 +6,9 @@ export async function SignIn() {
   if (session) {
     return (
       <div>
-        <div>{session.user?.email}</div>
-        あなたはログインしています
+        <div>{"email : " + session.user?.email}</div>
+        <div>{"name : " + session.user?.name}</div>
+        ログイン中
       </div>
     );
   }
@@ -17,13 +17,12 @@ export async function SignIn() {
     <form
       action={async () => {
         "use server";
-        var a = await signIn("github", { re: "/post" });
-        console.log("signed in", a);
+        await signIn("github", { re: "/post" });
       }}
     >
-      <div className="flex">
-        <Image src="/images/github-icon.png" alt={"github"} width={30} height={30} />
-        <button type="submit" className="pl-3 text-lg font-bold">
+      <div className="flex items-center justify-center">
+        <button type="submit" className="flex items-center pl-3 text-lg font-bold">
+          <img src="/images/github-icon.png" alt="github" width="30" height="30" className="mr-2" />
           Sign in with GitHub
         </button>
       </div>

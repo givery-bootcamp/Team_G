@@ -1,16 +1,14 @@
 import { NextPage } from "next";
-import React from "react";
 import { SignIn } from "./_components/signInButton";
 import { SignOut } from "./_components/signOutButton";
 
 const LoginPage: NextPage = async () => {
   return (
-    <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
-      <div className="flex flex-col items-center">
-        <div className=" justify-end">
-          <SignIn />
-          <SignOut />
-        </div>
+    <main className="mx-auto min-h-screen max-w-xl  pt-4">
+      <div className=" mx-auto max-w-xl justify-center  text-center">
+        <h1 className="mb-2 text-2xl font-bold">ログイン</h1>
+        <SignIn />
+        <SignOut />
       </div>
     </main>
   );

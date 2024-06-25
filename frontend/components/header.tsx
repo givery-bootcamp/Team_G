@@ -9,6 +9,9 @@ const Header = () => {
           {APP_NAME}
         </Link>
         <div className="flex items-center space-x-4">
+          <Link href="/login" className="text-sm text-gray-800">
+            ログイン
+          </Link>
           <Link href="/post" className="text-sm text-gray-800">
             投稿一覧
           </Link>
