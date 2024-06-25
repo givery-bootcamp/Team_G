@@ -5,6 +5,7 @@ import BreadCrumb from "../_components/breadCrumb";
 import FormArea from "../_components/formArea";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import CommentList from "../_components/commentList";
 
 interface Props {
   params: {
@@ -50,6 +51,9 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
         />
         <h2 className="text-xl font-semibold">{post.title}</h2>
         <p className="text-md mt-2">{post.body}</p>
+      </div>
+      <div className="p-5">
+        <CommentList />
       </div>
       <div className="p-5">
         <p className="text-left text-xl font-semibold">Post Message</p>
