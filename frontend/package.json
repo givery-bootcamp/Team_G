@@ -23,13 +23,15 @@
     "eslint-config-prettier": "^9.1.0",
     "lucide-react": "^0.379.0",
     "next": "15.0.0-rc.0",
+    "next-auth": "5.0.0-beta.19",
     "next-themes": "^0.3.0",
     "prettier": "^3.2.5",
     "react": "19.0.0-rc-6230622a1a-20240610",
     "react-dom": "19.0.0-rc-6230622a1a-20240610",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.32.1",
@@ -41,6 +43,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",

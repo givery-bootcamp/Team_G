@@ -39,7 +39,7 @@ message PostData {
   string id = 1;
   string title = 2;
   string body = 3;
-  int32 user_id = 4;
+  string user_id = 4;
   repeated Comment comments = 5;
   google.protobuf.Timestamp created_at = 6;
   google.protobuf.Timestamp updated_at = 7;
@@ -56,8 +56,8 @@ message PostData {
 message Comment {
   string id = 1;
   string body = 2;
-  int32 user_id = 3;
-  int32 post_id = 4;
+  string user_id = 3;
+  string post_id = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
 }
