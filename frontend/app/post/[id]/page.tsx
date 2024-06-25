@@ -1,5 +1,4 @@
-// import { postClient } from "@/lib/connect";
-import { mockData } from "@/constants/mock";
+import { postClient } from "@/lib/connect";
 import { NextPage } from "next";
 import Image from "next/image";
 import BreadCrumb from "../_components/breadCrumb";
@@ -12,8 +11,7 @@ interface Props {
 
 const PostDetailPage: NextPage<Props> = async ({ params }) => {
   const { id } = params;
-  // const { post } = await postClient.post({ id });
-  const post = mockData.find((md) => md.id === Number(id));
+  const { post } = await postClient.post({ id });
 
   if (!post) return;
 
