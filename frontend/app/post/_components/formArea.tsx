@@ -41,7 +41,7 @@ const FormArea = ({ pageId }: { pageId: string }) => {
   return (
     <form action={clickAction} className="flex flex-col items-center space-y-2">
       <Textarea name="body" placeholder="Type your message here." />
-      <Button type={"submit"}>Send</Button>
+      <Button type="submit">Send</Button>
     </form>
   );
 };
