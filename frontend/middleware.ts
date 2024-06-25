@@ -1,20 +1,15 @@
 // middleware.ts
 import { auth } from "@/auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export const config = {
-  matcher: ["/", "/((?!non-protected).*)"],
+  matcher: "/post/:path*",
 };
 
-export const middleware = async (request: NextRequest) => {
-  const { pathname } = request.nextUrl;
-  const session = await auth();
-
-  if (pathname === "/post") {
-    if (!session) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+export const middleware = auth((req) => {
+  if (!req.auth) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/api/auth/signin";
+    return NextResponse.redirect(url);
   }
-
-  return NextResponse.next();
-};
+});

@@ -3,10 +3,24 @@ import { postClient } from "@/lib/connect";
 import Link from "next/link";
 import Image from "next/image";
 import BreadCrumb from "./_components/breadCrumb";
+import { NextPage } from "next";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 const PostListPage: NextPage = async () => {
-  const { post } = await postClient.postList({});
-  console.log({ post });
+  const session = await auth();
+  if (!session || !session.accessToken) {
+    redirect("/api/auth/signin");
+  }
+
+  const { post } = await postClient.postList(
+    {},
+    {
+      headers: {
+        Authorization: session.accessToken,
+      },
+    },
+  );
 
   const breadcrumbItems = [
     { name: "Home", href: "/" },
