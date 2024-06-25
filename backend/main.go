@@ -205,10 +205,26 @@ func main() {
 	path, handler := postv1connect.NewPostServiceHandler(poster)
 	mux.Handle(path, handler)
 
+	// CORS設定用ミドルウェア
+	corsMiddleware := func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+			if r.Method == http.MethodOptions {
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+
+			next.ServeHTTP(w, r)
+		})
+	}
+
 	log.Printf("Server listening on port %s", port)
 	err := http.ListenAndServe(
 		fmt.Sprintf("0.0.0.0:%s", port),
-		h2c.NewHandler(mux, &http2.Server{}),
+		h2c.NewHandler(corsMiddleware(mux), &http2.Server{}),
 	)
 
 	if err != nil {
