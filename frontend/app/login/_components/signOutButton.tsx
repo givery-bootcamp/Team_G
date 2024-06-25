@@ -1,7 +1,7 @@
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 
-export async function SignOut() {
+export const SignOutButton = async () => {
   console.log("SignOut");
   const session = await auth();
   if (!session) {
@@ -20,4 +20,4 @@ export async function SignOut() {
       </Button>
     </form>
   );
-}
+};

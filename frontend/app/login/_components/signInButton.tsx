@@ -1,6 +1,6 @@
 import { auth, signIn } from "@/auth";
 
-export async function SignIn() {
+export const SignInButton = async () => {
   const session = await auth();
   console.log("session", session);
   if (session) {
@@ -17,7 +17,7 @@ export async function SignIn() {
     <form
       action={async () => {
         "use server";
-        await signIn("github", { re: "/post" });
+        await signIn("github", { redirectTo: "/post" });
       }}
     >
       <div className="flex items-center justify-center">
@@ -28,4 +28,4 @@ export async function SignIn() {
       </div>
     </form>
   );
-}
+};
