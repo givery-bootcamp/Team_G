@@ -2,7 +2,7 @@ import { IFileWithPreview } from "@/types";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-function useFileDrop() {
+const useFileDrop = () => {
   const [files, setFiles] = useState<IFileWithPreview[]>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -17,6 +17,6 @@ function useFileDrop() {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return { files, getRootProps, getInputProps, setFiles };
-}
+};
 
 export default useFileDrop;
