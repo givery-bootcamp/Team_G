@@ -1,9 +1,7 @@
-import { NextPage } from "next";
 import { Card } from "@/components/ui/card";
 import { postClient } from "@/lib/connect";
 import Link from "next/link";
 import Image from "next/image";
-// import { mockData } from "@/constants/mock";
 import BreadCrumb from "./_components/breadCrumb";
 
 const PostListPage: NextPage = async () => {
