@@ -7,6 +7,7 @@ type Post struct {
 	Title     string             `bson:"title"`
 	Body      string             `bson:"body"`
 	UserId    string             `bson:"user_id"`
+	ImageUrl  string             `bson:"image_url"`
 	Comments  []Comment          `bson:"comments"`
 	CreatedAt Timestamp          `bson:"created_at"`
 	UpdatedAt Timestamp          `bson:"updated_at"`

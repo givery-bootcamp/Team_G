@@ -41,6 +41,7 @@ message PostResponse { PostData post = 1; }
 message CreatePostRequest {
   string title = 1;
   string body = 2;
+  string image_url = 3;
 }
 
 // Post更新APIのリクエスト
@@ -48,6 +49,7 @@ message UpdatePostRequest {
   string id = 1;
   string title = 2;
   string body = 3;
+  string image_url = 4;
 }
 
 message DeletePostRequest { string id = 1; }
@@ -59,6 +61,7 @@ message DeletePostRequest { string id = 1; }
 //  body: 本文
 //  user_id: ユーザID
 //  comments: コメント配列
+//  image_url: 画像URL
 //  created_at: 作成日時
 //  updated_at: 更新日時
 message PostData {
@@ -66,9 +69,10 @@ message PostData {
   string title = 2;
   string body = 3;
   string user_id = 4;
-  repeated Comment comments = 5;
-  google.protobuf.Timestamp created_at = 6;
-  google.protobuf.Timestamp updated_at = 7;
+  string image_url = 5;
+  repeated Comment comments = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
 }
 
 // コメントデータ

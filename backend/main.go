@@ -113,6 +113,7 @@ func (s *PostServer) Post(
 			Title:     result.Title,
 			Body:      result.Body,
 			UserId:    result.UserId,
+			ImageUrl:  result.ImageUrl,
 			Comments:  comments,
 			CreatedAt: &timestamppb.Timestamp{Seconds: result.CreatedAt.Seconds, Nanos: result.CreatedAt.Nanos},
 			UpdatedAt: &timestamppb.Timestamp{Seconds: result.UpdatedAt.Seconds, Nanos: result.UpdatedAt.Nanos},
@@ -196,6 +197,7 @@ func (s *PostServer) CreatePost(
 		Title:     req.Msg.Title,
 		Body:      req.Msg.Body,
 		UserId:    userID,
+		ImageUrl:  req.Msg.ImageUrl,
 		Comments:  []domain.Comment{},
 		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
 		UpdatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
@@ -261,6 +263,7 @@ func (s *PostServer) UpdatePost(
 		"$set": bson.M{
 			"title":      req.Msg.Title,
 			"body":       req.Msg.Body,
+			"image_url":  req.Msg.ImageUrl,
 			"updated_at": domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
 		},
 	}
