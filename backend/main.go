@@ -33,34 +33,6 @@ var uri = os.Getenv("MONGODB_URI")
 
 var client *mongo.Client
 
-func convertPostList(postlist []domain.Post) []*postv1.PostData {
-	var res []*postv1.PostData
-	for _, post := range postlist {
-		comments := []*postv1.Comment{}
-		for _, comment := range post.Comments {
-			comments = append(comments, &postv1.Comment{
-				Id:        comment.Id.Hex(),
-				Body:      comment.Body,
-				UserId:    comment.UserId,
-				PostId:    comment.PostId,
-				CreatedAt: &timestamppb.Timestamp{Seconds: comment.CreatedAt.Seconds, Nanos: comment.CreatedAt.Nanos},
-				UpdatedAt: &timestamppb.Timestamp{Seconds: comment.UpdatedAt.Seconds, Nanos: comment.UpdatedAt.Nanos},
-			})
-		}
-		res = append(res, &postv1.PostData{
-			Id:        post.Id.Hex(),
-			Title:     post.Title,
-			Body:      post.Body,
-			UserId:    post.UserId,
-			Comments:  comments,
-			CreatedAt: &timestamppb.Timestamp{Seconds: post.CreatedAt.Seconds, Nanos: post.CreatedAt.Nanos},
-			UpdatedAt: &timestamppb.Timestamp{Seconds: post.UpdatedAt.Seconds, Nanos: post.UpdatedAt.Nanos},
-		})
-	}
-
-	return res
-}
-
 func (s *PostServer) Post(
 	ctx context.Context,
 	req *connect.Request[postv1.PostRequest],
@@ -143,7 +115,7 @@ func (s *PostServer) PostList(
 	}
 
 	res := connect.NewResponse(&postv1.PostListResponse{
-		Post: convertPostList(postList),
+		Post: utils.ConvertPostList(postList),
 	})
 	return res, nil
 }
