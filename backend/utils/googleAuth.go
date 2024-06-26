@@ -7,12 +7,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"google.golang.org/api/oauth2/v1"
 	"google.golang.org/api/option"
 )
 
 func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
+
+	if os.Getenv("ENV") == "develop" {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			next.ServeHTTP(w, r)
+		})
+	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Googleアクセストークンを取得 (not JWT)
