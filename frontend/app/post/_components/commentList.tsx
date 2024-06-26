@@ -12,7 +12,7 @@ function createDateString(baseDate: Date): string {
 }
 
 const CommentList = ({}) => {
-  const commentList = backend.comment.getCommentOld();
+  //const commentList = backend.comment.getCommentOld();
   return (
     <main>
       {mockComments.map((cm) => {

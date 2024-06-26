@@ -12,24 +12,24 @@ export const backend = {
 
       return savedComment;
     },
-    getCommentOld: async (): Promise<Comment[] | undefined> => {
-      const promptTemplateList: Comment[] | undefined = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mockComments);
-        }, 1000);
-      });
+    // getCommentOld: async (): Promise<Comment[] | undefined> => {
+    //   const promptTemplateList: Comment[] | undefined = await new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       resolve(mockComments);
+    //     }, 1000);
+    //   });
 
-      return promptTemplateList;
-    },
+    //   return promptTemplateList;
+    // },
     //id指定必要だよなあバージョン
-    getComment: async (id: String): Promise<Comment[] | undefined> => {
-      const promptTemplateList: Comment[] | undefined = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mockComments);
-        }, 1000);
-      });
+    // getComment: async (id: String): Promise<Comment[] | undefined> => {
+    //   const promptTemplateList: Comment[] | undefined = await new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       resolve(mockComments);
+    //     }, 1000);
+    //   });
 
-      return promptTemplateList;
-    },
+    //   return promptTemplateList;
+    // },
   },
 };
