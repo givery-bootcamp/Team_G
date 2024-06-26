@@ -4,10 +4,10 @@
 // @ts-nocheck
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { PostListResponse, PostRequest, PostResponse } from "./post_pb";
+import { CreatePostRequest, DeletePostRequest, PostListResponse, PostRequest, PostResponse, UpdatePostRequest } from "./post_pb.js";
 
 /**
- *
+ * Postサービスの定義
  *
  * @generated from service post.v1.PostService
  */
@@ -15,7 +15,8 @@ export const PostService = {
   typeName: "post.v1.PostService",
   methods: {
     /**
-     * リスト
+     * Post一覧API
+     * リクエストは空
      *
      * @generated from rpc post.v1.PostService.PostList
      */
@@ -26,7 +27,7 @@ export const PostService = {
       kind: MethodKind.Unary,
     },
     /**
-     * 詳細
+     * Post詳細API
      *
      * @generated from rpc post.v1.PostService.Post
      */
@@ -36,5 +37,39 @@ export const PostService = {
       O: PostResponse,
       kind: MethodKind.Unary,
     },
+    /**
+     * Post作成API
+     *
+     * @generated from rpc post.v1.PostService.CreatePost
+     */
+    createPost: {
+      name: "CreatePost",
+      I: CreatePostRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Post更新API
+     *
+     * @generated from rpc post.v1.PostService.UpdatePost
+     */
+    updatePost: {
+      name: "UpdatePost",
+      I: UpdatePostRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Post削除API
+     *
+     * @generated from rpc post.v1.PostService.DeletePost
+     */
+    deletePost: {
+      name: "DeletePost",
+      I: DeletePostRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
   }
 } as const;
+

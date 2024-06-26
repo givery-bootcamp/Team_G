@@ -1,10 +1,12 @@
-// import { postClient } from "@/lib/connect";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { mockData } from "@/constants/mock";
+import { postClient } from "@/lib/connect";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import BreadCrumb from "../_components/breadCrumb";
+import FormArea from "../_components/formArea";
 
 interface Props {
   params: {
@@ -14,8 +16,19 @@ interface Props {
 
 const PostDetailPage: NextPage<Props> = async ({ params }) => {
   const { id } = params;
-  // const { post } = await postClient.post({ id });
-  const post = mockData.find((md) => md.id === Number(id));
+  const session = await auth();
+  if (!session || !session.accessToken) {
+    redirect("/api/auth/signin");
+  }
+
+  const { post } = await postClient.post(
+    { id },
+    {
+      headers: {
+        Authorization: session.accessToken,
+      },
+    },
+  );
 
   if (!post) return;
 
@@ -43,6 +56,10 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
         />{" "}
         <h2 className="text-xl font-semibold">{post.title}</h2>
         <p className="text-md mt-2">{post.body}</p>
+      </div>
+      <div className="p-5">
+        <p className="text-left text-xl font-semibold">Post Message</p>
+        <FormArea pageId={id} />
       </div>
     </main>
   );

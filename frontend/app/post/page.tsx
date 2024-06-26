@@ -1,15 +1,27 @@
-import { Card } from "@/components/ui/card";
-import { NextPage } from "next";
-// import { postClient } from "@/lib/connect";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { mockData } from "@/constants/mock";
+import { Card } from "@/components/ui/card";
+import { postClient } from "@/lib/connect";
+import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import BreadCrumb from "./_components/breadCrumb";
 
 const PostListPage: NextPage = async () => {
-  // const res = await postClient.post({});
-  // console.log({res});
+  const session = await auth();
+  if (!session || !session.accessToken) {
+    redirect("/api/auth/signin");
+  }
+
+  const { post } = await postClient.postList(
+    {},
+    {
+      headers: {
+        Authorization: session.accessToken,
+      },
+    },
+  );
 
   const breadcrumbItems = [
     { name: "Home", href: "/" },
@@ -27,19 +39,20 @@ const PostListPage: NextPage = async () => {
       </Link>
 
       <section className="grid grid-cols-2 gap-2 p-2">
-        {mockData.map((md) => {
+        {post.map((md) => {
           return (
             <Link href={`/post/${md.id}`} key={md.id} className="w-full text-center">
               <Card className="mx-auto max-w-fit p-3">
                 <Image
-                  src={md.imageUrl.length > 0 ? md.imageUrl : "/images/noimage.png"}
+                  // src={md.imageUrl.length > 0 ? md.imageUrl : "/images/noimage.png"}
+                  src={"images/noimage.png"}
                   alt={md.title}
                   width={300}
                   height={300}
                 />
                 <p className="text-xl font-bold">{md.title}</p>
                 <p className="text-sm">{md.body}</p>
-                <div className="text-xs">{md.createdAt?.toLocaleDateString()}</div>
+                <div className="text-xs">{md.createdAt?.toDate().toLocaleDateString()}</div>
               </Card>
             </Link>
           );

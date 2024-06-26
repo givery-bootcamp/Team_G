@@ -1,7 +1,7 @@
 import FeatureSection from "./_components/featureSection";
 import HeroSection from "./_components/heroSection";
 
-const Home = () => {
+const Home = async () => {
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1">
       <HeroSection />

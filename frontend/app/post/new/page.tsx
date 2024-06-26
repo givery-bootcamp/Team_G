@@ -20,8 +20,6 @@ interface Props {
 }
 
 const PostNewPage: NextPage<Props> = ({ params }) => {
-  console.log("--------------------0000");
-  const { id, title, body } = params;
   const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
 
   let imageUrls: string[] = [];
@@ -46,7 +44,7 @@ const PostNewPage: NextPage<Props> = ({ params }) => {
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
-      <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
+      <h1 className="mb-4 text-2xl font-bold">Post Detail Page </h1>
 
       <div className="flex flex-col items-center">
         <DropArea imageUrls={imageUrls} getRootProps={getRootProps} getInputProps={getInputProps} setFiles={setFiles} />
@@ -66,7 +64,7 @@ const PostNewPage: NextPage<Props> = ({ params }) => {
           onChange={(e) => handleChangeBody(e.target.value)}
           className="mb-4"
         ></Input>
-        <Link href={`/post/${id}`}>
+        <Link href={`/post`}>
           <Button
             className="w-full"
             onClick={async () => {
@@ -76,7 +74,7 @@ const PostNewPage: NextPage<Props> = ({ params }) => {
               uploadFile(null, formData);
               //TODO:UPDATEのAPIを叩く
 
-              postClient.post({});
+              postClient.createPost({ title: postTitle, body: postBody });
             }}
           >
             更新
