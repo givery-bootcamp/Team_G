@@ -27,6 +27,7 @@ func ConvertPostList(postlist []domain.Post) []*postv1.PostData {
 			Title:     post.Title,
 			Body:      post.Body,
 			UserId:    post.UserId,
+			ImageUrl:  post.ImageUrl,
 			Comments:  comments,
 			CreatedAt: &timestamppb.Timestamp{Seconds: post.CreatedAt.Seconds, Nanos: post.CreatedAt.Nanos},
 			UpdatedAt: &timestamppb.Timestamp{Seconds: post.UpdatedAt.Seconds, Nanos: post.UpdatedAt.Nanos},
