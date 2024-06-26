@@ -1,5 +1,4 @@
 import { mockComments } from "@/constants/mock";
-import { backend } from "@/lib/backend";
 
 function createDateString(baseDate: Date): string {
   const year: string = String(baseDate.getFullYear());
@@ -11,13 +10,13 @@ function createDateString(baseDate: Date): string {
   return year + "-" + month + "-" + day + " " + timeH + ":" + timeM + ":" + timeS;
 }
 
-const CommentList = ({}) => {
+const CommentList = () => {
   //const commentList = backend.comment.getCommentOld();
   return (
     <main>
       {mockComments.map((cm) => {
         return (
-          <div className="p-2">
+          <div className="p-2" key={cm.id}>
             <div className="flex justify-between p-1">
               <p className="text-m">{cm.id}</p>
               <p className="text-m text-gray-500">{createDateString(cm.createdAt)}</p>
