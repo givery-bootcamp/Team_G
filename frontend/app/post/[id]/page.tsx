@@ -49,7 +49,8 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
           </Button>
         </Link>
         <Image
-          src={post.imageUrl.length > 0 ? post.imageUrl : "/images/noimage.png"}
+          // src={post.imageUrl.length > 0 ? post.imageUrl : "/images/noimage.png"}
+          src={"/images/noimage.png"}
           alt={post.title}
           width={400}
           height={400}

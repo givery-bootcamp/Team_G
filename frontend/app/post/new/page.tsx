@@ -3,9 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import { auth } from "@/auth";
 import { postClient } from "@/lib/connect";
 import { NextPage } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { DropArea } from "../[id]/edit/_components/fileDropArea";
 import useFileDrop from "../[id]/edit/_hooks/useFileDrop";
@@ -68,13 +70,30 @@ const PostNewPage: NextPage<Props> = ({ params }) => {
           <Button
             className="w-full"
             onClick={async () => {
-              var formData = new FormData();
-              formData.append("file", files[0], files[0].name);
-              formData.append("filename", files[0].name);
-              uploadFile(null, formData);
+              //imageの保存
+              // var formData = new FormData();
+              // formData.append("file", files[0], files[0].name);
+              // formData.append("filename", files[0].name);
+              // uploadFile(null, formData);
               //TODO:UPDATEのAPIを叩く
 
-              postClient.createPost({ title: postTitle, body: postBody });
+              console.log({ postTitle, postBody });
+              const session = await auth();
+              if (!session || !session.accessToken) {
+                redirect("/api/auth/signin");
+              }
+
+              await postClient.createPost(
+                {
+                  title: postTitle,
+                  body: postBody,
+                },
+                {
+                  headers: {
+                    Authorization: session.accessToken,
+                  },
+                },
+              );
             }}
           >
             更新

@@ -4,7 +4,14 @@
 // @ts-nocheck
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { CreatePostRequest, DeletePostRequest, PostListResponse, PostRequest, PostResponse, UpdatePostRequest } from "./post_pb.js";
+import {
+  CreatePostRequest,
+  DeletePostRequest,
+  PostListResponse,
+  PostRequest,
+  PostResponse,
+  UpdatePostRequest,
+} from "./post_pb";
 
 /**
  * Postサービスの定義
@@ -70,6 +77,5 @@ export const PostService = {
       O: Empty,
       kind: MethodKind.Unary,
     },
-  }
+  },
 } as const;
-

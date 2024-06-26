@@ -5,7 +5,14 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { CreatePostRequest, DeletePostRequest, PostListResponse, PostRequest, PostResponse, UpdatePostRequest } from "./post_pb.js";
+import {
+  CreatePostRequest,
+  DeletePostRequest,
+  PostListResponse,
+  PostRequest,
+  PostResponse,
+  UpdatePostRequest,
+} from "./post_pb";
 
 export const typeName = "post.v1.PostService";
 

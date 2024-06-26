@@ -45,7 +45,7 @@ const PostListPage: NextPage = async () => {
               <Card className="mx-auto max-w-fit p-3">
                 <Image
                   // src={md.imageUrl.length > 0 ? md.imageUrl : "/images/noimage.png"}
-                  src={"images/noimage.png"}
+                  src={"/images/noimage.png"}
                   alt={md.title}
                   width={300}
                   height={300}
