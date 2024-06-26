@@ -203,10 +203,16 @@ func (s *PostServer) UpdatePost(
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("権限がありません"))
 	}
 
+	// リクエストの値が空の場合
+	if req.Msg.Title == "" || req.Msg.Body == "" || req.Msg.ImageUrl == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("タイトルまたは本文またはイメージURLが空です"))
+	}
+
 	update := bson.M{
 		"$set": bson.M{
 			"title":      req.Msg.Title,
 			"body":       req.Msg.Body,
+			"image_url":  req.Msg.ImageUrl,
 			"updated_at": domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
 		},
 	}
