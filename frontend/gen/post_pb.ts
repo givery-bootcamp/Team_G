@@ -124,6 +124,151 @@ export class PostResponse extends Message<PostResponse> {
 }
 
 /**
+ * Post作成APIのリクエスト
+ *
+ * @generated from message post.v1.CreatePostRequest
+ */
+export class CreatePostRequest extends Message<CreatePostRequest> {
+  /**
+   * @generated from field: string title = 1;
+   */
+  title = "";
+
+  /**
+   * @generated from field: string body = 2;
+   */
+  body = "";
+
+  /**
+   * @generated from field: string image_url = 3;
+   */
+  imageUrl = "";
+
+  constructor(data?: PartialMessage<CreatePostRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.CreatePostRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "image_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreatePostRequest {
+    return new CreatePostRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreatePostRequest {
+    return new CreatePostRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreatePostRequest {
+    return new CreatePostRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CreatePostRequest | PlainMessage<CreatePostRequest> | undefined, b: CreatePostRequest | PlainMessage<CreatePostRequest> | undefined): boolean {
+    return proto3.util.equals(CreatePostRequest, a, b);
+  }
+}
+
+/**
+ * Post更新APIのリクエスト
+ *
+ * @generated from message post.v1.UpdatePostRequest
+ */
+export class UpdatePostRequest extends Message<UpdatePostRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title = "";
+
+  /**
+   * @generated from field: string body = 3;
+   */
+  body = "";
+
+  /**
+   * @generated from field: string image_url = 4;
+   */
+  imageUrl = "";
+
+  constructor(data?: PartialMessage<UpdatePostRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.UpdatePostRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "image_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePostRequest {
+    return new UpdatePostRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdatePostRequest {
+    return new UpdatePostRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdatePostRequest {
+    return new UpdatePostRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdatePostRequest | PlainMessage<UpdatePostRequest> | undefined, b: UpdatePostRequest | PlainMessage<UpdatePostRequest> | undefined): boolean {
+    return proto3.util.equals(UpdatePostRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message post.v1.DeletePostRequest
+ */
+export class DeletePostRequest extends Message<DeletePostRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  constructor(data?: PartialMessage<DeletePostRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.DeletePostRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeletePostRequest {
+    return new DeletePostRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeletePostRequest {
+    return new DeletePostRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeletePostRequest {
+    return new DeletePostRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeletePostRequest | PlainMessage<DeletePostRequest> | undefined, b: DeletePostRequest | PlainMessage<DeletePostRequest> | undefined): boolean {
+    return proto3.util.equals(DeletePostRequest, a, b);
+  }
+}
+
+/**
  * Postデータ
  * 詳細
  *  id: 投稿ID
@@ -131,6 +276,7 @@ export class PostResponse extends Message<PostResponse> {
  *  body: 本文
  *  user_id: ユーザID
  *  comments: コメント配列
+ *  image_url: 画像URL
  *  created_at: 作成日時
  *  updated_at: 更新日時
  *
@@ -158,17 +304,22 @@ export class PostData extends Message<PostData> {
   userId = "";
 
   /**
-   * @generated from field: repeated post.v1.Comment comments = 5;
+   * @generated from field: string image_url = 5;
+   */
+  imageUrl = "";
+
+  /**
+   * @generated from field: repeated post.v1.Comment comments = 6;
    */
   comments: Comment[] = [];
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
+   * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 7;
+   * @generated from field: google.protobuf.Timestamp updated_at = 8;
    */
   updatedAt?: Timestamp;
 
@@ -184,9 +335,10 @@ export class PostData extends Message<PostData> {
     { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "comments", kind: "message", T: Comment, repeated: true },
-    { no: 6, name: "created_at", kind: "message", T: Timestamp },
-    { no: 7, name: "updated_at", kind: "message", T: Timestamp },
+    { no: 5, name: "image_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "comments", kind: "message", T: Comment, repeated: true },
+    { no: 7, name: "created_at", kind: "message", T: Timestamp },
+    { no: 8, name: "updated_at", kind: "message", T: Timestamp },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostData {
