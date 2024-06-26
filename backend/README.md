@@ -104,7 +104,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 #### 投稿一覧取得
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{}' http://localhost:80/post.v1.PostService/PostList
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{}' https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/PostList
 ```
 
 #### 投稿取得
@@ -136,7 +136,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
-        "id": "667a802a6e2d7b033265fb63"}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/DeletePost
+        "id": "667a802a6e2d7b033265fb63"}' -H "Authorization: Googleアクセストークン" https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/DeletePost
 ```
 
 ## grpcurl
