@@ -65,6 +65,12 @@ go run main.go
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{}' http://localhost:80/post.v1.PostService/PostList
 ```
 
+#### 投稿一覧取得
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{"id": "Object ID"}' http://localhost:80/post.v1.PostService/PostList
+```
+
 #### 新規投稿
 
 ```bash
