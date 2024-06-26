@@ -5,7 +5,14 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { Empty, MethodKind } from "@bufbuild/protobuf";
-import { PostListResponse, PostRequest, PostResponse } from "./post_pb";
+import {
+  CreatePostRequest,
+  DeletePostRequest,
+  PostListResponse,
+  PostRequest,
+  PostResponse,
+  UpdatePostRequest,
+} from "./post_pb";
 
 export const typeName = "post.v1.PostService";
 
@@ -47,3 +54,60 @@ export const post = createQueryService({
     typeName: "post.v1.PostService",
   },
 }).post;
+
+/**
+ * Post作成API
+ *
+ * @generated from rpc post.v1.PostService.CreatePost
+ */
+export const createPost = createQueryService({
+  service: {
+    methods: {
+      createPost: {
+        name: "CreatePost",
+        kind: MethodKind.Unary,
+        I: CreatePostRequest,
+        O: Empty,
+      },
+    },
+    typeName: "post.v1.PostService",
+  },
+}).createPost;
+
+/**
+ * Post更新API
+ *
+ * @generated from rpc post.v1.PostService.UpdatePost
+ */
+export const updatePost = createQueryService({
+  service: {
+    methods: {
+      updatePost: {
+        name: "UpdatePost",
+        kind: MethodKind.Unary,
+        I: UpdatePostRequest,
+        O: Empty,
+      },
+    },
+    typeName: "post.v1.PostService",
+  },
+}).updatePost;
+
+/**
+ * Post削除API
+ *
+ * @generated from rpc post.v1.PostService.DeletePost
+ */
+export const deletePost = createQueryService({
+  service: {
+    methods: {
+      deletePost: {
+        name: "DeletePost",
+        kind: MethodKind.Unary,
+        I: DeletePostRequest,
+        O: Empty,
+      },
+    },
+    typeName: "post.v1.PostService",
+  },
+}).deletePost;
