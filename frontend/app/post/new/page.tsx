@@ -1,6 +1,5 @@
 "use server";
 import { auth } from "@/auth";
-import { postClient } from "@/lib/connect";
 import { NextPage } from "next";
 import { redirect } from "next/navigation";
 import BreadCrumb from "../_components/breadCrumb";
@@ -15,6 +14,10 @@ interface Props {
 }
 
 const PostNewPage: NextPage<Props> = async ({ params }) => {
+  const session = await auth();
+  if (!session || !session.accessToken) {
+    redirect("/api/auth/signin");
+  }
   const breadcrumbItems = [
     { name: "Home", href: "/" },
     { name: "投稿一覧", href: "/post" },
@@ -24,32 +27,11 @@ const PostNewPage: NextPage<Props> = async ({ params }) => {
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page </h1>
-      <PostFormArea params={{ postFunction: postNewPost }} />
+      <PostFormArea params={{ token: session.accessToken }} />
 
       <div className="flex flex-col items-center"></div>
     </main>
   );
-};
-
-const postNewPost = async (title: string, body: string) => {
-  console.log("postNewPost");
-  const session = await auth();
-  if (!session || !session.accessToken) {
-    redirect("/api/auth/signin");
-  }
-  const result = await postClient.createPost(
-    {
-      title: "あああ",
-      body: "いいい",
-    },
-    {
-      headers: {
-        Authorization: session.accessToken || "",
-      },
-    },
-  );
-  console.log("result", result);
-  console.log({ title, body });
 };
 
 const uploadFile = async (prevState: string | null, formData: FormData) => {

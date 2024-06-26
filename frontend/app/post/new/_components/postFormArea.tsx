@@ -1,13 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { postClient } from "@/lib/connect";
 import { useState } from "react";
 import { DropArea } from "../../[id]/edit/_components/fileDropArea";
 import useFileDrop from "../../[id]/edit/_hooks/useFileDrop";
 
 interface Props {
   params: {
-    postFunction: (title: string, body: string) => Promise<any>;
+    token: string;
   };
 }
 
@@ -46,10 +47,31 @@ const PostFormArea = ({ params }: Props) => {
         onChange={(e) => handleChangeBody(e.target.value)}
         className="mb-4"
       ></Input>
-      <Button className="w-full" onClick={() => params.postFunction(postTitle, postBody)}>
+      <Button className="w-full" onClick={async () => await postNewPost(postTitle, postBody, params.token)}>
         更新
       </Button>
     </div>
   );
 };
 export default PostFormArea;
+const postNewPost = async (title: string, body: string, token: string) => {
+  console.log("title", title, "body", body, "token", token);
+  try {
+    const result = await postClient.createPost(
+      {
+        title: "aaaa",
+        body: "vvvv",
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+    console.log("result", result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  console.log({ title, body });
+};
