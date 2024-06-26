@@ -20,6 +20,49 @@ import (
 
 type PostServer struct{}
 
+// ------------------------------ Create ------------------------------
+
+func (s *PostServer) CreatePost(
+	ctx context.Context,
+	req *connect.Request[postv1.CreatePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, ok := ctx.Value("client").(*mongo.Client)
+	if !ok {
+		log.Println("client取得エラー")
+		return nil, connect.NewError(connect.CodeInternal, nil)
+	}
+
+	coll := client.Database("SNS").Collection("Post")
+
+	// ユーザIDをコンテキストから取得
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	post := domain.Post{
+		Id:        primitive.NewObjectID(),
+		Title:     req.Msg.Title,
+		Body:      req.Msg.Body,
+		UserId:    userID,
+		ImageUrl:  req.Msg.ImageUrl,
+		Comments:  []domain.Comment{},
+		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+		UpdatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+	}
+
+	_, err := coll.InsertOne(context.TODO(), post)
+	if err != nil {
+		log.Printf("ドキュメント挿入エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
+}
+
+// ------------------------------ Read ------------------------------
+
 func (s *PostServer) Post(
 	ctx context.Context,
 	req *connect.Request[postv1.PostRequest],
@@ -71,6 +114,7 @@ func (s *PostServer) Post(
 			Title:     result.Title,
 			Body:      result.Body,
 			UserId:    result.UserId,
+			ImageUrl:  result.ImageUrl,
 			Comments:  comments,
 			CreatedAt: &timestamppb.Timestamp{Seconds: result.CreatedAt.Seconds, Nanos: result.CreatedAt.Nanos},
 			UpdatedAt: &timestamppb.Timestamp{Seconds: result.UpdatedAt.Seconds, Nanos: result.UpdatedAt.Nanos},
@@ -119,44 +163,6 @@ func (s *PostServer) PostList(
 	return res, nil
 }
 
-func (s *PostServer) CreatePost(
-	ctx context.Context,
-	req *connect.Request[postv1.CreatePostRequest],
-) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
-	if !ok {
-		log.Println("client取得エラー")
-		return nil, connect.NewError(connect.CodeInternal, nil)
-	}
-
-	coll := client.Database("SNS").Collection("Post")
-
-	// ユーザIDをコンテキストから取得
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
-	if !ok {
-		log.Printf("ユーザー情報がありません")
-	}
-	userID := user.Id
-
-	post := domain.Post{
-		Id:        primitive.NewObjectID(),
-		Title:     req.Msg.Title,
-		Body:      req.Msg.Body,
-		UserId:    userID,
-		Comments:  []domain.Comment{},
-		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
-		UpdatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
-	}
-
-	_, err := coll.InsertOne(context.TODO(), post)
-	if err != nil {
-		log.Printf("ドキュメント挿入エラー: %v", err)
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	return connect.NewResponse(&emptypb.Empty{}), nil
-}
-
 func (s *PostServer) UpdatePost(
 	ctx context.Context,
 	req *connect.Request[postv1.UpdatePostRequest],
@@ -197,10 +203,16 @@ func (s *PostServer) UpdatePost(
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("権限がありません"))
 	}
 
+	// リクエストの値が空の場合
+	if req.Msg.Title == "" || req.Msg.Body == "" || req.Msg.ImageUrl == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("タイトルまたは本文またはイメージURLが空です"))
+	}
+
 	update := bson.M{
 		"$set": bson.M{
 			"title":      req.Msg.Title,
 			"body":       req.Msg.Body,
+			"image_url":  req.Msg.ImageUrl,
 			"updated_at": domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
 		},
 	}

@@ -72,7 +72,7 @@ func main() {
 	}
 
 	// DB Client設定用ミドルウェア
-	dbMidleware := func(client *mongo.Client, next http.Handler) http.Handler {
+	dbMiddleware := func(client *mongo.Client, next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := context.WithValue(r.Context(), "client", client)
 			next.ServeHTTP(w, r.WithContext(ctx))
@@ -82,7 +82,7 @@ func main() {
 	log.Printf("Server listening on port %s", port)
 	err_http := http.ListenAndServe(
 		fmt.Sprintf("0.0.0.0:%s", port),
-		h2c.NewHandler(dbMidleware(client, corsMiddleware(mux)), &http2.Server{}),
+		h2c.NewHandler(dbMiddleware(client, corsMiddleware(mux)), &http2.Server{}),
 	)
 
 	if err_http != nil {

@@ -76,7 +76,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"id": "Object ID"}' http:/
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
         "title": "Team 7 CreatePost Test",
-        "body": "Team 7 CreatePost Test Body"
+        "body": "Team 7 CreatePost Test Body",
+        "image_url": "https://avatars.githubusercontent.com/u/45951565?v=4"
 }' http://localhost:80/post.v1.PostService/CreatePost
 ```
 
@@ -86,7 +87,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
 curl -X POST -H "Content-Type: application/json" -d '{
 	"id": "667a802a6e2d7b033265fb63",
 	"title": "Asuma CreatePost Test222222222222222222222",
-	"body": "Asuma CreatePost Test Body222222222222222222222"
+	"body": "Asuma CreatePost Test Body222222222222222222222",
+    "image_url": "https://avatars.githubusercontent.com/u/41140188?v=4"
 }' http://localhost:80/post.v1.PostService/UpdatePost
 ```
 

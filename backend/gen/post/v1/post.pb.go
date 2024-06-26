@@ -357,6 +357,7 @@ func (x *DeletePostRequest) GetId() string {
 //	body: 本文
 //	user_id: ユーザID
 //	comments: コメント配列
+//	image_url: 画像URL
 //	created_at: 作成日時
 //	updated_at: 更新日時
 type PostData struct {
