@@ -1,5 +1,5 @@
-import { Textarea } from "@/components/ui/textarea";
 import { mockComments } from "@/constants/mock";
+import { backend } from "@/lib/backend";
 
 function createDateString(baseDate: Date): string {
   const year: string = String(baseDate.getFullYear());
@@ -12,6 +12,7 @@ function createDateString(baseDate: Date): string {
 }
 
 const CommentList = ({}) => {
+  const commentList = backend.comment.getCommentOld();
   return (
     <main>
       {mockComments.map((cm) => {
