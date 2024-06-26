@@ -10,6 +10,7 @@ import (
 	"connectrpc.com/connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
+	"google.golang.org/api/oauth2/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -163,6 +164,172 @@ func (s *PostServer) PostList(
 		Post: convertPostList(postList),
 	})
 	return res, nil
+}
+
+func (s *PostServer) CreatePost(
+	ctx context.Context,
+	req *connect.Request[postv1.CreatePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			log.Fatalf("MongoDB切断エラー: %v", err)
+		}
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	// ユーザIDをコンテキストから取得
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	post := domain.Post{
+		Id:        primitive.NewObjectID(),
+		Title:     req.Msg.Title,
+		Body:      req.Msg.Body,
+		UserId:    userID,
+		Comments:  []domain.Comment{},
+		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+		UpdatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+	}
+
+	_, err = coll.InsertOne(context.TODO(), post)
+	if err != nil {
+		log.Printf("ドキュメント挿入エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
+}
+
+func (s *PostServer) UpdatePost(
+	ctx context.Context,
+	req *connect.Request[postv1.UpdatePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	if err != nil {
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			log.Fatalf("MongoDB切断エラー: %v", err)
+		}
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	idStr := req.Msg.Id
+	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	filter := bson.M{"_id": id}
+	var result domain.Post
+	err = coll.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, connect.NewError(connect.CodeNotFound, err)
+		}
+		log.Printf("ドキュメント取得エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	if result.UserId != userID {
+		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("権限がありません"))
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"title":      req.Msg.Title,
+			"body":       req.Msg.Body,
+			"updated_at": domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+		},
+	}
+
+	_, err = coll.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		log.Printf("ドキュメント更新エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
+}
+
+func (s *PostServer) DeletePost(
+	ctx context.Context,
+	req *connect.Request[postv1.DeletePostRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+
+	if err != nil {
+		log.Fatalf("MongoDB接続エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			log.Fatalf("MongoDB切断エラー: %v", err)
+		}
+
+	}()
+
+	coll := client.Database("SNS").Collection("Post")
+
+	idStr := req.Msg.Id
+	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+
+	}
+
+	filter := bson.M{"_id": id}
+	var result domain.Post
+	err = coll.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, connect.NewError(connect.CodeNotFound, err)
+		}
+		log.Printf("ドキュメント取得エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	if result.UserId != userID {
+		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("権限がありません"))
+	}
+
+	_, err = coll.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		log.Printf("ドキュメント削除エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
 func main() {

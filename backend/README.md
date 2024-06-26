@@ -57,9 +57,47 @@ buf generate
 go run main.go
 ```
 
-## grpcurl コマンド使用方法
-
 ### ローカル環境
+
+#### 投稿一覧取得
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{}' http://localhost:80/post.v1.PostService/PostList
+```
+
+#### 投稿取得
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{"id": "Object ID"}' http://localhost:80/post.v1.PostService/Post
+```
+
+#### 新規投稿
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+        "title": "Team 7 CreatePost Test",
+        "body": "Team 7 CreatePost Test Body"
+}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/CreatePost
+```
+
+#### 投稿更新
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+	"id": "667a802a6e2d7b033265fb63",
+	"title": "Asuma CreatePost Test222222222222222222222",
+	"body": "Asuma CreatePost Test Body222222222222222222222"
+}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/UpdatePost
+```
+
+#### 削除更新
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+        "id": "667a802a6e2d7b033265fb63"}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/DeletePost
+```
+
+## grpcurl
 
 #### 投稿の一覧を取得
 
@@ -67,21 +105,15 @@ go run main.go
 grpcurl -protoset <(buf build -o -) -plaintext localhost:80 post.v1.PostService/PostList
 ```
 
-#### 特定の投稿を取得
-
-```bash
-grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d080476e"}' localhost:80 post.v1.PostService/Post
-```
-
-### デプロイ環境
-
-#### 投稿の一覧を取得
-
 ```bash
 grpcurl -protoset <(buf build -o -) team-7_bk.member0005.track-bootcamp.run:443 post.v1.PostService/PostList
 ```
 
 #### 特定の投稿を取得
+
+```bash
+grpcurl -protoset <(buf build -o -) -plaintext -d '{"id": "6667bf839a410579d080476e"}' localhost:80 post.v1.PostService/Post
+```
 
 ```bash
 grpcurl -protoset <(buf build -o -) -d '{"id": "6667bf839a410579d080476e"}' team-7_bk.member0005.track-bootcamp.run:443 post.v1.PostService/Pos
