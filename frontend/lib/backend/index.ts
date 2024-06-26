@@ -1,4 +1,4 @@
-import { mockComments, mockData } from "@/constants/mock";
+import { mockComments } from "@/constants/mock";
 import { Comment } from "@/types";
 
 export const backend = {
