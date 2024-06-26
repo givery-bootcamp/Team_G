@@ -7,12 +7,26 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"google.golang.org/api/oauth2/v1"
 	"google.golang.org/api/option"
 )
 
 func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
+
+	if os.Getenv("ENV") == "develop" {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// 適当なユーザIDを設定
+			mockUser := oauth2.Userinfoplus{
+				Id: "507f1f77bcf86cd799439011",
+			}
+
+			r = r.WithContext(context.WithValue(r.Context(), "user", &mockUser))
+
+			next.ServeHTTP(w, r)
+		})
+	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Googleアクセストークンを取得 (not JWT)

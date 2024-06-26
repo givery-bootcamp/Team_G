@@ -15,6 +15,7 @@ services:
       TZ: Asia/Tokyo
       PORT: 80
       MONGODB_URI: "mongodb://mongodb:27017"
+      ENV : "develop"
 
   mongodb:
     container_name: "team-7-mongodb"

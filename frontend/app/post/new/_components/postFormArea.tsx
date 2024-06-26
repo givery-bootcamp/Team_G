@@ -61,6 +61,7 @@ const postNewPost = async (title: string, body: string, token: string) => {
       {
         title: "aaaa",
         body: "vvvv",
+        imageUrl: "https://example.com",
       },
       {
         headers: {

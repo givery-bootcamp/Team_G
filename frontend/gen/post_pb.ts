@@ -139,6 +139,11 @@ export class CreatePostRequest extends Message<CreatePostRequest> {
    */
   body = "";
 
+  /**
+   * @generated from field: string image_url = 3;
+   */
+  imageUrl = "";
+
   constructor(data?: PartialMessage<CreatePostRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -149,6 +154,7 @@ export class CreatePostRequest extends Message<CreatePostRequest> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "image_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreatePostRequest {
@@ -189,6 +195,11 @@ export class UpdatePostRequest extends Message<UpdatePostRequest> {
    */
   body = "";
 
+  /**
+   * @generated from field: string image_url = 4;
+   */
+  imageUrl = "";
+
   constructor(data?: PartialMessage<UpdatePostRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -200,6 +211,7 @@ export class UpdatePostRequest extends Message<UpdatePostRequest> {
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "image_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePostRequest {
@@ -264,6 +276,7 @@ export class DeletePostRequest extends Message<DeletePostRequest> {
  *  body: 本文
  *  user_id: ユーザID
  *  comments: コメント配列
+ *  image_url: 画像URL
  *  created_at: 作成日時
  *  updated_at: 更新日時
  *
@@ -291,17 +304,22 @@ export class PostData extends Message<PostData> {
   userId = "";
 
   /**
-   * @generated from field: repeated post.v1.Comment comments = 5;
+   * @generated from field: string image_url = 5;
+   */
+  imageUrl = "";
+
+  /**
+   * @generated from field: repeated post.v1.Comment comments = 6;
    */
   comments: Comment[] = [];
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
+   * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 7;
+   * @generated from field: google.protobuf.Timestamp updated_at = 8;
    */
   updatedAt?: Timestamp;
 
@@ -317,9 +335,10 @@ export class PostData extends Message<PostData> {
     { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "comments", kind: "message", T: Comment, repeated: true },
-    { no: 6, name: "created_at", kind: "message", T: Timestamp },
-    { no: 7, name: "updated_at", kind: "message", T: Timestamp },
+    { no: 5, name: "image_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "comments", kind: "message", T: Comment, repeated: true },
+    { no: 7, name: "created_at", kind: "message", T: Timestamp },
+    { no: 8, name: "updated_at", kind: "message", T: Timestamp },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PostData {
