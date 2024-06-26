@@ -3,6 +3,8 @@ import { NextPage } from "next";
 import Image from "next/image";
 import BreadCrumb from "../_components/breadCrumb";
 import FormArea from "../_components/formArea";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 interface Props {
   params: {
@@ -12,7 +14,19 @@ interface Props {
 
 const PostDetailPage: NextPage<Props> = async ({ params }) => {
   const { id } = params;
-  const { post } = await postClient.post({ id });
+  const session = await auth();
+  if (!session || !session.accessToken) {
+    redirect("/api/auth/signin");
+  }
+
+  const { post } = await postClient.post(
+    { id },
+    {
+      headers: {
+        Authorization: session.accessToken,
+      },
+    },
+  );
 
   if (!post) return;
 
