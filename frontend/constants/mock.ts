@@ -1,7 +1,7 @@
-import { Post, Comment } from "@/types";
+import { Comment, Post } from "@/types";
 
 // Mock comments data
-const mockComments: Comment[] = [
+export const mockComments: Comment[] = [
   { id: "1", body: "Comment 1", userId: "1", postId: "1", createdAt: new Date(), updatedAt: new Date() },
   { id: "2", body: "Comment 2", userId: "1", postId: "2", createdAt: new Date(), updatedAt: new Date() },
   { id: "3", body: "Comment 3", userId: "2", postId: "3", createdAt: new Date(), updatedAt: new Date() },
@@ -12,6 +12,7 @@ const mockComments: Comment[] = [
   { id: "8", body: "Comment 8", userId: "2", postId: "9", createdAt: new Date(), updatedAt: new Date() },
   { id: "9", body: "Comment 9", userId: "2", postId: "10", createdAt: new Date(), updatedAt: new Date() },
 ];
+const imageUrl = "https://dena-training-2024-team7.s3.ap-northeast-1.amazonaws.com/bakushou-nya.gif";
 
 export const mockData: Post[] = [
   {
@@ -22,6 +23,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "1"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 2,
@@ -31,6 +33,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "2"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 3,
@@ -40,6 +43,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "3"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 4,
@@ -49,6 +53,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "4"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 5,
@@ -58,6 +63,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "5"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 6,
@@ -67,6 +73,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "6"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 8,
@@ -76,6 +83,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "8"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: "",
   },
   {
     id: 9,
@@ -85,6 +93,7 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "9"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: imageUrl,
   },
   {
     id: 10,
@@ -94,5 +103,6 @@ export const mockData: Post[] = [
     comments: mockComments.filter((comment) => comment.postId === "10"),
     createdAt: new Date(),
     updatedAt: new Date(),
+    imageUrl: "",
   },
 ];
