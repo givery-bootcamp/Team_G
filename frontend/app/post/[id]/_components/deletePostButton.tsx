@@ -30,6 +30,7 @@ const DeletePostButton = ({ params }: Props) => {
         },
       );
       router.push("/post");
+      router.refresh();
     } catch (e) {
       console.error(e);
     } finally {

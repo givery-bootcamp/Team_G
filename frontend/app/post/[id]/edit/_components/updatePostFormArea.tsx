@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PostData } from "@/gen/post_pb";
 import { postClient } from "@/lib/connect";
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import useFileDrop from "../_hooks/useFileDrop";
 import { DropArea } from "./fileDropArea";
@@ -17,6 +19,7 @@ interface Props {
 const UpdatePostFormArea = ({ params }: Props) => {
   const { file, getRootProps, getInputProps, setFile } = useFileDrop();
   var post = params.post;
+  const router = useRouter();
 
   let imageUrl = post.imageUrl;
   if (file) {
@@ -30,6 +33,29 @@ const UpdatePostFormArea = ({ params }: Props) => {
   const [postBody, setPostBody] = useState(post.body);
   const handleChangeBody = (value: string) => {
     setPostBody(value);
+  };
+  const updatePost = async (id: string, title: string, body: string, imageUrl: string, token: string) => {
+    try {
+      const result = await postClient.updatePost(
+        {
+          id: id,
+          title: title,
+          body: body,
+          imageUrl: imageUrl,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      router.push("/post");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+
+    console.log({ title, body });
   };
 
   return (
@@ -91,26 +117,4 @@ const uploadFile = async (prevState: string | null, formData: FormData) => {
   } catch (error) {
     console.error(error);
   }
-};
-const updatePost = async (id: string, title: string, body: string, imageUrl: string, token: string) => {
-  try {
-    const result = await postClient.updatePost(
-      {
-        id: id,
-        title: title,
-        body: body,
-        imageUrl: imageUrl,
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      },
-    );
-    console.log("result", result);
-  } catch (error) {
-    console.error(error);
-  }
-
-  console.log({ title, body });
 };

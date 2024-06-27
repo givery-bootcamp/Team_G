@@ -44,10 +44,9 @@ const PostFormArea = ({ params }: Props) => {
           },
         },
       );
-      console.log("createPOst!!!!!!!");
-      console.log(result);
-      // revalidatePath("/post");
+
       router.push("/post");
+      router.refresh();
     } catch (error) {
       console.error(error);
     }
