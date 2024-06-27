@@ -42,7 +42,7 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
       <div className="flex flex-col items-center">
         <Image
-          src={post.imageUrl ?? "/images/noimage.png"}
+          src={post.imageUrl || "/images/noimage.png"}
           alt="Post Image"
           className="mb-4"
           width={400}

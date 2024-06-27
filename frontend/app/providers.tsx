@@ -1,5 +1,6 @@
 "use client";
 
+import { CommandEffect } from "@/components/CommandEffect";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useKonamiCommand } from "@/hooks/useKonamiCommand";
 import { finalTransport } from "@/lib/connect";
@@ -15,6 +16,7 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   const onCommandFired = () => {
     setIsOpen(true);
   };
+
   useKonamiCommand(onCommandFired);
 
   return (
@@ -23,7 +25,9 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
         <QueryClientProvider client={queryClient}>
           {children}
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent>Test</DialogContent>
+            <DialogContent className="h-screen !max-w-none bg-black">
+              <CommandEffect />
+            </DialogContent>
           </Dialog>
         </QueryClientProvider>
       </TransportProvider>
