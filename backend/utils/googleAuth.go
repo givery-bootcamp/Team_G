@@ -22,7 +22,7 @@ func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 				Id: "507f1f77bcf86cd799439011",
 			}
 
-			r = r.WithContext(context.WithValue(r.Context(), "user", &mockUser))
+			r = r.WithContext(context.WithValue(r.Context(), UserKey, &mockUser))
 
 			next.ServeHTTP(w, r)
 		})
@@ -31,7 +31,6 @@ func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Googleアクセストークンを取得 (not JWT)
 		token := r.Header.Get("Authorization")
-		fmt.Println("token: ", token)
 
 		ctx := r.Context()
 		oauth2Service, err := oauth2.NewService(ctx, option.WithHTTPClient(&http.Client{}))
@@ -56,7 +55,7 @@ func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 		}
 
 		// ユーザー情報をリクエストに添付
-		r = r.WithContext(context.WithValue(r.Context(), "user", u))
+		r = r.WithContext(context.WithValue(r.Context(), UserKey, u))
 
 		next.ServeHTTP(w, r)
 	})
