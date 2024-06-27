@@ -99,6 +99,24 @@ curl -X POST -H "Content-Type: application/json" -d '{
         "id": "667a802a6e2d7b033265fb63"}' http://localhost:80/post.v1.PostService/DeletePost
 ```
 
+#### コメント作成
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"body": "Aoiiiiiiiiiiii", "post_id": "667ce87da691e1f69c8db5fd"}' http://localhost:80/post.v1.CommentService/CreateComment | jq
+```
+
+#### コメント更新
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"body": "yuyaaaaaaaa", "post_id": "667bac94ef34cafea96a9a50", "comment_id": "667bd7d925ee0b9517207015"}' http://localhost:80/post.v1.CommentService/UpdateComment | jq
+```
+
+#### コメント削除
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"post_id": "667cff66327b262d7c8db5fe", "comment_id": "667cd7db1eb82bf6f8462c9f"}' http://localhost:80/post.v1.CommentService/DeleteComment | jq
+```
+
 ### 本番環境
 
 #### 投稿一覧取得
