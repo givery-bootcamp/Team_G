@@ -12,6 +12,7 @@ export type Post = {
   title: string;
   body: string;
   userId: number;
+  imageUrl: string;
   comments: Comment[];
   createdAt: Date;
   updatedAt: Date;
@@ -24,3 +25,7 @@ export type User = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export interface IFileWithPreview extends File {
+  preview: string;
+}
