@@ -102,7 +102,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 #### コメント作成
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"body": "Aoiiiiiiiiiiii", "post_id": "667bac94ef34cafea96a9a50"}' http://localhost:80/post.v1.CommentService/CreateComment | jq
+curl -X POST -H "Content-Type: application/json" -d '{"body": "Aoiiiiiiiiiiii", "post_id": "667ce87da691e1f69c8db5fd"}' http://localhost:80/post.v1.CommentService/CreateComment | jq
 ```
 
 #### コメント更新
