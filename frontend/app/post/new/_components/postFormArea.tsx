@@ -59,8 +59,8 @@ const postNewPost = async (title: string, body: string, token: string) => {
   try {
     const result = await postClient.createPost(
       {
-        title: "aaaa",
-        body: "vvvv",
+        title: title,
+        body: body,
         imageUrl: "https://example.com",
       },
       {
