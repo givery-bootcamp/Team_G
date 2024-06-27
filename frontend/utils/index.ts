@@ -1,4 +1,4 @@
-export const createDateString = (baseDate: Date | undefined): string => {
+export const createDateString = (baseDate: Date): string => {
   if (baseDate) {
     const year: string = String(baseDate.getFullYear());
     const month: string = String(baseDate.getMonth());
