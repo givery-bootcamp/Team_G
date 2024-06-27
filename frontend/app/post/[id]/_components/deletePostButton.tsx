@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { postClient } from "@/lib/connect";
-import Image from "next/image";
+import { Trash2 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -35,7 +35,7 @@ const DeletePostButton = ({ params }: Props) => {
 
   return (
     <Button className="bg-white p-2 hover:bg-gray-300" onClick={handleClick}>
-      <Image src="/images/delete_icon.png" alt="edit pencil" className="" width={30} height={30} />
+      <Trash2 color="grey" />
     </Button>
   );
 };

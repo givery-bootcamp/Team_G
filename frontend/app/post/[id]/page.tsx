@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { postClient } from "@/lib/connect";
+import { Pencil } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,7 +49,7 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
         <div>
           <Link href={`/post/${id}/edit`} key={id} className="w-full">
             <Button className=" bg-white p-2 hover:bg-gray-300">
-              <Image src="/images/mode_edit.png" alt="edit pencil" className="" width={30} height={30} />
+              <Pencil color="grey" />
             </Button>
           </Link>
           <DeletePostButton params={{ id, token: session.accessToken }} />

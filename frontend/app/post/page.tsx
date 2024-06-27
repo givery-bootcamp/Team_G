@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { postClient } from "@/lib/connect";
+import { Pencil } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,7 +35,7 @@ const PostListPage: NextPage = async () => {
       <h1 className="mb-2 text-2xl font-bold">投稿一覧</h1>
       <Link href="/post/new" key="new" className="w-full">
         <Button className="absolute right-0 top-0 h-12 w-12 bg-white p-2 hover:bg-gray-300">
-          <Image src="/images/mode_edit.png" alt="edit pencil" className="" width={400} height={400} />
+          <Pencil color="grey" />
         </Button>
       </Link>
 
