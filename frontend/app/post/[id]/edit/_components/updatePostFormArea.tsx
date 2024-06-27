@@ -55,13 +55,15 @@ const UpdatePostFormArea = ({ params }: Props) => {
         className="w-full"
         onClick={async () => {
           var formData = new FormData();
-          if (!file) return;
-          formData.append("file", file, file.name);
-          formData.append("filename", file.name);
-          const imageUrl = process.env.NEXT_PUBLIC_S3_BUCKET_PATH + file.name;
-          await updatePost(post.id, postTitle, postBody, imageUrl, params.token);
-
-          await uploadFile(null, formData);
+          if (file) {
+            formData.append("file", file, file.name);
+            formData.append("filename", file.name);
+            const imageUrl = process.env.NEXT_PUBLIC_S3_BUCKET_PATH + file.name;
+            await uploadFile(null, formData);
+            await updatePost(post.id, postTitle, postBody, imageUrl, params.token);
+          } else {
+            await updatePost(post.id, postTitle, postBody, "", params.token);
+          }
         }}
       >
         更新

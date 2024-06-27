@@ -16,10 +16,10 @@ interface DropAreaProps {
 
 export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, getRootProps, getInputProps }) => {
   const inputRef = useRef(null);
-  const [file, setFile] = useState<IFileWithPreview>();
+  const [file, setFile] = useState<IFileWithPreview | null>();
 
   const removeFile = (fileToRemove: IFileWithPreview) => {
-    setFile(undefined);
+    setFile(null);
     URL.revokeObjectURL(fileToRemove.preview);
   };
 
