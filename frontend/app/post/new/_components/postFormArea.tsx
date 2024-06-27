@@ -30,13 +30,13 @@ const PostFormArea = ({ params }: Props) => {
   const handleChangeBody = (value: string) => {
     setPostBody(value);
   };
-  const postNewPost = async (title: string, body: string, token: string) => {
+  const postNewPost = async (title: string, body: string, imageUrl: string, token: string) => {
     try {
       const result = await postClient.createPost(
         {
           title: title,
           body: body,
-          imageUrl: "https://example.com",
+          imageUrl: imageUrl,
         },
         {
           headers: {
@@ -71,7 +71,14 @@ const PostFormArea = ({ params }: Props) => {
         onChange={(e) => handleChangeBody(e.target.value)}
         className="mb-4"
       />
-      <Button className="w-full" onClick={async () => await postNewPost(postTitle, postBody, params.token)}>
+      <Button
+        className="w-full"
+        onClick={async () => {
+          const imageUrl = process.env.NEXT_PUBLIC_S3_BUCKET_PATH + files[0].name;
+          console.log("imageUrl", imageUrl);
+          await postNewPost(postTitle, postBody, imageUrl, params.token);
+        }}
+      >
         作成する
       </Button>
     </div>

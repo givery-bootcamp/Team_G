@@ -41,16 +41,11 @@ const PostListPage: NextPage = async () => {
 
       <section className="grid grid-cols-2 gap-2 p-2">
         {posts.map((post) => {
+          console.log(post);
           return (
             <Link href={`/post/${post.id}`} key={post.id} className="w-full text-center">
               <Card className="mx-auto max-w-fit p-3">
-                <Image
-                  // src={md.imageUrl.length > 0 ? md.imageUrl : "/images/noimage.png"}
-                  src="/images/noimage.png"
-                  alt={post.title}
-                  width={300}
-                  height={300}
-                />
+                <Image src={post.imageUrl || "/images/noimage.png"} alt={post.title} width={300} height={300} />
                 <p className="text-xl font-bold">{post.title}</p>
                 <p className="text-sm">{post.body}</p>
                 <div className="text-xs">{post.createdAt?.toDate().toLocaleDateString()}</div>
