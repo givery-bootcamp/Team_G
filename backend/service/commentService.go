@@ -61,11 +61,17 @@ func (s *CommentServer) CreateComment(
 	update := bson.M{
 		"$push": bson.M{
 			"comments": domain.Comment{
-				Id:        primitive.NewObjectID(),
-				UserId:    userID,
-				Body:      req.Msg.Body,
-				CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
-				UpdatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
+				Id:     primitive.NewObjectID(),
+				UserId: userID,
+				Body:   req.Msg.Body,
+				CreatedAt: domain.Timestamp{
+					Seconds: timestamppb.Now().GetSeconds(),
+					Nanos:   timestamppb.Now().GetNanos(),
+				},
+				UpdatedAt: domain.Timestamp{
+					Seconds: timestamppb.Now().GetSeconds(),
+					Nanos:   timestamppb.Now().GetNanos(),
+				},
 			},
 		},
 	}
@@ -137,11 +143,13 @@ func (*CommentServer) UpdateComment(
 
 	// Commentが見つからなかった場合
 	if comment.Id.IsZero() {
+		log.Printf("コメントが見つかりません")
 		return nil, connect.NewError(connect.CodeNotFound, err)
 	}
 
 	// CommentのUserIDとリクエストユーザーのUserIDが一致しない場合
 	if comment.UserId != userID {
+		log.Printf("コメント更新権限がありません")
 		return nil, connect.NewError(connect.CodePermissionDenied, err)
 	}
 
@@ -165,6 +173,91 @@ func (*CommentServer) UpdateComment(
 
 	if err != nil {
 		log.Printf("コメント更新エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
+}
+
+func (s *CommentServer) DeleteComment(
+	ctx context.Context,
+	req *connect.Request[postv1.DeleteCommentRequest],
+) (*connect.Response[emptypb.Empty], error) {
+	client, ok := ctx.Value("client").(*mongo.Client)
+	if !ok {
+		log.Println("client取得エラー")
+		return nil, connect.NewError(connect.CodeInternal, nil)
+	}
+
+	coll := client.Database("SNS").Collection("Post")
+
+	// PostIDを取得
+	idStr := req.Msg.PostId
+	id, err := primitive.ObjectIDFromHex(idStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// PostIDを用いて、Postを取得
+	filter := bson.M{"_id": id}
+	var result domain.Post
+	err = coll.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, connect.NewError(connect.CodeNotFound, err)
+		}
+		log.Printf("ドキュメント取得エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// userIDを取得
+	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	if !ok {
+		log.Printf("ユーザー情報がありません")
+	}
+	userID := user.Id
+
+	// CommentIDを取得
+	commentIDStr := req.Msg.CommentId
+	commentID, err := primitive.ObjectIDFromHex(commentIDStr)
+	if err != nil {
+		log.Printf("ID変換エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// CommentIDを用いて、Commentを取得
+	var comment domain.Comment
+	for _, c := range result.Comments {
+		if c.Id == commentID {
+			comment = c
+			break
+		}
+	}
+
+	// Commentが見つからなかった場合
+	if comment.Id.IsZero() {
+		log.Printf("コメントが見つかりません")
+		return nil, connect.NewError(connect.CodeNotFound, err)
+	}
+
+	// CommentのUserIDとリクエストユーザーのUserIDが一致しない場合
+	if comment.UserId != userID {
+		log.Printf("コメント更新権限がありません")
+		return nil, connect.NewError(connect.CodePermissionDenied, err)
+	}
+
+	arrayFilters := options.ArrayFilters{
+		Filters: []interface{}{bson.M{"elem._id": commentID}},
+	}
+
+	_, err = coll.DeleteOne(
+		context.TODO(),
+		filter,
+		&options.DeleteOptions{ArrayFilters: &arrayFilters},
+	)
+	if err != nil {
+		log.Printf("コメント削除エラー: %v", err)
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 

@@ -52,6 +52,9 @@ const (
 	// CommentServiceUpdateCommentProcedure is the fully-qualified name of the CommentService's
 	// UpdateComment RPC.
 	CommentServiceUpdateCommentProcedure = "/post.v1.CommentService/UpdateComment"
+	// CommentServiceDeleteCommentProcedure is the fully-qualified name of the CommentService's
+	// DeleteComment RPC.
+	CommentServiceDeleteCommentProcedure = "/post.v1.CommentService/DeleteComment"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
@@ -65,6 +68,7 @@ var (
 	commentServiceServiceDescriptor             = v1.File_post_v1_post_proto.Services().ByName("CommentService")
 	commentServiceCreateCommentMethodDescriptor = commentServiceServiceDescriptor.Methods().ByName("CreateComment")
 	commentServiceUpdateCommentMethodDescriptor = commentServiceServiceDescriptor.Methods().ByName("UpdateComment")
+	commentServiceDeleteCommentMethodDescriptor = commentServiceServiceDescriptor.Methods().ByName("DeleteComment")
 )
 
 // PostServiceClient is a client for the post.v1.PostService service.
@@ -257,6 +261,8 @@ type CommentServiceClient interface {
 	CreateComment(context.Context, *connect.Request[v1.CreateCommentRequest]) (*connect.Response[emptypb.Empty], error)
 	// コメント更新API
 	UpdateComment(context.Context, *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error)
+	// コメント削除API
+	DeleteComment(context.Context, *connect.Request[v1.DeleteCommentRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewCommentServiceClient constructs a client for the post.v1.CommentService service. By default,
@@ -281,6 +287,12 @@ func NewCommentServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(commentServiceUpdateCommentMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
+		deleteComment: connect.NewClient[v1.DeleteCommentRequest, emptypb.Empty](
+			httpClient,
+			baseURL+CommentServiceDeleteCommentProcedure,
+			connect.WithSchema(commentServiceDeleteCommentMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -288,6 +300,7 @@ func NewCommentServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 type commentServiceClient struct {
 	createComment *connect.Client[v1.CreateCommentRequest, emptypb.Empty]
 	updateComment *connect.Client[v1.UpdateCommentRequest, emptypb.Empty]
+	deleteComment *connect.Client[v1.DeleteCommentRequest, emptypb.Empty]
 }
 
 // CreateComment calls post.v1.CommentService.CreateComment.
@@ -300,12 +313,19 @@ func (c *commentServiceClient) UpdateComment(ctx context.Context, req *connect.R
 	return c.updateComment.CallUnary(ctx, req)
 }
 
+// DeleteComment calls post.v1.CommentService.DeleteComment.
+func (c *commentServiceClient) DeleteComment(ctx context.Context, req *connect.Request[v1.DeleteCommentRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.deleteComment.CallUnary(ctx, req)
+}
+
 // CommentServiceHandler is an implementation of the post.v1.CommentService service.
 type CommentServiceHandler interface {
 	// コメント作成API
 	CreateComment(context.Context, *connect.Request[v1.CreateCommentRequest]) (*connect.Response[emptypb.Empty], error)
 	// コメント更新API
 	UpdateComment(context.Context, *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error)
+	// コメント削除API
+	DeleteComment(context.Context, *connect.Request[v1.DeleteCommentRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewCommentServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -326,12 +346,20 @@ func NewCommentServiceHandler(svc CommentServiceHandler, opts ...connect.Handler
 		connect.WithSchema(commentServiceUpdateCommentMethodDescriptor),
 		connect.WithHandlerOptions(opts...),
 	)
+	commentServiceDeleteCommentHandler := connect.NewUnaryHandler(
+		CommentServiceDeleteCommentProcedure,
+		svc.DeleteComment,
+		connect.WithSchema(commentServiceDeleteCommentMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/post.v1.CommentService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CommentServiceCreateCommentProcedure:
 			commentServiceCreateCommentHandler.ServeHTTP(w, r)
 		case CommentServiceUpdateCommentProcedure:
 			commentServiceUpdateCommentHandler.ServeHTTP(w, r)
+		case CommentServiceDeleteCommentProcedure:
+			commentServiceDeleteCommentHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -347,4 +375,8 @@ func (UnimplementedCommentServiceHandler) CreateComment(context.Context, *connec
 
 func (UnimplementedCommentServiceHandler) UpdateComment(context.Context, *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.CommentService.UpdateComment is not implemented"))
+}
+
+func (UnimplementedCommentServiceHandler) DeleteComment(context.Context, *connect.Request[v1.DeleteCommentRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.CommentService.DeleteComment is not implemented"))
 }

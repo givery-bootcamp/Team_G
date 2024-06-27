@@ -142,6 +142,61 @@ func (x *UpdateCommentRequest) GetCommentId() string {
 	return ""
 }
 
+type DeleteCommentRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	PostId    string `protobuf:"bytes,1,opt,name=post_id,json=postId,proto3" json:"post_id,omitempty"`
+	CommentId string `protobuf:"bytes,2,opt,name=comment_id,json=commentId,proto3" json:"comment_id,omitempty"`
+}
+
+func (x *DeleteCommentRequest) Reset() {
+	*x = DeleteCommentRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_post_v1_post_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteCommentRequest) ProtoMessage() {}
+
+func (x *DeleteCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_post_v1_post_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteCommentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteCommentRequest) Descriptor() ([]byte, []int) {
+	return file_post_v1_post_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteCommentRequest) GetPostId() string {
+	if x != nil {
+		return x.PostId
+	}
+	return ""
+}
+
+func (x *DeleteCommentRequest) GetCommentId() string {
+	if x != nil {
+		return x.CommentId
+	}
+	return ""
+}
+
 // Post一覧APIのレスポンス
 type PostListResponse struct {
 	state         protoimpl.MessageState
@@ -154,7 +209,7 @@ type PostListResponse struct {
 func (x *PostListResponse) Reset() {
 	*x = PostListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[2]
+		mi := &file_post_v1_post_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -167,7 +222,7 @@ func (x *PostListResponse) String() string {
 func (*PostListResponse) ProtoMessage() {}
 
 func (x *PostListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[2]
+	mi := &file_post_v1_post_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -180,7 +235,7 @@ func (x *PostListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostListResponse.ProtoReflect.Descriptor instead.
 func (*PostListResponse) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{2}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *PostListResponse) GetPost() []*PostData {
@@ -202,7 +257,7 @@ type PostRequest struct {
 func (x *PostRequest) Reset() {
 	*x = PostRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[3]
+		mi := &file_post_v1_post_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -215,7 +270,7 @@ func (x *PostRequest) String() string {
 func (*PostRequest) ProtoMessage() {}
 
 func (x *PostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[3]
+	mi := &file_post_v1_post_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -228,7 +283,7 @@ func (x *PostRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostRequest.ProtoReflect.Descriptor instead.
 func (*PostRequest) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{3}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PostRequest) GetId() string {
@@ -250,7 +305,7 @@ type PostResponse struct {
 func (x *PostResponse) Reset() {
 	*x = PostResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[4]
+		mi := &file_post_v1_post_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -263,7 +318,7 @@ func (x *PostResponse) String() string {
 func (*PostResponse) ProtoMessage() {}
 
 func (x *PostResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[4]
+	mi := &file_post_v1_post_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -276,7 +331,7 @@ func (x *PostResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostResponse.ProtoReflect.Descriptor instead.
 func (*PostResponse) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{4}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PostResponse) GetPost() *PostData {
@@ -300,7 +355,7 @@ type CreatePostRequest struct {
 func (x *CreatePostRequest) Reset() {
 	*x = CreatePostRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[5]
+		mi := &file_post_v1_post_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -313,7 +368,7 @@ func (x *CreatePostRequest) String() string {
 func (*CreatePostRequest) ProtoMessage() {}
 
 func (x *CreatePostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[5]
+	mi := &file_post_v1_post_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -326,7 +381,7 @@ func (x *CreatePostRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePostRequest.ProtoReflect.Descriptor instead.
 func (*CreatePostRequest) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{5}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreatePostRequest) GetTitle() string {
@@ -365,7 +420,7 @@ type UpdatePostRequest struct {
 func (x *UpdatePostRequest) Reset() {
 	*x = UpdatePostRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[6]
+		mi := &file_post_v1_post_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -378,7 +433,7 @@ func (x *UpdatePostRequest) String() string {
 func (*UpdatePostRequest) ProtoMessage() {}
 
 func (x *UpdatePostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[6]
+	mi := &file_post_v1_post_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -391,7 +446,7 @@ func (x *UpdatePostRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePostRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePostRequest) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{6}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdatePostRequest) GetId() string {
@@ -433,7 +488,7 @@ type DeletePostRequest struct {
 func (x *DeletePostRequest) Reset() {
 	*x = DeletePostRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[7]
+		mi := &file_post_v1_post_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -446,7 +501,7 @@ func (x *DeletePostRequest) String() string {
 func (*DeletePostRequest) ProtoMessage() {}
 
 func (x *DeletePostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[7]
+	mi := &file_post_v1_post_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -459,7 +514,7 @@ func (x *DeletePostRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePostRequest.ProtoReflect.Descriptor instead.
 func (*DeletePostRequest) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{7}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeletePostRequest) GetId() string {
@@ -498,7 +553,7 @@ type PostData struct {
 func (x *PostData) Reset() {
 	*x = PostData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[8]
+		mi := &file_post_v1_post_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -511,7 +566,7 @@ func (x *PostData) String() string {
 func (*PostData) ProtoMessage() {}
 
 func (x *PostData) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[8]
+	mi := &file_post_v1_post_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -524,7 +579,7 @@ func (x *PostData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostData.ProtoReflect.Descriptor instead.
 func (*PostData) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{8}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PostData) GetId() string {
@@ -608,7 +663,7 @@ type Comment struct {
 func (x *Comment) Reset() {
 	*x = Comment{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_post_v1_post_proto_msgTypes[9]
+		mi := &file_post_v1_post_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -621,7 +676,7 @@ func (x *Comment) String() string {
 func (*Comment) ProtoMessage() {}
 
 func (x *Comment) ProtoReflect() protoreflect.Message {
-	mi := &file_post_v1_post_proto_msgTypes[9]
+	mi := &file_post_v1_post_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -634,7 +689,7 @@ func (x *Comment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Comment.ProtoReflect.Descriptor instead.
 func (*Comment) Descriptor() ([]byte, []int) {
-	return file_post_v1_post_proto_rawDescGZIP(), []int{9}
+	return file_post_v1_post_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Comment) GetId() string {
@@ -698,6 +753,11 @@ var file_post_v1_post_proto_rawDesc = []byte{
 	0x70, 0x6f, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70,
 	0x6f, 0x73, 0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74,
 	0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x6d, 0x65,
+	0x6e, 0x74, 0x49, 0x64, 0x22, 0x4e, 0x0a, 0x14, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x43, 0x6f,
+	0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07,
+	0x70, 0x6f, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70,
+	0x6f, 0x73, 0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74,
+	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x6d, 0x65,
 	0x6e, 0x74, 0x49, 0x64, 0x22, 0x39, 0x0a, 0x10, 0x50, 0x6f, 0x73, 0x74, 0x4c, 0x69, 0x73, 0x74,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x04, 0x70, 0x6f, 0x73, 0x74,
 	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76, 0x31,
@@ -775,7 +835,7 @@ var file_post_v1_post_proto_rawDesc = []byte{
 	0x2e, 0x76, 0x31, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x32,
-	0xa4, 0x01, 0x0a, 0x0e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69,
+	0xee, 0x01, 0x0a, 0x0e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69,
 	0x63, 0x65, 0x12, 0x48, 0x0a, 0x0d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d,
 	0x65, 0x6e, 0x74, 0x12, 0x1d, 0x2e, 0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72,
 	0x65, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
@@ -785,9 +845,14 @@ var file_post_v1_post_proto_rawDesc = []byte{
 	0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f,
 	0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67,
 	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45,
-	0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x42, 0x1c, 0x5a, 0x1a, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e,
-	0x64, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x70, 0x6f, 0x73, 0x74, 0x2f, 0x76, 0x31, 0x3b, 0x70, 0x6f,
-	0x73, 0x74, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x1d, 0x2e, 0x70, 0x6f, 0x73, 0x74, 0x2e, 0x76,
+	0x31, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00,
+	0x42, 0x1c, 0x5a, 0x1a, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x67, 0x65, 0x6e, 0x2f,
+	0x70, 0x6f, 0x73, 0x74, 0x2f, 0x76, 0x31, 0x3b, 0x70, 0x6f, 0x73, 0x74, 0x76, 0x31, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -802,45 +867,48 @@ func file_post_v1_post_proto_rawDescGZIP() []byte {
 	return file_post_v1_post_proto_rawDescData
 }
 
-var file_post_v1_post_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_post_v1_post_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_post_v1_post_proto_goTypes = []interface{}{
 	(*CreateCommentRequest)(nil),  // 0: post.v1.CreateCommentRequest
 	(*UpdateCommentRequest)(nil),  // 1: post.v1.UpdateCommentRequest
-	(*PostListResponse)(nil),      // 2: post.v1.PostListResponse
-	(*PostRequest)(nil),           // 3: post.v1.PostRequest
-	(*PostResponse)(nil),          // 4: post.v1.PostResponse
-	(*CreatePostRequest)(nil),     // 5: post.v1.CreatePostRequest
-	(*UpdatePostRequest)(nil),     // 6: post.v1.UpdatePostRequest
-	(*DeletePostRequest)(nil),     // 7: post.v1.DeletePostRequest
-	(*PostData)(nil),              // 8: post.v1.PostData
-	(*Comment)(nil),               // 9: post.v1.Comment
-	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),         // 11: google.protobuf.Empty
+	(*DeleteCommentRequest)(nil),  // 2: post.v1.DeleteCommentRequest
+	(*PostListResponse)(nil),      // 3: post.v1.PostListResponse
+	(*PostRequest)(nil),           // 4: post.v1.PostRequest
+	(*PostResponse)(nil),          // 5: post.v1.PostResponse
+	(*CreatePostRequest)(nil),     // 6: post.v1.CreatePostRequest
+	(*UpdatePostRequest)(nil),     // 7: post.v1.UpdatePostRequest
+	(*DeletePostRequest)(nil),     // 8: post.v1.DeletePostRequest
+	(*PostData)(nil),              // 9: post.v1.PostData
+	(*Comment)(nil),               // 10: post.v1.Comment
+	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),         // 12: google.protobuf.Empty
 }
 var file_post_v1_post_proto_depIdxs = []int32{
-	8,  // 0: post.v1.PostListResponse.post:type_name -> post.v1.PostData
-	8,  // 1: post.v1.PostResponse.post:type_name -> post.v1.PostData
-	9,  // 2: post.v1.PostData.comments:type_name -> post.v1.Comment
-	10, // 3: post.v1.PostData.created_at:type_name -> google.protobuf.Timestamp
-	10, // 4: post.v1.PostData.updated_at:type_name -> google.protobuf.Timestamp
-	10, // 5: post.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
-	10, // 6: post.v1.Comment.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 7: post.v1.PostService.PostList:input_type -> google.protobuf.Empty
-	3,  // 8: post.v1.PostService.Post:input_type -> post.v1.PostRequest
-	5,  // 9: post.v1.PostService.CreatePost:input_type -> post.v1.CreatePostRequest
-	6,  // 10: post.v1.PostService.UpdatePost:input_type -> post.v1.UpdatePostRequest
-	7,  // 11: post.v1.PostService.DeletePost:input_type -> post.v1.DeletePostRequest
+	9,  // 0: post.v1.PostListResponse.post:type_name -> post.v1.PostData
+	9,  // 1: post.v1.PostResponse.post:type_name -> post.v1.PostData
+	10, // 2: post.v1.PostData.comments:type_name -> post.v1.Comment
+	11, // 3: post.v1.PostData.created_at:type_name -> google.protobuf.Timestamp
+	11, // 4: post.v1.PostData.updated_at:type_name -> google.protobuf.Timestamp
+	11, // 5: post.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
+	11, // 6: post.v1.Comment.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 7: post.v1.PostService.PostList:input_type -> google.protobuf.Empty
+	4,  // 8: post.v1.PostService.Post:input_type -> post.v1.PostRequest
+	6,  // 9: post.v1.PostService.CreatePost:input_type -> post.v1.CreatePostRequest
+	7,  // 10: post.v1.PostService.UpdatePost:input_type -> post.v1.UpdatePostRequest
+	8,  // 11: post.v1.PostService.DeletePost:input_type -> post.v1.DeletePostRequest
 	0,  // 12: post.v1.CommentService.CreateComment:input_type -> post.v1.CreateCommentRequest
 	1,  // 13: post.v1.CommentService.UpdateComment:input_type -> post.v1.UpdateCommentRequest
-	2,  // 14: post.v1.PostService.PostList:output_type -> post.v1.PostListResponse
-	4,  // 15: post.v1.PostService.Post:output_type -> post.v1.PostResponse
-	11, // 16: post.v1.PostService.CreatePost:output_type -> google.protobuf.Empty
-	11, // 17: post.v1.PostService.UpdatePost:output_type -> google.protobuf.Empty
-	11, // 18: post.v1.PostService.DeletePost:output_type -> google.protobuf.Empty
-	11, // 19: post.v1.CommentService.CreateComment:output_type -> google.protobuf.Empty
-	11, // 20: post.v1.CommentService.UpdateComment:output_type -> google.protobuf.Empty
-	14, // [14:21] is the sub-list for method output_type
-	7,  // [7:14] is the sub-list for method input_type
+	2,  // 14: post.v1.CommentService.DeleteComment:input_type -> post.v1.DeleteCommentRequest
+	3,  // 15: post.v1.PostService.PostList:output_type -> post.v1.PostListResponse
+	5,  // 16: post.v1.PostService.Post:output_type -> post.v1.PostResponse
+	12, // 17: post.v1.PostService.CreatePost:output_type -> google.protobuf.Empty
+	12, // 18: post.v1.PostService.UpdatePost:output_type -> google.protobuf.Empty
+	12, // 19: post.v1.PostService.DeletePost:output_type -> google.protobuf.Empty
+	12, // 20: post.v1.CommentService.CreateComment:output_type -> google.protobuf.Empty
+	12, // 21: post.v1.CommentService.UpdateComment:output_type -> google.protobuf.Empty
+	12, // 22: post.v1.CommentService.DeleteComment:output_type -> google.protobuf.Empty
+	15, // [15:23] is the sub-list for method output_type
+	7,  // [7:15] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
 	7,  // [7:7] is the sub-list for extension extendee
 	0,  // [0:7] is the sub-list for field type_name
@@ -877,7 +945,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostListResponse); i {
+			switch v := v.(*DeleteCommentRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -889,7 +957,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostRequest); i {
+			switch v := v.(*PostListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -901,7 +969,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostResponse); i {
+			switch v := v.(*PostRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -913,7 +981,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreatePostRequest); i {
+			switch v := v.(*PostResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -925,7 +993,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdatePostRequest); i {
+			switch v := v.(*CreatePostRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -937,7 +1005,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeletePostRequest); i {
+			switch v := v.(*UpdatePostRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -949,7 +1017,7 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostData); i {
+			switch v := v.(*DeletePostRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -961,6 +1029,18 @@ func file_post_v1_post_proto_init() {
 			}
 		}
 		file_post_v1_post_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PostData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_post_v1_post_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Comment); i {
 			case 0:
 				return &v.state
@@ -979,7 +1059,7 @@ func file_post_v1_post_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_post_v1_post_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

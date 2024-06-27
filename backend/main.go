@@ -20,6 +20,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+var clientKey utils.ContextKey = "client"
+
 // Connection URI
 var uri = os.Getenv("MONGODB_URI")
 
@@ -74,7 +76,7 @@ func main() {
 	// DB Client設定用ミドルウェア
 	dbMiddleware := func(client *mongo.Client, next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			ctx := context.WithValue(r.Context(), "client", client)
+			ctx := context.WithValue(r.Context(), clientKey, client)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}

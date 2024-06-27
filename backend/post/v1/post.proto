@@ -36,6 +36,9 @@ service CommentService {
 
   // コメント更新API
   rpc UpdateComment(UpdateCommentRequest) returns (google.protobuf.Empty) {}
+
+  // コメント削除API
+  rpc DeleteComment(DeleteCommentRequest) returns (google.protobuf.Empty) {}
 }
 
 // コメント作成APIのリクエスト
@@ -49,6 +52,11 @@ message UpdateCommentRequest {
   string body = 1;
   string post_id = 2;
   string comment_id = 3;
+}
+
+message DeleteCommentRequest {
+  string post_id = 1;
+  string comment_id = 2;
 }
 
 // Post一覧APIのレスポンス
