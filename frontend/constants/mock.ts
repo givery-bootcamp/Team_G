@@ -1,7 +1,7 @@
 import { Comment, Post } from "@/types";
 
 // Mock comments data
-const mockComments: Comment[] = [
+export const mockComments: Comment[] = [
   { id: "1", body: "Comment 1", userId: "1", postId: "1", createdAt: new Date(), updatedAt: new Date() },
   { id: "2", body: "Comment 2", userId: "1", postId: "2", createdAt: new Date(), updatedAt: new Date() },
   { id: "3", body: "Comment 3", userId: "2", postId: "3", createdAt: new Date(), updatedAt: new Date() },
