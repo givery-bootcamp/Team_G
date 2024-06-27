@@ -52,7 +52,8 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
               <Pencil color="grey" />
             </Button>
           </Link>
-          <DeletePostButton params={{ id, token: session.accessToken }} />
+
+          {post.userId === session.id && <DeletePostButton params={{ id, token: session.accessToken }} />}
         </div>
         <Image
           // src={post.imageUrl.length > 0 ? post.imageUrl : "/images/noimage.png"}
