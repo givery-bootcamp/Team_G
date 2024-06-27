@@ -4,7 +4,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuid4 } from "uuid";
 //import { v4 as uuid4 } from "uuid";
 import { Comment } from "@/types";
-import { backend } from "@/lib/backend";
 
 const FormArea = ({ pageId }: { pageId: string }) => {
   const clickAction = (formData: FormData) => {
@@ -32,7 +31,7 @@ const FormArea = ({ pageId }: { pageId: string }) => {
       console.log(comment.postId);
       console.log(comment.createdAt);
       console.log(comment.updatedAt);
-      backend.comment.postComment(comment);
+      //need post request
     } else {
       console.log("null text");
     }
