@@ -15,13 +15,13 @@ interface Props {
 }
 
 const PostFormArea = ({ params }: Props) => {
-  const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
+  const { file, getRootProps, getInputProps, setFile } = useFileDrop();
   const router = useRouter();
 
-  const imageUrls: string[] = [];
-  files.map((file) => {
-    imageUrls.push(file.preview);
-  });
+  let imageUrl = "";
+  if (file !== undefined) {
+    imageUrl = URL.createObjectURL(file);
+  }
   const [postTitle, setPostTitle] = useState("");
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
@@ -54,9 +54,8 @@ const PostFormArea = ({ params }: Props) => {
 
   return (
     <div>
-      <DropArea imageUrls={imageUrls} getRootProps={getRootProps} getInputProps={getInputProps} setFiles={setFiles} />
-      <div>アップロードされたファイル数: {files.length}</div>
-      <div>アップロードされたファイル: {files.map((file) => file.name).join(", ")}</div>
+      <DropArea imageUrl={imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
+      <div>アップロードされたファイル: {file?.name}</div>
       <Input
         type="title"
         placeholder="タイトル"
@@ -74,7 +73,7 @@ const PostFormArea = ({ params }: Props) => {
       <Button
         className="w-full"
         onClick={async () => {
-          const imageUrl = process.env.NEXT_PUBLIC_S3_BUCKET_PATH + files[0].name;
+          const imageUrl = file ? process.env.NEXT_PUBLIC_S3_BUCKET_PATH + file.name : "";
           console.log("imageUrl", imageUrl);
           await postNewPost(postTitle, postBody, imageUrl, params.token);
         }}

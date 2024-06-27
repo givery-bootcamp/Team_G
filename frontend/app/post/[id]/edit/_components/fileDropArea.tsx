@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -5,33 +6,31 @@ interface IFileWithPreview extends File {
   preview: string;
 }
 interface DropAreaProps {
-  imageUrls: string[];
+  imageUrl: string;
   getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
   getInputProps: () => {
     ref: React.RefObject<HTMLInputElement>;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
-  setFiles: React.Dispatch<React.SetStateAction<IFileWithPreview[]>>;
 }
 
-export const DropArea: React.FC<DropAreaProps> = ({ imageUrls, getRootProps, getInputProps }) => {
+export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, getRootProps, getInputProps }) => {
   const inputRef = useRef(null);
-  const [files, setFiles] = useState<IFileWithPreview[]>([]);
+  const [file, setFile] = useState<IFileWithPreview>();
 
   const removeFile = (fileToRemove: IFileWithPreview) => {
-    setFiles(files.filter((file) => file.name !== fileToRemove.name));
+    setFile(undefined);
     URL.revokeObjectURL(fileToRemove.preview);
   };
 
   useEffect(() => {
-    const newFiles = imageUrls.map((imageUrl) =>
-      Object.assign(new File([""], imageUrl), {
-        preview: imageUrl,
-      }),
-    );
-    setFiles(newFiles);
-  }, [imageUrls]);
-  const previews = files.map((file: IFileWithPreview) => (
+    if (imageUrl == "") return;
+    const newFile = Object.assign(new File([""], imageUrl), {
+      preview: imageUrl,
+    });
+    setFile(newFile);
+  }, [imageUrl]);
+  const preview = (file: IFileWithPreview) => (
     <div key={file.name} className="relative">
       <img
         src={file.preview}
@@ -43,15 +42,15 @@ export const DropArea: React.FC<DropAreaProps> = ({ imageUrls, getRootProps, get
           URL.revokeObjectURL(file.preview);
         }}
       />
-      <button
+      <Button
         onClick={() => removeFile(file)}
         className="absolute right-0 top-0 flex items-center justify-center rounded-full bg-red-500 p-1 text-xs text-white"
         style={{ width: "30px", height: "30px" }}
       >
         ×
-      </button>
+      </Button>
     </div>
-  ));
+  );
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
@@ -70,8 +69,8 @@ export const DropArea: React.FC<DropAreaProps> = ({ imageUrls, getRootProps, get
         </button>
       </div>
 
-      {files.length > 0 ? (
-        <div className="w-50 mt-4">{previews}</div>
+      {file != undefined ? (
+        preview(file)
       ) : (
         <Image src="/images/noimage.png" alt="No Image Available" className="mb-4" width={400} height={400} />
       )}
