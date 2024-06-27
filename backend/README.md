@@ -104,13 +104,13 @@ curl -X POST -H "Content-Type: application/json" -d '{
 #### 投稿一覧取得
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{}' http://localhost:80/post.v1.PostService/PostList
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{}' https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/PostList
 ```
 
 #### 投稿取得
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{"id": "Object ID"}' http://localhost:80/post.v1.PostService/Post
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアクセストークン" -d '{"id": "Object ID"}' https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/Post
 ```
 
 #### 新規投稿
@@ -118,8 +118,9 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアク
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
         "title": "Team 7 CreatePost Test",
-        "body": "Team 7 CreatePost Test Body"
-}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/CreatePost
+        "body": "Team 7 CreatePost Test Body",
+        "image_url": "https://avatars.githubusercontent.com/u/41140188?v=4"
+}' -H "Authorization: Googleアクセストークン" https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/CreatePost
 ```
 
 #### 投稿更新
@@ -128,15 +129,16 @@ curl -X POST -H "Content-Type: application/json" -d '{
 curl -X POST -H "Content-Type: application/json" -d '{
 	"id": "667a802a6e2d7b033265fb63",
 	"title": "Asuma CreatePost Test222222222222222222222",
-	"body": "Asuma CreatePost Test Body222222222222222222222"
-}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/UpdatePost
+	"body": "Asuma CreatePost Test Body222222222222222222222",
+  "image_url": "https://avatars.githubusercontent.com/u/41140188?v=4"
+}' -H "Authorization: Googleアクセストークン" https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/UpdatePost
 ```
 
 #### 削除更新
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
-        "id": "667a802a6e2d7b033265fb63"}' -H "Authorization: Googleアクセストークン" http://localhost:80/post.v1.PostService/DeletePost
+        "id": "667a802a6e2d7b033265fb63"}' -H "Authorization: Googleアクセストークン" https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/DeletePost
 ```
 
 ## grpcurl
