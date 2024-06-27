@@ -156,7 +156,13 @@ func (*CommentServer) UpdateComment(
 		Filters: []interface{}{bson.M{"elem._id": commentID}},
 	}
 
-	_, err = coll.UpdateOne(context.TODO(), filter, update, &options.UpdateOptions{ArrayFilters: &arrayFilters})
+	_, err = coll.UpdateOne(
+		context.TODO(),
+		filter,
+		update,
+		&options.UpdateOptions{ArrayFilters: &arrayFilters},
+	)
+
 	if err != nil {
 		log.Printf("コメント更新エラー: %v", err)
 		return nil, connect.NewError(connect.CodeInternal, err)
