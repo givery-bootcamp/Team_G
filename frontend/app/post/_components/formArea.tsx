@@ -2,38 +2,22 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuid4 } from "uuid";
+import { postClient } from "@/lib/connect";
 //import { v4 as uuid4 } from "uuid";
 import { Comment } from "@/types";
+import { post } from "@/gen/post-PostService_connectquery";
 
-const FormArea = ({ pageId }: { pageId: string }) => {
-  const clickAction = (formData: FormData) => {
-    const comment: Comment = {
-      id: "1",
-      body: "sample comment",
-      userId: "0",
-      postId: "0",
-      createdAt: new Date(2024, 6, 24),
-      updatedAt: new Date(2024, 6, 24),
-    };
+interface Props {
+  params: {
+    token: string;
+  };
+}
 
-    const text = formData.get("body");
-    const uniqueId = uuid4();
-
-    if (text && text != null) {
-      comment.id = String(uniqueId);
-      comment.body = String(text);
-      comment.postId = pageId;
-      const createdAt = new Date();
-      comment.createdAt = createdAt;
-      comment.updatedAt = createdAt;
-      console.log(uniqueId);
-      console.log(comment.body);
-      console.log(comment.postId);
-      console.log(comment.createdAt);
-      console.log(comment.updatedAt);
-      //need post request
-    } else {
-      console.log("null text");
+const FormArea = ({ postId }: { postId: string }, { params }: Props) => {
+  const clickAction = async (formData: FormData) => {
+    if (formData.get("body")) {
+      const commentBody = String(formData.get("body"));
+      await postNewComment(commentBody, postId);
     }
   };
 
@@ -46,3 +30,23 @@ const FormArea = ({ pageId }: { pageId: string }) => {
 };
 
 export default FormArea;
+
+const postNewComment = async (body: string, postId: string) => {
+  try {
+    const result = await postClient.createComment(
+      {
+        body: body,
+        postId: postId,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+    console.log("result", result);
+  } catch (error) {
+    console.error(error);
+  }
+  console.log({ body, pageId });
+};
