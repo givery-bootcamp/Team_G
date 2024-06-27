@@ -5,15 +5,7 @@ import { redirect } from "next/navigation";
 import BreadCrumb from "../_components/breadCrumb";
 import PostFormArea from "./_components/postFormArea";
 
-interface Props {
-  params: {
-    id: string;
-    title: string;
-    body: string;
-  };
-}
-
-const PostNewPage: NextPage<Props> = async ({ params }) => {
+const PostNewPage: NextPage = async () => {
   const session = await auth();
   if (!session || !session.accessToken) {
     redirect("/api/auth/signin");
@@ -29,29 +21,29 @@ const PostNewPage: NextPage<Props> = async ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page </h1>
       <PostFormArea params={{ token: session.accessToken }} />
 
-      <div className="flex flex-col items-center"></div>
+      <div className="flex flex-col items-center" />
     </main>
   );
 };
 
-const uploadFile = async (prevState: string | null, formData: FormData) => {
-  console.log({ formData });
-  console.log("uploadFile.....");
-  if (!formData.get("file")) {
-    return prevState;
-  }
-  try {
-    const response = await fetch("/api/thumbnail/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await response.json();
-    console.log(data);
+// const uploadFile = async (prevState: string | null, formData: FormData) => {
+//   console.log({ formData });
+//   console.log("uploadFile.....");
+//   if (!formData.get("file")) {
+//     return prevState;
+//   }
+//   try {
+//     const response = await fetch("/api/thumbnail/upload", {
+//       method: "POST",
+//       body: formData,
+//     });
+//     const data = await response.json();
+//     console.log(data);
 
-    return data.imageUrl;
-  } catch (error) {
-    console.error(error);
-  }
-};
+//     return data.imageUrl;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 export default PostNewPage;

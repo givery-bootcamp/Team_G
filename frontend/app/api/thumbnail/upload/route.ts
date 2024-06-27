@@ -14,8 +14,6 @@ export async function POST(request: Request) {
   });
   console.log("request:", request.url);
 
-  const { searchParams } = new URL(request.url);
-
   const formData = await request.formData();
   const file = formData.get("file") as File;
   const fileName = formData.get("filename") as string;

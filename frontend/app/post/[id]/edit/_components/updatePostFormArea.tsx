@@ -18,7 +18,7 @@ interface Props {
 const UpdatePostFormArea = ({ params }: Props) => {
   const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
 
-  let imageUrls: string[] = [];
+  const imageUrls: string[] = [];
   files.map((file) => {
     imageUrls.push(file.preview);
   });
@@ -42,14 +42,14 @@ const UpdatePostFormArea = ({ params }: Props) => {
         value={postTitle}
         onChange={(e) => handleChangeTitle(e.target.value)}
         className="mb-4"
-      ></Input>
+       />
       <Input
         type="body"
         placeholder="テキスト"
         value={postBody}
         onChange={(e) => handleChangeBody(e.target.value)}
         className="mb-4"
-      ></Input>
+       />
       <Button className="w-full" onClick={async () => await postNewPost(params.id, postTitle, postBody, params.token)}>
         更新
       </Button>

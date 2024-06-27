@@ -7,7 +7,10 @@ interface IFileWithPreview extends File {
 interface DropAreaProps {
   imageUrls: string[];
   getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
-  getInputProps: () => {};
+  getInputProps: () => {
+    ref: React.RefObject<HTMLInputElement>;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  };
   setFiles: React.Dispatch<React.SetStateAction<IFileWithPreview[]>>;
 }
 

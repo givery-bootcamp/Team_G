@@ -32,7 +32,7 @@ const PostListPage: NextPage = async () => {
     <main className="mx-auto min-h-screen max-w-xl pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
       <h1 className="mb-2 text-2xl font-bold">投稿一覧</h1>
-      <Link href={`/post/new`} key="new" className="w-full">
+      <Link href="/post/new" key="new" className="w-full">
         <Button className="absolute right-0 top-0 h-12 w-12 bg-white p-2 hover:bg-gray-300">
           <Image src="/images/mode_edit.png" alt="edit pencil" className="" width={400} height={400} />
         </Button>
@@ -45,7 +45,7 @@ const PostListPage: NextPage = async () => {
               <Card className="mx-auto max-w-fit p-3">
                 <Image
                   // src={md.imageUrl.length > 0 ? md.imageUrl : "/images/noimage.png"}
-                  src={"/images/noimage.png"}
+                  src="/images/noimage.png"
                   alt={post.title}
                   width={300}
                   height={300}

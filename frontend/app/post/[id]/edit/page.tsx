@@ -33,7 +33,7 @@ const PostEditPage: NextPage<Props> = async ({ params }) => {
   );
 
   if (!post) return;
-  let imageUrls = [];
+  const imageUrls = [];
   if (post.imageUrl) {
     imageUrls.push(post.imageUrl);
   }
@@ -57,22 +57,22 @@ const PostEditPage: NextPage<Props> = async ({ params }) => {
 };
 
 export default PostEditPage;
-const uploadFile = async (prevState: string | null, formData: FormData) => {
-  console.log({ formData });
-  console.log("uploadFile.....");
-  if (!formData.get("file")) {
-    return prevState;
-  }
-  try {
-    const response = await fetch("/api/thumbnail/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await response.json();
-    console.log(data);
+// const uploadFile = async (prevState: string | null, formData: FormData) => {
+//   console.log({ formData });
+//   console.log("uploadFile.....");
+//   if (!formData.get("file")) {
+//     return prevState;
+//   }
+//   try {
+//     const response = await fetch("/api/thumbnail/upload", {
+//       method: "POST",
+//       body: formData,
+//     });
+//     const data = await response.json();
+//     console.log(data);
 
-    return data.imageUrl;
-  } catch (error) {
-    console.error(error);
-  }
-};
+//     return data.imageUrl;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
