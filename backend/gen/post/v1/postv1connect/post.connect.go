@@ -24,6 +24,8 @@ const _ = connect.IsAtLeastVersion1_13_0
 const (
 	// PostServiceName is the fully-qualified name of the PostService service.
 	PostServiceName = "post.v1.PostService"
+	// CommentServiceName is the fully-qualified name of the CommentService service.
+	CommentServiceName = "post.v1.CommentService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -44,16 +46,25 @@ const (
 	PostServiceUpdatePostProcedure = "/post.v1.PostService/UpdatePost"
 	// PostServiceDeletePostProcedure is the fully-qualified name of the PostService's DeletePost RPC.
 	PostServiceDeletePostProcedure = "/post.v1.PostService/DeletePost"
+	// CommentServiceCreateCommentProcedure is the fully-qualified name of the CommentService's
+	// CreateComment RPC.
+	CommentServiceCreateCommentProcedure = "/post.v1.CommentService/CreateComment"
+	// CommentServiceUpdateCommentProcedure is the fully-qualified name of the CommentService's
+	// UpdateComment RPC.
+	CommentServiceUpdateCommentProcedure = "/post.v1.CommentService/UpdateComment"
 )
 
 // These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
 var (
-	postServiceServiceDescriptor          = v1.File_post_v1_post_proto.Services().ByName("PostService")
-	postServicePostListMethodDescriptor   = postServiceServiceDescriptor.Methods().ByName("PostList")
-	postServicePostMethodDescriptor       = postServiceServiceDescriptor.Methods().ByName("Post")
-	postServiceCreatePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("CreatePost")
-	postServiceUpdatePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("UpdatePost")
-	postServiceDeletePostMethodDescriptor = postServiceServiceDescriptor.Methods().ByName("DeletePost")
+	postServiceServiceDescriptor                = v1.File_post_v1_post_proto.Services().ByName("PostService")
+	postServicePostListMethodDescriptor         = postServiceServiceDescriptor.Methods().ByName("PostList")
+	postServicePostMethodDescriptor             = postServiceServiceDescriptor.Methods().ByName("Post")
+	postServiceCreatePostMethodDescriptor       = postServiceServiceDescriptor.Methods().ByName("CreatePost")
+	postServiceUpdatePostMethodDescriptor       = postServiceServiceDescriptor.Methods().ByName("UpdatePost")
+	postServiceDeletePostMethodDescriptor       = postServiceServiceDescriptor.Methods().ByName("DeletePost")
+	commentServiceServiceDescriptor             = v1.File_post_v1_post_proto.Services().ByName("CommentService")
+	commentServiceCreateCommentMethodDescriptor = commentServiceServiceDescriptor.Methods().ByName("CreateComment")
+	commentServiceUpdateCommentMethodDescriptor = commentServiceServiceDescriptor.Methods().ByName("UpdateComment")
 )
 
 // PostServiceClient is a client for the post.v1.PostService service.
@@ -238,4 +249,102 @@ func (UnimplementedPostServiceHandler) UpdatePost(context.Context, *connect.Requ
 
 func (UnimplementedPostServiceHandler) DeletePost(context.Context, *connect.Request[v1.DeletePostRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.PostService.DeletePost is not implemented"))
+}
+
+// CommentServiceClient is a client for the post.v1.CommentService service.
+type CommentServiceClient interface {
+	// コメント作成API
+	CreateComment(context.Context, *connect.Request[v1.CreateCommentRequest]) (*connect.Response[emptypb.Empty], error)
+	// コメント更新API
+	UpdateComment(context.Context, *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error)
+}
+
+// NewCommentServiceClient constructs a client for the post.v1.CommentService service. By default,
+// it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and
+// sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC()
+// or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewCommentServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) CommentServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	return &commentServiceClient{
+		createComment: connect.NewClient[v1.CreateCommentRequest, emptypb.Empty](
+			httpClient,
+			baseURL+CommentServiceCreateCommentProcedure,
+			connect.WithSchema(commentServiceCreateCommentMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		updateComment: connect.NewClient[v1.UpdateCommentRequest, emptypb.Empty](
+			httpClient,
+			baseURL+CommentServiceUpdateCommentProcedure,
+			connect.WithSchema(commentServiceUpdateCommentMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// commentServiceClient implements CommentServiceClient.
+type commentServiceClient struct {
+	createComment *connect.Client[v1.CreateCommentRequest, emptypb.Empty]
+	updateComment *connect.Client[v1.UpdateCommentRequest, emptypb.Empty]
+}
+
+// CreateComment calls post.v1.CommentService.CreateComment.
+func (c *commentServiceClient) CreateComment(ctx context.Context, req *connect.Request[v1.CreateCommentRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.createComment.CallUnary(ctx, req)
+}
+
+// UpdateComment calls post.v1.CommentService.UpdateComment.
+func (c *commentServiceClient) UpdateComment(ctx context.Context, req *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.updateComment.CallUnary(ctx, req)
+}
+
+// CommentServiceHandler is an implementation of the post.v1.CommentService service.
+type CommentServiceHandler interface {
+	// コメント作成API
+	CreateComment(context.Context, *connect.Request[v1.CreateCommentRequest]) (*connect.Response[emptypb.Empty], error)
+	// コメント更新API
+	UpdateComment(context.Context, *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error)
+}
+
+// NewCommentServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewCommentServiceHandler(svc CommentServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	commentServiceCreateCommentHandler := connect.NewUnaryHandler(
+		CommentServiceCreateCommentProcedure,
+		svc.CreateComment,
+		connect.WithSchema(commentServiceCreateCommentMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	commentServiceUpdateCommentHandler := connect.NewUnaryHandler(
+		CommentServiceUpdateCommentProcedure,
+		svc.UpdateComment,
+		connect.WithSchema(commentServiceUpdateCommentMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/post.v1.CommentService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case CommentServiceCreateCommentProcedure:
+			commentServiceCreateCommentHandler.ServeHTTP(w, r)
+		case CommentServiceUpdateCommentProcedure:
+			commentServiceUpdateCommentHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedCommentServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedCommentServiceHandler struct{}
+
+func (UnimplementedCommentServiceHandler) CreateComment(context.Context, *connect.Request[v1.CreateCommentRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.CommentService.CreateComment is not implemented"))
+}
+
+func (UnimplementedCommentServiceHandler) UpdateComment(context.Context, *connect.Request[v1.UpdateCommentRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("post.v1.CommentService.UpdateComment is not implemented"))
 }

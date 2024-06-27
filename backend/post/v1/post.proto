@@ -28,6 +28,29 @@ service PostService {
   rpc DeletePost(DeletePostRequest) returns (google.protobuf.Empty) {}
 }
 
+// Commentサービスの定義
+service CommentService {
+
+  // コメント作成API
+  rpc CreateComment(CreateCommentRequest) returns (google.protobuf.Empty) {}
+
+  // コメント更新API
+  rpc UpdateComment(UpdateCommentRequest) returns (google.protobuf.Empty) {}
+}
+
+// コメント作成APIのリクエスト
+message CreateCommentRequest {
+  string body = 1;
+  string post_id = 2;
+}
+
+// コメント更新APIのリクエスト
+message UpdateCommentRequest {
+  string body = 1;
+  string post_id = 2;
+  string comment_id = 3;
+}
+
 // Post一覧APIのレスポンス
 message PostListResponse { repeated PostData post = 1; }
 

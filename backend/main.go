@@ -26,7 +26,6 @@ var uri = os.Getenv("MONGODB_URI")
 var client *mongo.Client
 
 func main() {
-
 	//MongoDB接続
 	var err error
 	client, err = infra.NewMongoDB(uri)
@@ -38,21 +37,22 @@ func main() {
 			log.Fatalf("MongoDB切断エラー: %v", err)
 		}
 	}()
-	// PORT環境変数の値を取得
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "80"
-	}
 
-	poster := &service.PostServer{}
+	// muxの生成
 	mux := http.NewServeMux()
-
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Team 7 200 OK"))
 	})
 
+	// Postサービスをmuxに登録
+	poster := &service.PostServer{}
 	path, handler := postv1connect.NewPostServiceHandler(poster)
+	mux.Handle(path, utils.VerifyGoogleOAuthJwtToken(handler))
+
+	// Commentサービスをmuxに登録
+	comment := &service.CommentServer{}
+	path, handler = postv1connect.NewCommentServiceHandler(comment)
 	mux.Handle(path, utils.VerifyGoogleOAuthJwtToken(handler))
 
 	// CORS設定用ミドルウェア
@@ -79,7 +79,13 @@ func main() {
 		})
 	}
 
+	// PORT環境変数の値を取得
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "80"
+	}
 	log.Printf("Server listening on port %s", port)
+
 	err_http := http.ListenAndServe(
 		fmt.Sprintf("0.0.0.0:%s", port),
 		h2c.NewHandler(dbMiddleware(client, corsMiddleware(mux)), &http2.Server{}),
