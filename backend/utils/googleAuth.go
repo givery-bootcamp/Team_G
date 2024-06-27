@@ -13,8 +13,6 @@ import (
 	"google.golang.org/api/option"
 )
 
-var userKey ContextKey = "user"
-
 func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 
 	if os.Getenv("ENV") == "develop" {
@@ -24,7 +22,7 @@ func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 				Id: "507f1f77bcf86cd799439011",
 			}
 
-			r = r.WithContext(context.WithValue(r.Context(), userKey, &mockUser))
+			r = r.WithContext(context.WithValue(r.Context(), UserKey, &mockUser))
 
 			next.ServeHTTP(w, r)
 		})
@@ -57,7 +55,7 @@ func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 		}
 
 		// ユーザー情報をリクエストに添付
-		r = r.WithContext(context.WithValue(r.Context(), userKey, u))
+		r = r.WithContext(context.WithValue(r.Context(), UserKey, u))
 
 		next.ServeHTTP(w, r)
 	})

@@ -8,7 +8,7 @@ remove:
 	docker compose down --volumes
 
 check:
-	curl -X POST -H "Content-Type: application/json" -d '{}' http://localhost:80/post.v1.PostService/PostList
+	curl -X POST -H "Content-Type: application/json" -d '{}' http://localhost:80/post.v1.PostService/PostList | jq
 
 backend_test:
 	cd backend && go vet ./... && go test ./...

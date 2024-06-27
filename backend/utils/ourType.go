@@ -1,3 +1,8 @@
 package utils
 
-type ContextKey string
+type contextKey string
+
+const (
+	UserKey   contextKey = "user"
+	ClientKey            = "client"
+)

@@ -2,6 +2,7 @@ package service
 
 import (
 	"backend/domain"
+	"backend/utils"
 	"context"
 	"log"
 
@@ -23,7 +24,7 @@ func (s *CommentServer) CreateComment(
 	ctx context.Context,
 	req *connect.Request[postv1.CreateCommentRequest],
 ) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
 		log.Println("client取得エラー")
 		return nil, connect.NewError(connect.CodeInternal, nil)
@@ -52,7 +53,7 @@ func (s *CommentServer) CreateComment(
 	}
 
 	// userIDを取得
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	user, ok := ctx.Value(utils.UserKey).(*oauth2.Userinfoplus)
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
@@ -89,7 +90,7 @@ func (*CommentServer) UpdateComment(
 	ctx context.Context,
 	req *connect.Request[postv1.UpdateCommentRequest],
 ) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
 		log.Println("client取得エラー")
 		return nil, connect.NewError(connect.CodeInternal, nil)
@@ -118,7 +119,7 @@ func (*CommentServer) UpdateComment(
 	}
 
 	// userIDを取得
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	user, ok := ctx.Value(utils.UserKey).(*oauth2.Userinfoplus)
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
@@ -183,7 +184,7 @@ func (s *CommentServer) DeleteComment(
 	ctx context.Context,
 	req *connect.Request[postv1.DeleteCommentRequest],
 ) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
 		log.Println("client取得エラー")
 		return nil, connect.NewError(connect.CodeInternal, nil)
@@ -212,7 +213,7 @@ func (s *CommentServer) DeleteComment(
 	}
 
 	// userIDを取得
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	user, ok := ctx.Value(utils.UserKey).(*oauth2.Userinfoplus)
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
@@ -228,9 +229,11 @@ func (s *CommentServer) DeleteComment(
 
 	// CommentIDを用いて、Commentを取得
 	var comment domain.Comment
-	for _, c := range result.Comments {
+	var count int
+	for i, c := range result.Comments {
 		if c.Id == commentID {
 			comment = c
+			count = i
 			break
 		}
 	}
@@ -247,15 +250,17 @@ func (s *CommentServer) DeleteComment(
 		return nil, connect.NewError(connect.CodePermissionDenied, err)
 	}
 
-	arrayFilters := options.ArrayFilters{
-		Filters: []interface{}{bson.M{"elem._id": commentID}},
+	// TODO: Transaction
+	// 対象のコメント削除
+	result.Comments = append(result.Comments[:count], result.Comments[count+1:]...)
+
+	update := bson.M{
+		"$set": bson.M{
+			"comments": result.Comments,
+		},
 	}
 
-	_, err = coll.DeleteOne(
-		context.TODO(),
-		filter,
-		&options.DeleteOptions{ArrayFilters: &arrayFilters},
-	)
+	_, err = coll.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		log.Printf("コメント削除エラー: %v", err)
 		return nil, connect.NewError(connect.CodeInternal, err)
