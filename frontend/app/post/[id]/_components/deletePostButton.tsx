@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { postClient } from "@/lib/connect";
 import { Trash2 } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Props {
   params: {
@@ -12,10 +12,11 @@ interface Props {
 }
 
 const DeletePostButton = ({ params }: Props) => {
+  const router = useRouter();
   const handleClick = async () => {
     alert("削除しますか？");
     try {
-      const result = await postClient.deletePost(
+      await postClient.deletePost(
         {
           id: params.id,
         },
@@ -25,9 +26,7 @@ const DeletePostButton = ({ params }: Props) => {
           },
         },
       );
-      if (result) {
-        redirect("/post");
-      }
+      router.push("/post");
     } catch (e) {
       console.error(e);
     }

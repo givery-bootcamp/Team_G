@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { postClient } from "@/lib/connect";
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DropArea } from "../../[id]/edit/_components/fileDropArea";
 import useFileDrop from "../../[id]/edit/_hooks/useFileDrop";
@@ -14,6 +16,7 @@ interface Props {
 
 const PostFormArea = ({ params }: Props) => {
   const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
+  const router = useRouter();
 
   const imageUrls: string[] = [];
   files.map((file) => {
@@ -27,6 +30,27 @@ const PostFormArea = ({ params }: Props) => {
   const handleChangeBody = (value: string) => {
     setPostBody(value);
   };
+  const postNewPost = async (title: string, body: string, token: string) => {
+    try {
+      const result = await postClient.createPost(
+        {
+          title: title,
+          body: body,
+          imageUrl: "https://example.com",
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      console.log("createPOst!!!!!!!");
+      // revalidatePath("/post");
+      router.push("/post");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -39,39 +63,18 @@ const PostFormArea = ({ params }: Props) => {
         value={postTitle}
         onChange={(e) => handleChangeTitle(e.target.value)}
         className="mb-4"
-       />
+      />
       <Input
         type="body"
         placeholder="テキスト"
         value={postBody}
         onChange={(e) => handleChangeBody(e.target.value)}
         className="mb-4"
-       />
+      />
       <Button className="w-full" onClick={async () => await postNewPost(postTitle, postBody, params.token)}>
-        更新
+        作成する
       </Button>
     </div>
   );
 };
 export default PostFormArea;
-const postNewPost = async (title: string, body: string, token: string) => {
-  try {
-    const result = await postClient.createPost(
-      {
-        title: title,
-        body: body,
-        imageUrl: "https://example.com",
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      },
-    );
-    console.log("result", result);
-  } catch (error) {
-    console.error(error);
-  }
-
-  console.log({ title, body });
-};

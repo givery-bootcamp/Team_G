@@ -47,11 +47,13 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
       <div className="relative flex flex-col items-center">
         <div>
-          <Link href={`/post/${id}/edit`} key={id} className="w-full">
-            <Button className=" bg-white p-2 hover:bg-gray-300">
-              <Pencil color="grey" />
-            </Button>
-          </Link>
+          {post.userId === session.id && (
+            <Link href={`/post/${id}/edit`} key={id} className="w-full">
+              <Button className=" bg-white p-2 hover:bg-gray-300">
+                <Pencil color="grey" />
+              </Button>
+            </Link>
+          )}
 
           {post.userId === session.id && <DeletePostButton params={{ id, token: session.accessToken }} />}
         </div>
