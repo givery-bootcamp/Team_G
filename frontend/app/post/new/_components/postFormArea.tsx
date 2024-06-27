@@ -45,6 +45,7 @@ const PostFormArea = ({ params }: Props) => {
         },
       );
       console.log("createPOst!!!!!!!");
+      console.log(result);
       // revalidatePath("/post");
       router.push("/post");
     } catch (error) {
@@ -75,6 +76,15 @@ const PostFormArea = ({ params }: Props) => {
         onClick={async () => {
           const imageUrl = file ? process.env.NEXT_PUBLIC_S3_BUCKET_PATH + file.name : "";
           console.log("imageUrl", imageUrl);
+
+          if (file) {
+            var formData = new FormData();
+
+            formData.append("file", file, file.name);
+            formData.append("filename", file.name);
+            await uploadFile(imageUrl, formData);
+          }
+
           await postNewPost(postTitle, postBody, imageUrl, params.token);
         }}
       >
@@ -84,3 +94,23 @@ const PostFormArea = ({ params }: Props) => {
   );
 };
 export default PostFormArea;
+
+const uploadFile = async (prevState: string | null, formData: FormData) => {
+  console.log({ formData });
+  console.log("uploadFile.....");
+  if (!formData.get("file")) {
+    return prevState;
+  }
+  try {
+    const response = await fetch("/api/thumbnail/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    console.log(data);
+
+    return data.imageUrl;
+  } catch (error) {
+    console.error(error);
+  }
+};
