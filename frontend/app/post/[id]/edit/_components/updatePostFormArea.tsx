@@ -3,27 +3,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { postClient } from "@/lib/connect";
 import { useState } from "react";
-import { DropArea } from "../../[id]/edit/_components/fileDropArea";
-import useFileDrop from "../../[id]/edit/_hooks/useFileDrop";
+import useFileDrop from "../_hooks/useFileDrop";
+import { DropArea } from "./fileDropArea";
 
 interface Props {
   params: {
+    id: string;
+    title: string;
+    body: string;
     token: string;
   };
 }
 
-const PostFormArea = ({ params }: Props) => {
+const UpdatePostFormArea = ({ params }: Props) => {
   const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
 
   let imageUrls: string[] = [];
   files.map((file) => {
     imageUrls.push(file.preview);
   });
-  const [postTitle, setPostTitle] = useState("");
+  const [postTitle, setPostTitle] = useState(params.title);
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
   };
-  const [postBody, setPostBody] = useState("");
+  const [postBody, setPostBody] = useState(params.body);
   const handleChangeBody = (value: string) => {
     setPostBody(value);
   };
@@ -47,17 +50,18 @@ const PostFormArea = ({ params }: Props) => {
         onChange={(e) => handleChangeBody(e.target.value)}
         className="mb-4"
       ></Input>
-      <Button className="w-full" onClick={async () => await postNewPost(postTitle, postBody, params.token)}>
+      <Button className="w-full" onClick={async () => await postNewPost(params.id, postTitle, postBody, params.token)}>
         更新
       </Button>
     </div>
   );
 };
-export default PostFormArea;
-const postNewPost = async (title: string, body: string, token: string) => {
+export default UpdatePostFormArea;
+const postNewPost = async (id: string, title: string, body: string, token: string) => {
   try {
-    const result = await postClient.createPost(
+    const result = await postClient.updatePost(
       {
+        id: id,
         title: title,
         body: body,
         imageUrl: "https://example.com",

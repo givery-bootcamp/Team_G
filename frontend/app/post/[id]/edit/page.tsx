@@ -1,16 +1,12 @@
-"use client";
 // import { postClient } from "@/lib/connect";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { mockData } from "@/constants/mock";
 
 import { NextPage } from "next";
-import Link from "next/link";
-import { useState } from "react";
 import BreadCrumb from "../../_components/breadCrumb";
 
-import { DropArea } from "./_components/fileDropArea";
-import useFileDrop from "./_hooks/useFileDrop";
+import { auth } from "@/auth";
+import { postClient } from "@/lib/connect";
+import { redirect } from "next/navigation";
+import UpdatePostFormArea from "./_components/updatePostFormArea";
 
 interface Props {
   params: {
@@ -20,71 +16,41 @@ interface Props {
   };
 }
 
-const PostEditPage: NextPage<Props> = ({ params }) => {
-  const { id, title, body } = params;
-  const { files, getRootProps, getInputProps, setFiles } = useFileDrop();
-  const post = mockData.find((md) => md.id === Number(id));
+const PostEditPage: NextPage<Props> = async ({ params }) => {
+  const session = await auth();
+  if (!session || !session.accessToken) {
+    redirect("/api/auth/signin");
+  }
+  const id = params.id;
+
+  const { post } = await postClient.post(
+    { id },
+    {
+      headers: {
+        Authorization: session.accessToken,
+      },
+    },
+  );
+
   if (!post) return;
   let imageUrls = [];
   if (post.imageUrl) {
     imageUrls.push(post.imageUrl);
   }
-  files.map((file) => {
-    imageUrls.push(file.preview);
-  });
-
-  const [postTitle, setPostTitle] = useState(post?.title);
-  const handleChangeTitle = (value: string) => {
-    setPostTitle(value);
-  };
-  const [postBody, setPostBody] = useState(post?.body);
-  const handleChangeBody = (value: string) => {
-    setPostBody(value);
-  };
 
   const breadcrumbItems = [
     { name: "Home", href: "/" },
     { name: "投稿一覧", href: "/post" },
-    { name: `${post.title}`, href: `/post/${id}` },
+    { name: `${post.title}`, href: `/post/${post.id}` },
   ];
 
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
-      <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
+      <h1 className="mb-4 text-2xl font-bold">Post Detail Page {post.id}</h1>
 
       <div className="flex flex-col items-center">
-        <DropArea imageUrls={imageUrls} getRootProps={getRootProps} getInputProps={getInputProps} setFiles={setFiles} />
-        <div>アップロードされたファイル数: {files.length}</div>
-        <div>アップロードされたファイル: {files.map((file) => file.name).join(", ")}</div>
-        <Input
-          type="title"
-          placeholder="タイトル"
-          value={postTitle}
-          onChange={(e) => handleChangeTitle(e.target.value)}
-          className="mb-4"
-        ></Input>
-        <Input
-          type="body"
-          placeholder="テキスト"
-          value={postBody}
-          onChange={(e) => handleChangeBody(e.target.value)}
-          className="mb-4"
-        ></Input>
-        <Link href={`/post/${id}`}>
-          <Button
-            className="w-full"
-            onClick={async () => {
-              var formData = new FormData();
-              formData.append("file", files[0], files[0].name);
-              formData.append("filename", files[0].name);
-              uploadFile(null, formData);
-              //TODO:UPDATEのAPIを叩く
-            }}
-          >
-            更新
-          </Button>
-        </Link>
+        <UpdatePostFormArea params={{ id: post.id, title: post.title, body: post.body, token: session.accessToken }} />
       </div>
     </main>
   );
