@@ -1,0 +1,69 @@
+title: check /message
+steps:
+- title: CreatePost
+  protocol: http
+  request:
+    method: POST
+    url: http://localhost:80/post.v1.PostService/CreatePost
+    header:
+      Content-Type: application/json
+    body:
+      title: "Team 7 CreatePost Test"
+      body: "Team 7 CreatePost Test Body"
+      image_url: "https://avatars.githubusercontent.com/u/45951565?v=4"
+  expect:
+    code: 200
+
+- title: PostList
+  protocol: http
+  request:
+    method: POST
+    url: http://localhost:80/post.v1.PostService/PostList
+    header:
+      Content-Type: application/json
+    body: {}
+  expect:
+    code: 200
+  bind:
+    vars:
+      ObjectId: '{{respose.body["post"][0].id}}'
+
+- title: Post
+  protocol: http
+  request:
+    method: POST
+    url: http://localhost:80/post.v1.PostService/Post
+    header:
+      Content-Type: application/json
+    body:
+      id: '{{vars.ObjectId}}'
+  expect:
+    code: 200
+
+- title: Updatepost
+  protocol: http
+  request:
+    method: POST
+    url: http://localhost:80/post.v1.PostService/UpdatePost
+    header:
+      Content-Type: application/json
+    body:
+      id: "667a802a6e2d7b033265fb63"
+      title: "Asuma CreatePost Test222222222222222222222"
+      body: "Asuma CreatePost Test Body222222222222222222222"
+      image_url: "https://avatars.githubusercontent.com/u/41140188?v=4"
+  expect:
+    code: 200
+    body: {}
+
+- title: DeletePost
+  protocol: http
+  request:
+    method: POST
+    url: http://localhost:80/post.v1.PostService/DeletePost
+    header:
+      Content-Type: application/json
+    body:
+      id: "667a802a6e2d7b033265fb63"
+  expect:
+    code: 200
