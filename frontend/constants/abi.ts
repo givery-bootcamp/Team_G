@@ -1,65 +1,22 @@
 export const abi = [
   {
     type: "function",
-    name: "addCandidate",
-    inputs: [{ name: "name", type: "string", internalType: "string" }],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
     name: "candidates",
-    inputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-    outputs: [
-      { name: "id", type: "uint256", internalType: "uint256" },
-      { name: "name", type: "string", internalType: "string" },
-      { name: "voteCount", type: "uint256", internalType: "uint256" },
-    ],
+    inputs: [{ name: "", type: "string", internalType: "string" }],
+    outputs: [{ name: "voteCount", type: "uint256", internalType: "uint256" }],
     stateMutability: "view",
   },
   {
     type: "function",
-    name: "candidatesCount",
-    inputs: [],
+    name: "getVoteCount",
+    inputs: [{ name: "candidateId", type: "string", internalType: "string" }],
     outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
     stateMutability: "view",
   },
   {
     type: "function",
-    name: "getAllCandidates",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "tuple[]",
-        internalType: "struct Voting.Candidate[]",
-        components: [
-          { name: "id", type: "uint256", internalType: "uint256" },
-          { name: "name", type: "string", internalType: "string" },
-          {
-            name: "voteCount",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "getCandidate",
-    inputs: [{ name: "candidateId", type: "uint256", internalType: "uint256" }],
-    outputs: [
-      { name: "name", type: "string", internalType: "string" },
-      { name: "voteCount", type: "uint256", internalType: "uint256" },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "vote",
-    inputs: [{ name: "candidateId", type: "uint256", internalType: "uint256" }],
+    inputs: [{ name: "candidateId", type: "string", internalType: "string" }],
     outputs: [],
     stateMutability: "nonpayable",
   },
@@ -76,9 +33,9 @@ export const abi = [
     inputs: [
       {
         name: "candidateId",
-        type: "uint256",
+        type: "string",
         indexed: true,
-        internalType: "uint256",
+        internalType: "string",
       },
       {
         name: "voter",

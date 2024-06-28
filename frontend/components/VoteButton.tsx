@@ -1,26 +1,28 @@
 "use client";
 
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { abi } from "@/constants/abi";
-import { Spinner } from "./Spinner";
+import { Spinner } from "@/components/Spinner";
+import { toast } from "sonner";
 
-const VoteButton = () => {
+const VoteButton = ({ postId }: { postId: string }) => {
   const { address } = useAccount();
   const { data: hash, writeContract } = useWriteContract();
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({
     hash,
   });
 
-  if (!address) return <ConnectButton />;
-
   const handleVote = () => {
+    if (!address) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     writeContract({
-      address: "0x7fCA9B5D1CFB005056029B05010bF25D265B16F2",
+      address: "0x2f3169fC572Df5eD5662AeC37d45aC17Cc30072F",
       abi,
       functionName: "vote",
-      args: [BigInt(1)],
+      args: [postId],
     });
   };
 
