@@ -163,6 +163,8 @@ func (s *PostServer) PostList(
 	return res, nil
 }
 
+// ------------------------------ Update ------------------------------
+
 func (s *PostServer) UpdatePost(
 	ctx context.Context,
 	req *connect.Request[postv1.UpdatePostRequest],
@@ -204,8 +206,8 @@ func (s *PostServer) UpdatePost(
 	}
 
 	// リクエストの値が空の場合
-	if req.Msg.Title == "" || req.Msg.Body == "" || req.Msg.ImageUrl == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("タイトルまたは本文またはイメージURLが空です"))
+	if req.Msg.Title == "" || req.Msg.Body == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("タイトルまたは本文が空です"))
 	}
 
 	update := bson.M{
