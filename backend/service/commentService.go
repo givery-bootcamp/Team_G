@@ -62,9 +62,10 @@ func (s *CommentServer) CreateComment(
 	update := bson.M{
 		"$push": bson.M{
 			"comments": domain.Comment{
-				Id:     primitive.NewObjectID(),
-				UserId: userID,
-				Body:   req.Msg.Body,
+				Id:       primitive.NewObjectID(),
+				UserId:   userID,
+				UserName: user.Name,
+				Body:     req.Msg.Body,
 				CreatedAt: domain.Timestamp{
 					Seconds: timestamppb.Now().GetSeconds(),
 					Nanos:   timestamppb.Now().GetNanos(),
