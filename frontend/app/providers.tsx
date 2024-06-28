@@ -8,6 +8,10 @@ import { TransportProvider } from "@connectrpc/connect-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { PropsWithChildren, useState } from "react";
+import "@rainbow-me/rainbowkit/styles.css";
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
+import { WagmiProvider } from "wagmi";
+import { config } from "@/lib/wagmi";
 
 const queryClient = new QueryClient();
 
@@ -20,18 +24,30 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
   useKonamiCommand(onCommandFired);
 
   return (
-    <SessionProvider>
-      <TransportProvider transport={finalTransport}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className="h-screen !max-w-none bg-black">
-              <CommandEffect />
-            </DialogContent>
-          </Dialog>
-        </QueryClientProvider>
-      </TransportProvider>
-    </SessionProvider>
+    <WagmiProvider config={config}>
+      <SessionProvider>
+        <TransportProvider transport={finalTransport}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider
+              theme={lightTheme({
+                accentColor: "#0f172a",
+                accentColorForeground: "white",
+                borderRadius: "medium",
+                fontStack: "system",
+                overlayBlur: "small",
+              })}
+            >
+              {children}
+              <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogContent className="h-screen !max-w-none bg-black">
+                  <CommandEffect />
+                </DialogContent>
+              </Dialog>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </TransportProvider>
+      </SessionProvider>
+    </WagmiProvider>
   );
 };
 export default Providers;

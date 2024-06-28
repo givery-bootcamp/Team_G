@@ -1,5 +1,7 @@
 import { APP_NAME } from "@/constants";
 import Link from "next/link";
+// import VoteButton from "./VoteButton";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Header = () => {
   return (
@@ -9,6 +11,7 @@ const Header = () => {
           {APP_NAME}
         </Link>
         <div className="flex items-center space-x-4">
+        <ConnectButton />
           <Link href="/post" className="text-sm text-gray-800">
             投稿一覧
           </Link>
