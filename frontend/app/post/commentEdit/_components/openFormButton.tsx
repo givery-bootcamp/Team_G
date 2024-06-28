@@ -4,15 +4,15 @@ import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 
 interface Props {
-  body: string;
-  postId: string;
-  commentId: string;
-  token: string;
+  handler: () => void;
 }
 
-const UpdateFormButton = ({ body, postId, commentId, token }: Props) => {
+const OpenFormButton = ({ handler }: Props) => {
+  const onClick = () => {
+    handler();
+  };
   return (
-    <Button className="bg-white">
+    <Button className="bg-white" onClick={onClick}>
       <Image src="/images/mode_edit.png" alt="delete_icon" width={15} height={15} />
     </Button>
     // <form className="flex flex-col items-center space-y-2">
@@ -22,4 +22,4 @@ const UpdateFormButton = ({ body, postId, commentId, token }: Props) => {
   );
 };
 
-export default UpdateFormButton;
+export default OpenFormButton;
