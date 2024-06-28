@@ -1,24 +1,23 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { v4 as uuid4 } from "uuid";
-import { commentClient, postClient } from "@/lib/connect";
-//import { v4 as uuid4 } from "uuid";
-import { Comment } from "@/types";
-import { post } from "@/gen/post-PostService_connectquery";
+import { commentClient } from "@/lib/connect";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  params: {
-    token: string;
-  };
+  token: string;
+  postId: string;
 }
 
-const FormArea = ({ postId }: { postId: string }, { params }: Props) => {
+const FormArea = ({ token, postId }: Props) => {
+  const router = useRouter();
   const clickAction = async (formData: FormData) => {
+    console.log("click");
     if (formData.get("body")) {
       const commentBody = String(formData.get("body"));
       //console.log(commentBody);
-      await postNewComment(commentBody, postId, params.token);
+      await postNewComment(commentBody, postId, token);
+      router.refresh();
     }
   };
 
@@ -49,5 +48,5 @@ const postNewComment = async (body: string, postId: string, token: string) => {
   } catch (error) {
     console.error(error);
   }
-  console.log({ body, postId });
+  //console.log({ body, postId });
 };
