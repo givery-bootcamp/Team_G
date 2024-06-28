@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { postClient } from "@/lib/connect";
 import { Pencil } from "lucide-react";
 import { NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import BreadCrumb from "../_components/breadCrumb";
 import CommentList from "../_components/commentList";
 import FormArea from "../_components/formArea";
 import DeletePostButton from "./_components/deletePostButton";
+import PostImage from "./edit/_components/postIcon";
 
 interface Props {
   params: {
@@ -57,7 +57,7 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
 
           {post.userId === session.id && <DeletePostButton params={{ id, token: session.accessToken }} />}
         </div>
-        <Image src={post.imageUrl || "/images/noimage.png"} alt={post.title} width={400} height={400} />{" "}
+        <PostImage post={post} />
         <h2 className="text-xl font-semibold">{post.title}</h2>
         <p className="text-md mt-2">{post.body}</p>
       </div>

@@ -4,9 +4,9 @@ import { Card } from "@/components/ui/card";
 import { postClient } from "@/lib/connect";
 import { Plus } from "lucide-react";
 import { NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import PostImage from "./[id]/edit/_components/postIcon";
 import BreadCrumb from "./_components/breadCrumb";
 
 const PostListPage: NextPage = async () => {
@@ -48,7 +48,7 @@ const PostListPage: NextPage = async () => {
           return (
             <Link href={`/post/${post.id}`} key={post.id} className="w-full text-center">
               <Card className="mx-auto max-w-fit p-3">
-                <Image src={post.imageUrl || "/images/noimage.png"} alt={post.title} width={300} height={300} />
+                <PostImage post={post} />
                 <p className="text-xl font-bold">{post.title}</p>
                 <p className="text-sm">{post.body}</p>
                 <div className="text-xs">{post.createdAt?.toDate().toLocaleDateString()}</div>
