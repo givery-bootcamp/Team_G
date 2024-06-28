@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PostData } from "@/gen/post_pb";
 import { postClient } from "@/lib/connect";
-import { IFileWithPreview } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -25,9 +24,10 @@ const UpdatePostFormArea = ({ params }: Props) => {
   const [postBody, setPostBody] = useState(post.body);
 
   useEffect(() => {
-    if (post.imageUrl) {
-      const newFile = new File([new Blob()], post.imageUrl) as IFileWithPreview;
-      newFile.preview = post.imageUrl;
+    if (post.imageUrl !== "") {
+      const newFile = Object.assign(new File([""], post.imageUrl), {
+        preview: post.imageUrl,
+      });
       setFile(newFile);
     }
   }, [post.imageUrl, setFile]);
@@ -69,7 +69,7 @@ const UpdatePostFormArea = ({ params }: Props) => {
 
   return (
     <div>
-      <DropArea imageUrl={post.imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
+      <DropArea file={file} getRootProps={getRootProps} getInputProps={getInputProps} setFile={setFile} />
       <div>アップロードされたファイル: {file?.name}</div>
       <Input
         type="title"

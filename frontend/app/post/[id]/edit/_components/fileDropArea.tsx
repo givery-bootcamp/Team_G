@@ -1,39 +1,32 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 interface IFileWithPreview extends File {
   preview: string;
 }
 
 interface DropAreaProps {
-  imageUrl: string;
+  file: IFileWithPreview | undefined;
   getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
   getInputProps: () => {
     ref: React.RefObject<HTMLInputElement>;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // ここに onChange を追加
   };
+  setFile: (file: IFileWithPreview | undefined) => void;
 }
 
-export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, getRootProps, getInputProps }) => {
+export const DropArea: React.FC<DropAreaProps> = ({ file, getRootProps, getInputProps, setFile }) => {
   const inputRef = useRef(null);
-  const [file, setFile] = useState<IFileWithPreview | null>(null);
 
   const removeFile = (fileToRemove: IFileWithPreview) => {
-    setFile(null);
+    setFile(undefined);
     URL.revokeObjectURL(fileToRemove.preview);
   };
 
-  useEffect(() => {
-    if (imageUrl === "") return;
-    const newFile = Object.assign(new File([""], imageUrl), {
-      preview: imageUrl,
-    });
-    setFile(newFile);
-  }, [imageUrl]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
+
     if (selectedFile) {
       const fileWithPreview = Object.assign(selectedFile, {
         preview: URL.createObjectURL(selectedFile),
@@ -70,7 +63,7 @@ export const DropArea: React.FC<DropAreaProps> = ({ imageUrl, getRootProps, getI
         {...getRootProps()}
         className="border-coral-400 w-50 h-38 mb-4 cursor-pointer items-center justify-center border p-4 text-center"
       >
-        <input {...getInputProps()} ref={inputRef} onChange={handleFileChange} />
+        <input {...getInputProps()} ref={inputRef} onChange={handleFileChange} /> {/* onChange を追加 */}
         <p>ここにファイルをドラッグ&ドロップ</p>
         <p className="p-2">または</p>
         <button

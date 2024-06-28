@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { postClient } from "@/lib/connect";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DropArea } from "../../[id]/edit/_components/fileDropArea";
 import useFileDrop from "../../[id]/edit/_hooks/useFileDrop";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const PostFormArea = ({ params }: Props) => {
-  const { file, getRootProps, getInputProps } = useFileDrop();
+  const { file, getRootProps, getInputProps, setFile } = useFileDrop();
   const router = useRouter();
 
   let imageUrl = "";
@@ -58,7 +58,7 @@ const PostFormArea = ({ params }: Props) => {
 
   return (
     <div>
-      <DropArea imageUrl={imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
+      <DropArea file={file} getRootProps={getRootProps} getInputProps={getInputProps} setFile={setFile} />
       <div>アップロードされたファイル: {file?.name}</div>
       <Input
         type="title"
