@@ -26,9 +26,10 @@ const CommentList = ({ commentList, postId, token }: Props) => {
     setComment(value);
   };
   return (
+
       {commentList.map((comment) => {
         return(
-        <CommentCard commentId={comment.id} commentBody={comment.body} postId={postId} token={token}></>
+        <CommentCard commentId={comment.id} commentBody={comment.body} postId={postId} token={token}/>
         );
       })};
   );
