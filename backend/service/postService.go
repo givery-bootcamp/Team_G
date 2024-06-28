@@ -71,8 +71,6 @@ func (s *PostServer) CreatePost(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	time.Sleep(10 * time.Second)
-
 	err = session.CommitTransaction(context.TODO())
 	if err != nil {
 		log.Printf("トランザクションコミットエラー: %v", err)
@@ -194,6 +192,14 @@ func (s *PostServer) UpdatePost(
 		return nil, connect.NewError(connect.CodeInternal, nil)
 	}
 
+	// transaction
+	session, err := client.StartSession()
+	if err != nil {
+		log.Printf("セッション開始エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer session.EndSession(context.TODO())
+
 	coll := client.Database("SNS").Collection("Post")
 
 	idStr := req.Msg.Id
@@ -201,6 +207,12 @@ func (s *PostServer) UpdatePost(
 	if err != nil {
 		log.Printf("ID変換エラー: %v", err)
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	err = session.StartTransaction()
+	if err != nil {
+		log.Printf("トランザクション開始エラー: %v", err)
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	filter := bson.M{"_id": id}
@@ -241,6 +253,16 @@ func (s *PostServer) UpdatePost(
 	_, err = coll.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		log.Printf("ドキュメント更新エラー: %v", err)
+		// ミスらないでください
+		_ = session.AbortTransaction(context.TODO())
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	time.Sleep(100 * time.Second)
+
+	err = session.CommitTransaction(context.TODO())
+	if err != nil {
+		log.Printf("トランザクションコミットエラー: %v", err)
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
