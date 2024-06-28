@@ -94,8 +94,6 @@ func (s *PostServer) Post(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	fmt.Println(result)
-
 	comments := []*postv1.Comment{}
 	for _, comment := range result.Comments {
 		comments = append(comments, &postv1.Comment{
