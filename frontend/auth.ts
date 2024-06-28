@@ -5,8 +5,6 @@ import Google from "next-auth/providers/google";
 
 import type { JWT } from "next-auth/jwt";
 
-console.log(process.env.AUTH_SECRET);
-
 declare module "next-auth/jwt" {
   interface JWT {
     id_token?: string;
