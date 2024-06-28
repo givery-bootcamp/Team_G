@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { v4 as uuid4 } from "uuid";
-import { postClient } from "@/lib/connect";
+import { commentClient, postClient } from "@/lib/connect";
 //import { v4 as uuid4 } from "uuid";
 import { Comment } from "@/types";
 import { post } from "@/gen/post-PostService_connectquery";
@@ -17,7 +17,8 @@ const FormArea = ({ postId }: { postId: string }, { params }: Props) => {
   const clickAction = async (formData: FormData) => {
     if (formData.get("body")) {
       const commentBody = String(formData.get("body"));
-      await postNewComment(commentBody, postId);
+      //console.log(commentBody);
+      await postNewComment(commentBody, postId, params.token);
     }
   };
 
@@ -31,9 +32,9 @@ const FormArea = ({ postId }: { postId: string }, { params }: Props) => {
 
 export default FormArea;
 
-const postNewComment = async (body: string, postId: string) => {
+const postNewComment = async (body: string, postId: string, token: string) => {
   try {
-    const result = await postClient.createComment(
+    const result = await commentClient.createComment(
       {
         body: body,
         postId: postId,
@@ -48,5 +49,5 @@ const postNewComment = async (body: string, postId: string) => {
   } catch (error) {
     console.error(error);
   }
-  console.log({ body, pageId });
+  console.log({ body, postId });
 };
