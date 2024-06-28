@@ -17,8 +17,8 @@ interface Props {
 }
 
 const UpdatePostFormArea = ({ params }: Props) => {
-  const { file, getRootProps, getInputProps, setFile } = useFileDrop();
-  var post = params.post;
+  const { file, getRootProps, getInputProps } = useFileDrop();
+  const post = params.post;
   const router = useRouter();
 
   let imageUrl = post.imageUrl;
@@ -36,7 +36,7 @@ const UpdatePostFormArea = ({ params }: Props) => {
   };
   const updatePost = async (id: string, title: string, body: string, imageUrl: string, token: string) => {
     try {
-      const result = await postClient.updatePost(
+      await postClient.updatePost(
         {
           id: id,
           title: title,
@@ -80,7 +80,7 @@ const UpdatePostFormArea = ({ params }: Props) => {
       <Button
         className="w-full"
         onClick={async () => {
-          var formData = new FormData();
+          const formData = new FormData();
           if (file) {
             formData.append("file", file, file.name);
             formData.append("filename", file.name);

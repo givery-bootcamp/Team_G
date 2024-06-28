@@ -15,7 +15,7 @@ interface Props {
 }
 
 const PostFormArea = ({ params }: Props) => {
-  const { file, getRootProps, getInputProps, setFile } = useFileDrop();
+  const { file, getRootProps, getInputProps } = useFileDrop();
   const router = useRouter();
 
   let imageUrl = "";
@@ -32,7 +32,7 @@ const PostFormArea = ({ params }: Props) => {
   };
   const postNewPost = async (title: string, body: string, imageUrl: string, token: string) => {
     try {
-      const result = await postClient.createPost(
+      await postClient.createPost(
         {
           title: title,
           body: body,
@@ -77,7 +77,7 @@ const PostFormArea = ({ params }: Props) => {
           console.log("imageUrl", imageUrl);
 
           if (file) {
-            var formData = new FormData();
+            const formData = new FormData();
 
             formData.append("file", file, file.name);
             formData.append("filename", file.name);
