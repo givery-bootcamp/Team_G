@@ -25,25 +25,4 @@ const PostNewPage: NextPage = async () => {
     </main>
   );
 };
-
-// const uploadFile = async (prevState: string | null, formData: FormData) => {
-//   console.log({ formData });
-//   console.log("uploadFile.....");
-//   if (!formData.get("file")) {
-//     return prevState;
-//   }
-//   try {
-//     const response = await fetch("/api/thumbnail/upload", {
-//       method: "POST",
-//       body: formData,
-//     });
-//     const data = await response.json();
-//     console.log(data);
-
-//     return data.imageUrl;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 export default PostNewPage;

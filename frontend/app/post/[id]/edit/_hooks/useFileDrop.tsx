@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const useFileDrop = () => {
-  const [files, setFiles] = useState<IFileWithPreview[]>([]);
+  const [file, setFile] = useState<IFileWithPreview>();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const mappedFiles = acceptedFiles.map((file) =>
@@ -11,12 +11,12 @@ const useFileDrop = () => {
         preview: URL.createObjectURL(file),
       }),
     );
-    setFiles((currentFiles) => [...currentFiles, ...mappedFiles]);
+    setFile(mappedFiles[0]);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  return { files, getRootProps, getInputProps, setFiles };
+  return { file, getRootProps, getInputProps, setFile };
 };
 
 export default useFileDrop;

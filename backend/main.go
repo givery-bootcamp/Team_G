@@ -42,7 +42,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Team 7 200 OK"))
+		w.Write([]byte("Team Aoi 200 OK"))
 	})
 
 	// Postサービスをmuxに登録
