@@ -16,7 +16,7 @@ const FormArea = ({ token, postId }: Props) => {
 
   const createComment = async (body: string, postId: string, token: string) => {
     try {
-      const result = await commentClient.createComment(
+      await commentClient.createComment(
         {
           body: body,
           postId: postId,

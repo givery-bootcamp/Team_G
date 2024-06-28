@@ -31,7 +31,6 @@ const CommentCard = ({ commentUserName, commentId, commentBody, postId, token, i
   return (
     <Card className="mb-4 w-full p-1">
       <div className=" p-2" key={commentId}>
-        <div className="ml-auto flex justify-between p-1"></div>
         <p className="text-m ml-auto max-w-fit">{"by " + commentUserName}</p>
 
         {isEditing ? (
