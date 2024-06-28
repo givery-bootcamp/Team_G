@@ -1,39 +1,42 @@
 "use client";
+import VoteButton from "@/components/VoteButton";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { v4 as uuid4 } from "uuid";
-//import { v4 as uuid4 } from "uuid";
-import { Comment } from "@/types";
+import { commentClient } from "@/lib/connect";
+import { useRouter } from "next/navigation";
 
-const FormArea = ({ pageId }: { pageId: string }) => {
-  const clickAction = (formData: FormData) => {
-    const comment: Comment = {
-      id: "1",
-      body: "sample comment",
-      userId: "0",
-      postId: "0",
-      createdAt: new Date(2024, 6, 24),
-      updatedAt: new Date(2024, 6, 24),
-    };
+interface Props {
+  token: string;
+  postId: string;
+}
 
-    const text = formData.get("body");
-    const uniqueId = uuid4();
+const FormArea = ({ token, postId }: Props) => {
+  const router = useRouter();
 
-    if (text && text != null) {
-      comment.id = String(uniqueId);
-      comment.body = String(text);
-      comment.postId = pageId;
-      const createdAt = new Date();
-      comment.createdAt = createdAt;
-      comment.updatedAt = createdAt;
-      console.log(uniqueId);
-      console.log(comment.body);
-      console.log(comment.postId);
-      console.log(comment.createdAt);
-      console.log(comment.updatedAt);
-      //need post request
-    } else {
-      console.log("null text");
+  const createComment = async (body: string, postId: string, token: string) => {
+    try {
+      const result = await commentClient.createComment(
+        {
+          body: body,
+          postId: postId,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      console.log("result", result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const clickAction = async (formData: FormData) => {
+    if (formData.get("body")) {
+      const commentBody = String(formData.get("body"));
+      await createComment(commentBody, postId, token);
+      router.refresh();
     }
   };
 
@@ -41,6 +44,7 @@ const FormArea = ({ pageId }: { pageId: string }) => {
     <form action={clickAction} className="flex flex-col items-center space-y-2">
       <Textarea name="body" placeholder="Type your message here." />
       <Button type="submit">Send</Button>
+      <VoteButton postId={postId} />
     </form>
   );
 };

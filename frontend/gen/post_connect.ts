@@ -5,11 +5,14 @@
 
 import { Empty, MethodKind } from "@bufbuild/protobuf";
 import {
+  CreateCommentRequest,
   CreatePostRequest,
+  DeleteCommentRequest,
   DeletePostRequest,
   PostListResponse,
   PostRequest,
   PostResponse,
+  UpdateCommentRequest,
   UpdatePostRequest,
 } from "./post_pb";
 
@@ -74,6 +77,50 @@ export const PostService = {
     deletePost: {
       name: "DeletePost",
       I: DeletePostRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
+  },
+} as const;
+
+/**
+ * Commentサービスの定義
+ *
+ * @generated from service post.v1.CommentService
+ */
+export const CommentService = {
+  typeName: "post.v1.CommentService",
+  methods: {
+    /**
+     * コメント作成API
+     *
+     * @generated from rpc post.v1.CommentService.CreateComment
+     */
+    createComment: {
+      name: "CreateComment",
+      I: CreateCommentRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * コメント更新API
+     *
+     * @generated from rpc post.v1.CommentService.UpdateComment
+     */
+    updateComment: {
+      name: "UpdateComment",
+      I: UpdateCommentRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * コメント削除API
+     *
+     * @generated from rpc post.v1.CommentService.DeleteComment
+     */
+    deleteComment: {
+      name: "DeleteComment",
+      I: DeleteCommentRequest,
       O: Empty,
       kind: MethodKind.Unary,
     },

@@ -1,6 +1,6 @@
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { createPromiseClient } from "@connectrpc/connect";
-import { PostService } from "@/gen/post_connect";
+import { CommentService, PostService } from "@/gen/post_connect";
 
 export const finalTransport = createConnectTransport({
   // gRPCのエンドポイントを指定する
@@ -10,3 +10,4 @@ export const finalTransport = createConnectTransport({
 
 // For SSR
 export const postClient = createPromiseClient(PostService, finalTransport);
+export const commentClient = createPromiseClient(CommentService, finalTransport);

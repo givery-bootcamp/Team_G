@@ -33,10 +33,12 @@ const RootLayout = ({
   return (
     <html lang="ja">
       <body className={(inter.className, zenKakuGothicNew.variable)}>
-        <Header />
-        <Providers>{children}</Providers>
-        <Footer />
-        <Toaster />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

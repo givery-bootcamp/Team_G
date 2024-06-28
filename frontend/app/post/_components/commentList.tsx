@@ -1,18 +1,18 @@
-import { mockComments } from "@/constants/mock";
 import { createDateString } from "@/utils/index";
-const CommentList = () => {
-  //const commentList = backend.comment.getCommentOld();
+import { Comment } from "@/gen/post_pb";
+const CommentList = ({ commentList }: { commentList: Comment[] }) => {
   return (
     <main>
-      {mockComments.map((cm) => {
+      {commentList.map((comment) => {
         return (
-          <div className="p-2" key={cm.id}>
+          <div className="p-2" key={comment.id}>
             <div className="flex justify-between p-1">
-              <p className="text-m">{cm.id}</p>
-              <p className="text-m text-gray-500">{createDateString(cm.createdAt)}</p>
+              <p className="text-m">{comment.id}</p>
+              {comment.createdAt && (
+                <p className="text-m text-gray-500">{createDateString(comment.createdAt.toDate())}</p>
+              )}
             </div>
-
-            <p className="text-sm">{cm.body}</p>
+            <p className="text-sm">{comment.body}</p>
           </div>
         );
       })}

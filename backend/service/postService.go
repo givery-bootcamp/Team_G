@@ -26,16 +26,16 @@ func (s *PostServer) CreatePost(
 	ctx context.Context,
 	req *connect.Request[postv1.CreatePostRequest],
 ) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
-		log.Println("client取得エラー")
+		log.Println("client取得エラー: CreatePost")
 		return nil, connect.NewError(connect.CodeInternal, nil)
 	}
 
 	coll := client.Database("SNS").Collection("Post")
 
 	// ユーザIDをコンテキストから取得
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	user, ok := ctx.Value(utils.UserKey).(*oauth2.Userinfoplus)
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
@@ -67,9 +67,9 @@ func (s *PostServer) Post(
 	ctx context.Context,
 	req *connect.Request[postv1.PostRequest],
 ) (*connect.Response[postv1.PostResponse], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
-		log.Println("client取得エラー")
+		log.Println("client取得エラー: Post")
 		return nil, connect.NewError(connect.CodeInternal, nil)
 	}
 
@@ -128,9 +128,9 @@ func (s *PostServer) PostList(
 	ctx context.Context,
 	req *connect.Request[emptypb.Empty],
 ) (*connect.Response[postv1.PostListResponse], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
-		log.Println("client取得エラー")
+		log.Println("client取得エラー: PostList")
 		return nil, connect.NewError(connect.CodeInternal, nil)
 	}
 
@@ -163,13 +163,15 @@ func (s *PostServer) PostList(
 	return res, nil
 }
 
+// ------------------------------ Update ------------------------------
+
 func (s *PostServer) UpdatePost(
 	ctx context.Context,
 	req *connect.Request[postv1.UpdatePostRequest],
 ) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
-		log.Println("client取得エラー")
+		log.Println("client取得エラー: UpdatePost")
 		return nil, connect.NewError(connect.CodeInternal, nil)
 	}
 
@@ -193,7 +195,7 @@ func (s *PostServer) UpdatePost(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	user, ok := ctx.Value(utils.UserKey).(*oauth2.Userinfoplus)
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
@@ -204,8 +206,8 @@ func (s *PostServer) UpdatePost(
 	}
 
 	// リクエストの値が空の場合
-	if req.Msg.Title == "" || req.Msg.Body == "" || req.Msg.ImageUrl == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("タイトルまたは本文またはイメージURLが空です"))
+	if req.Msg.Title == "" || req.Msg.Body == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("タイトルまたは本文が空です"))
 	}
 
 	update := bson.M{
@@ -230,9 +232,9 @@ func (s *PostServer) DeletePost(
 	ctx context.Context,
 	req *connect.Request[postv1.DeletePostRequest],
 ) (*connect.Response[emptypb.Empty], error) {
-	client, ok := ctx.Value("client").(*mongo.Client)
+	client, ok := ctx.Value(utils.ClientKey).(*mongo.Client)
 	if !ok {
-		log.Println("client取得エラー")
+		log.Println("client取得エラー: DeletePost")
 		return nil, connect.NewError(connect.CodeInternal, nil)
 	}
 
@@ -257,7 +259,7 @@ func (s *PostServer) DeletePost(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	user, ok := ctx.Value("user").(*oauth2.Userinfoplus)
+	user, ok := ctx.Value(utils.UserKey).(*oauth2.Userinfoplus)
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
