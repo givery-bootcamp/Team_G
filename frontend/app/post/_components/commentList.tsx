@@ -1,6 +1,13 @@
 import { createDateString } from "@/utils/index";
 import { Comment } from "@/gen/post_pb";
-const CommentList = ({ commentList }: { commentList: Comment[] }) => {
+import DeleteCommentButton from "../[id]/_components/deleteCommentButton";
+
+interface Props {
+  commentList: Comment[];
+  postId: string;
+  token: string;
+}
+const CommentList = ({ commentList, postId, token }: Props) => {
   return (
     <main>
       {commentList.map((comment) => {
@@ -12,7 +19,10 @@ const CommentList = ({ commentList }: { commentList: Comment[] }) => {
                 <p className="text-m text-gray-500">{createDateString(comment.createdAt.toDate())}</p>
               )}
             </div>
-            <p className="text-sm">{comment.body}</p>
+            <div className="flex justify-between">
+              <p className="text-sm">{comment.body}</p>
+              <DeleteCommentButton postId={postId} commentId={comment.id} token={token} />
+            </div>
           </div>
         );
       })}

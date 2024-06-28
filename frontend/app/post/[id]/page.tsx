@@ -64,7 +64,7 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
         <p className="text-md mt-2">{post.body}</p>
       </div>
       <div className="p-5">
-        <CommentList commentList={post.comments} />
+        <CommentList commentList={post.comments} postId={post.id} token={session.accessToken} />
       </div>
       <div className="p-5">
         <p className="text-left text-xl font-semibold">Post Message</p>
