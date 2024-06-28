@@ -41,11 +41,6 @@ func (s *PostServer) CreatePost(
 	}
 	userID := user.Id
 
-	userName := user.Name
-	if userName == "" {
-		userName = "名無しさん"
-	}
-
 	post := domain.Post{
 		Id:        primitive.NewObjectID(),
 		Title:     req.Msg.Title,
