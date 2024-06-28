@@ -26,6 +26,8 @@ var uri = os.Getenv("MONGODB_URI")
 var client *mongo.Client
 
 func main() {
+	log.Println("Team 7 yuya is here.")
+
 	//MongoDB接続
 	var err error
 	client, err = infra.NewMongoDB(uri)

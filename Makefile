@@ -26,6 +26,6 @@ generate_frontend:
 	cd frontend && pnpm buf:generate
 
 deploy:
-	bash deploy.sh 17
+	bash deploy.sh 19
 
 .PHONY: run rebuild remove backend_test
