@@ -37,8 +37,6 @@ export const postList = createQueryService({
 }).postList;
 
 /**
- * Post詳細API
- *
  * @generated from rpc post.v1.PostService.Post
  */
 export const post = createQueryService({

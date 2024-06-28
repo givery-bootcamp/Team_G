@@ -52,6 +52,7 @@ const PostListPage: NextPage = async () => {
                 <p className="text-xl font-bold">{post.title}</p>
                 <p className="text-sm">{post.body}</p>
                 <div className="text-xs">{post.createdAt?.toDate().toLocaleDateString()}</div>
+                <div className="text-xs">by {post.userName}</div>
               </Card>
             </Link>
           );

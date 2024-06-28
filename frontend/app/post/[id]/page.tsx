@@ -44,7 +44,11 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
   return (
     <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
       <BreadCrumb breadcrumbItems={breadcrumbItems} />
-      <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
+      <div className="flex justify-between">
+        <h1 className="mb-4 text-2xl font-bold">Post Detail Page </h1>
+        <p>{"by " + post.userName}</p>
+      </div>
+
       <div className="relative flex flex-col items-center">
         <div>
           {post.userId === session.id && (
