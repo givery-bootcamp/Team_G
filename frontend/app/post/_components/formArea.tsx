@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { commentClient } from "@/lib/connect";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   token: string;
@@ -26,8 +27,9 @@ const FormArea = ({ token, postId }: Props) => {
           },
         },
       );
-      console.log("result", result);
+      toast.success("Comment created successfully!");
     } catch (error) {
+      toast.error("Failed to create comment. Please try again.");
       console.error(error);
     }
   };

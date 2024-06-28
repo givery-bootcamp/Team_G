@@ -44,7 +44,6 @@ const PostListPage: NextPage = async () => {
 
       <section className="grid grid-cols-2 gap-2 p-2">
         {posts.map((post) => {
-          console.log(post);
           return (
             <Link href={`/post/${post.id}`} key={post.id} className="w-full text-center">
               <Card className="mx-auto max-w-fit p-3">

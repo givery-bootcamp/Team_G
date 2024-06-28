@@ -1,23 +1,43 @@
-import { createDateString } from "@/utils/index";
+"use client";
 import { Comment } from "@/gen/post_pb";
-const CommentList = ({ commentList }: { commentList: Comment[] }) => {
-  return (
-    <main>
-      {commentList.map((comment) => {
-        return (
-          <div className="p-2" key={comment.id}>
-            <div className="flex justify-between p-1">
-              <p className="text-m">{comment.id}</p>
-              {comment.createdAt && (
-                <p className="text-m text-gray-500">{createDateString(comment.createdAt.toDate())}</p>
-              )}
-            </div>
-            <p className="text-sm">{comment.body}</p>
-          </div>
-        );
-      })}
-    </main>
-  );
+import { useState } from "react";
+import CommentCard from "../[id]/edit/_components/commentCard";
+
+interface Props {
+  commentList: Comment[];
+  postId: string;
+  token: string;
+  userId: string;
+}
+const CommentList = ({ commentList, postId, token, userId }: Props) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [commentBody, setComment] = useState("");
+
+  const handler = () => {
+    setIsEditing((prev) => !prev);
+    console.log(isEditing);
+  };
+  const handleSetComment = (value: string) => {
+    setComment(value);
+  };
+  return commentList.map((comment) => {
+    return (
+      <CommentCard
+        commentUserName={comment.userName}
+        commentId={comment.id}
+        commentBody={comment.body}
+        postId={postId}
+        token={token}
+        isOwnComment={userId === comment.userId}
+      />
+    );
+  });
+  //     {commentList.map((comment) => {
+  //       return(
+  //       <CommentCard commentId={comment.id} commentBody={comment.body} postId={postId} token={token}/>
+  //       );
+  //     })};
+  // );
 };
 
 export default CommentList;
