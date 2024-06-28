@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { postClient } from "@/lib/connect";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { DropArea } from "../../[id]/edit/_components/fileDropArea";
 import useFileDrop from "../../[id]/edit/_hooks/useFileDrop";
@@ -18,10 +18,6 @@ const PostFormArea = ({ params }: Props) => {
   const { file, getRootProps, getInputProps, setFile } = useFileDrop();
   const router = useRouter();
 
-  let imageUrl = "";
-  if (file !== undefined) {
-    imageUrl = URL.createObjectURL(file);
-  }
   const [postTitle, setPostTitle] = useState("");
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
