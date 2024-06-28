@@ -7,6 +7,145 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
+ * コメント作成APIのリクエスト
+ *
+ * @generated from message post.v1.CreateCommentRequest
+ */
+export class CreateCommentRequest extends Message<CreateCommentRequest> {
+  /**
+   * @generated from field: string body = 1;
+   */
+  body = "";
+
+  /**
+   * @generated from field: string post_id = 2;
+   */
+  postId = "";
+
+  constructor(data?: PartialMessage<CreateCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.CreateCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "post_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateCommentRequest {
+    return new CreateCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateCommentRequest {
+    return new CreateCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateCommentRequest {
+    return new CreateCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CreateCommentRequest | PlainMessage<CreateCommentRequest> | undefined, b: CreateCommentRequest | PlainMessage<CreateCommentRequest> | undefined): boolean {
+    return proto3.util.equals(CreateCommentRequest, a, b);
+  }
+}
+
+/**
+ * コメント更新APIのリクエスト
+ *
+ * @generated from message post.v1.UpdateCommentRequest
+ */
+export class UpdateCommentRequest extends Message<UpdateCommentRequest> {
+  /**
+   * @generated from field: string body = 1;
+   */
+  body = "";
+
+  /**
+   * @generated from field: string post_id = 2;
+   */
+  postId = "";
+
+  /**
+   * @generated from field: string comment_id = 3;
+   */
+  commentId = "";
+
+  constructor(data?: PartialMessage<UpdateCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.UpdateCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "post_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "comment_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateCommentRequest {
+    return new UpdateCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateCommentRequest {
+    return new UpdateCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateCommentRequest {
+    return new UpdateCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateCommentRequest | PlainMessage<UpdateCommentRequest> | undefined, b: UpdateCommentRequest | PlainMessage<UpdateCommentRequest> | undefined): boolean {
+    return proto3.util.equals(UpdateCommentRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message post.v1.DeleteCommentRequest
+ */
+export class DeleteCommentRequest extends Message<DeleteCommentRequest> {
+  /**
+   * @generated from field: string post_id = 1;
+   */
+  postId = "";
+
+  /**
+   * @generated from field: string comment_id = 2;
+   */
+  commentId = "";
+
+  constructor(data?: PartialMessage<DeleteCommentRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "post.v1.DeleteCommentRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "post_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "comment_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteCommentRequest {
+    return new DeleteCommentRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteCommentRequest {
+    return new DeleteCommentRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteCommentRequest {
+    return new DeleteCommentRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteCommentRequest | PlainMessage<DeleteCommentRequest> | undefined, b: DeleteCommentRequest | PlainMessage<DeleteCommentRequest> | undefined): boolean {
+    return proto3.util.equals(DeleteCommentRequest, a, b);
+  }
+}
+
+/**
  * Post一覧APIのレスポンス
  *
  * @generated from message post.v1.PostListResponse
