@@ -50,7 +50,7 @@ const PostEditPage: NextPage<Props> = async ({ params }) => {
       <h1 className="mb-4 text-2xl font-bold">Post Detail Page {post.id}</h1>
 
       <div className="flex flex-col items-center">
-        <UpdatePostFormArea params={{ post: post, token: session.accessToken }} />
+        <UpdatePostFormArea post={post} token={session.accessToken} />
       </div>
     </main>
   );

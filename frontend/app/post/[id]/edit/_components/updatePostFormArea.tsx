@@ -10,15 +10,13 @@ import useFileDrop from "../_hooks/useFileDrop";
 import { DropArea } from "./fileDropArea";
 
 interface Props {
-  params: {
-    post: PostData;
-    token: string;
-  };
+  post: PostData;
+  token: string;
 }
 
-const UpdatePostFormArea = ({ params }: Props) => {
+const UpdatePostFormArea: React.FC<Props> = ({ post, token }) => {
   const { file, getRootProps, getInputProps, setFile } = useFileDrop();
-  const post = params.post;
+
   const router = useRouter();
   const [postTitle, setPostTitle] = useState(post.title);
   const [postBody, setPostBody] = useState(post.body);
@@ -98,9 +96,9 @@ const UpdatePostFormArea = ({ params }: Props) => {
               imageUrl = post.imageUrl;
             }
             await uploadFile(null, formData);
-            await updatePost(post.id, postTitle, postBody, imageUrl, params.token);
+            await updatePost(post.id, postTitle, postBody, imageUrl, token);
           } else {
-            await updatePost(post.id, postTitle, postBody, "", params.token);
+            await updatePost(post.id, postTitle, postBody, "", token);
           }
         }}
       >
