@@ -1,6 +1,7 @@
 import { createDateString } from "@/utils/index";
 import { Comment } from "@/gen/post_pb";
 import DeleteCommentButton from "../[id]/_components/deleteCommentButton";
+import UpdateFormButton from "../commentEdit/_components/updateButton";
 
 interface Props {
   commentList: Comment[];
@@ -8,6 +9,7 @@ interface Props {
   token: string;
 }
 const CommentList = ({ commentList, postId, token }: Props) => {
+  let isEditing: boolean = false;
   return (
     <main>
       {commentList.map((comment) => {
@@ -19,8 +21,10 @@ const CommentList = ({ commentList, postId, token }: Props) => {
                 <p className="text-m text-gray-500">{createDateString(comment.createdAt.toDate())}</p>
               )}
             </div>
-            <div className="flex justify-between">
-              <p className="text-sm">{comment.body}</p>
+            <p className="text-sm">{comment.body}</p>
+
+            <div className="ml-auto max-w-fit">
+              <UpdateFormButton body={comment.body} postId={postId} commentId={comment.id} token={token} />
               <DeleteCommentButton postId={postId} commentId={comment.id} token={token} />
             </div>
           </div>
