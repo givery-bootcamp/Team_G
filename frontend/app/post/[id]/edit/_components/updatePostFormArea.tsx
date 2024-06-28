@@ -110,8 +110,6 @@ const UpdatePostFormArea: React.FC<Props> = ({ post, token }) => {
 export default UpdatePostFormArea;
 
 const uploadFile = async (prevState: string | null, formData: FormData) => {
-  console.log({ formData });
-  console.log("uploadFile.....");
   if (!formData.get("file")) {
     return prevState;
   }

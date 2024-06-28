@@ -8,13 +8,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
-  params: {
-    id: string;
-    token: string;
-  };
+  id: string;
+  token: string;
 }
 
-const DeletePostButton = ({ params }: Props) => {
+const DeletePostButton: React.FC<Props> = ({ id, token }) => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -22,11 +20,11 @@ const DeletePostButton = ({ params }: Props) => {
     try {
       await postClient.deletePost(
         {
-          id: params.id,
+          id: id,
         },
         {
           headers: {
-            Authorization: params.token,
+            Authorization: token,
           },
         },
       );
