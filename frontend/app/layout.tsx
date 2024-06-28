@@ -1,10 +1,10 @@
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata, Viewport } from "next";
 import { Inter, Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import Providers from "./providers";
-import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
@@ -14,8 +14,8 @@ const zenKakuGothicNew = Zen_Kaku_Gothic_New({
 });
 
 export const metadata: Metadata = {
-  title: "TEAM 7",
-  description: "TEAM 7 app",
+  title: "Team Aoi",
+  description: "Team Aoi app",
 };
 
 export const viewport: Viewport = {

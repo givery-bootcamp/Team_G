@@ -49,7 +49,7 @@ func main() {
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Team 7 200 OK"))
+		w.Write([]byte("Team Aoi 200 OK"))
 	})
 
 	path, handler := postv1connect.NewPostServiceHandler(poster)
