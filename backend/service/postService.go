@@ -41,11 +41,17 @@ func (s *PostServer) CreatePost(
 	}
 	userID := user.Id
 
+	userName := user.Name
+	if userName == "" {
+		userName = "名無しさん"
+	}
+
 	post := domain.Post{
 		Id:        primitive.NewObjectID(),
 		Title:     req.Msg.Title,
 		Body:      req.Msg.Body,
 		UserId:    userID,
+		UserName:  user.Name,
 		ImageUrl:  req.Msg.ImageUrl,
 		Comments:  []domain.Comment{},
 		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
@@ -101,8 +107,7 @@ func (s *PostServer) Post(
 		comments = append(comments, &postv1.Comment{
 			Id:        comment.Id.Hex(),
 			Body:      comment.Body,
-			UserId:    comment.UserId,
-			PostId:    comment.PostId,
+			UserName:  comment.UserName,
 			CreatedAt: &timestamppb.Timestamp{Seconds: comment.CreatedAt.Seconds, Nanos: comment.CreatedAt.Nanos},
 			UpdatedAt: &timestamppb.Timestamp{Seconds: comment.UpdatedAt.Seconds, Nanos: comment.UpdatedAt.Nanos},
 		})
@@ -113,7 +118,7 @@ func (s *PostServer) Post(
 			Id:        result.Id.Hex(),
 			Title:     result.Title,
 			Body:      result.Body,
-			UserId:    result.UserId,
+			UserName:  result.UserName,
 			ImageUrl:  result.ImageUrl,
 			Comments:  comments,
 			CreatedAt: &timestamppb.Timestamp{Seconds: result.CreatedAt.Seconds, Nanos: result.CreatedAt.Nanos},

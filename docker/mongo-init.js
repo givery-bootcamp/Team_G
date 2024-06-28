@@ -7,6 +7,7 @@ db.Post.insert(
    	"title" : "Hello, World!",
     "body" : "This is a test post.",
     "user_id" : "507f1f77bcf86cd799439011",
+	"user_name": "test_user",
     "comments" : [],
 	"image_url": "https://www.google.com",
     "created_at": {
@@ -25,6 +26,7 @@ db.Post.insert(
    	"title" : "Hello, Hell!",
     "body" : "This is a second test post.",
     "user_id" : "507f1f77bcf86cd799439012",
+	"user_name": "test_user2",
     "comments" : [],
 	"image_url": "https://www.google.com",
     "created_at": {
@@ -45,6 +47,7 @@ db.Post.insert(
    	"title" : "Hello, Hell!",
     "body" : "This is a second test post.",
     "user_id" : "507f1f77bcf86cd799439012",
+	"user_name": "test_user2",
     "comments" : [{"_id": ObjectId("667cd7db1eb82bf6f8462c9d"), "user_id": "507f1f77bcf86cd799439011", "body": "This is a comment."}],
 	"image_url": "https://www.google.com",
     "created_at": {
@@ -63,6 +66,7 @@ db.Post.insert(
    	"title" : "Aoi Yuya Basa",
     "body" : "This is a pen",
     "user_id" : "507f1f77bcf86cd799439012",
+	"user_name": "test_user3",
     "comments" : [{"_id": ObjectId("667cd7db1eb82bf6f8462c9f"), "user_id": "507f1f77bcf86cd799439011", "body": "mongodb objectID go to hell"}],
 	"image_url": "https://www.google.com",
     "created_at": {
