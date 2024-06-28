@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PostData } from "@/gen/post_pb";
 import { postClient } from "@/lib/connect";
-
+import { IFileWithPreview } from "@/types";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast, Toaster } from "sonner";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import useFileDrop from "../_hooks/useFileDrop";
 import { DropArea } from "./fileDropArea";
 
@@ -18,23 +18,28 @@ interface Props {
 }
 
 const UpdatePostFormArea = ({ params }: Props) => {
-  const { file, getRootProps, getInputProps } = useFileDrop();
+  const { file, getRootProps, getInputProps, setFile } = useFileDrop();
   const post = params.post;
   const router = useRouter();
-
-  let imageUrl = post.imageUrl;
-  if (file) {
-    imageUrl = URL.createObjectURL(file);
-  }
-
   const [postTitle, setPostTitle] = useState(post.title);
+  const [postBody, setPostBody] = useState(post.body);
+
+  useEffect(() => {
+    if (post.imageUrl) {
+      const newFile = new File([new Blob()], post.imageUrl) as IFileWithPreview;
+      newFile.preview = post.imageUrl;
+      setFile(newFile);
+    }
+  }, [post.imageUrl, setFile]);
+
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
   };
-  const [postBody, setPostBody] = useState(post.body);
+
   const handleChangeBody = (value: string) => {
     setPostBody(value);
   };
+
   const updatePost = async (id: string, title: string, body: string, imageUrl: string, token: string) => {
     try {
       await postClient.updatePost(
@@ -64,9 +69,7 @@ const UpdatePostFormArea = ({ params }: Props) => {
 
   return (
     <div>
-      <Toaster position="top-right" />
-      <DropArea imageUrl={imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
-
+      <DropArea imageUrl={post.imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
       <div>アップロードされたファイル: {file?.name}</div>
       <Input
         type="title"
@@ -89,7 +92,11 @@ const UpdatePostFormArea = ({ params }: Props) => {
           if (file) {
             formData.append("file", file, file.name);
             formData.append("filename", file.name);
-            const imageUrl = process.env.NEXT_PUBLIC_S3_BUCKET_PATH + file.name;
+
+            let imageUrl = process.env.NEXT_PUBLIC_S3_BUCKET_PATH + file.name;
+            if (file.name == post.imageUrl) {
+              imageUrl = post.imageUrl;
+            }
             await uploadFile(null, formData);
             await updatePost(post.id, postTitle, postBody, imageUrl, params.token);
           } else {

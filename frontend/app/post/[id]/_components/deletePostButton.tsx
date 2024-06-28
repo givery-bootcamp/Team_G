@@ -5,7 +5,7 @@ import { postClient } from "@/lib/connect";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 interface Props {
   params: {
@@ -50,7 +50,6 @@ const DeletePostButton = ({ params }: Props) => {
 
   return (
     <>
-      <Toaster position="top-right" />
       <Button className="bg-white p-2 hover:bg-gray-300" onClick={() => setIsDialogOpen(true)}>
         <Trash2 color="grey" />
       </Button>
