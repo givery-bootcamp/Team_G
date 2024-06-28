@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Providers from "./providers";
@@ -33,10 +34,12 @@ const RootLayout = ({
   return (
     <html lang="ja">
       <body className={(inter.className, zenKakuGothicNew.variable)}>
-        <Header />
-        <Providers>{children}</Providers>
-        <Footer />
-        <Toaster />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

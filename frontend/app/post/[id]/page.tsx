@@ -54,8 +54,8 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
           <DeletePostButton params={{ id, token: session.accessToken }} />
         </div>
         <Image
-          // src={post.imageUrl.length > 0 ? post.imageUrl : "/images/noimage.png"}
-          src="/images/noimage.png"
+          src={post.imageUrl || "/images/noimage.png"}
+          className="mb-4"
           alt={post.title}
           width={400}
           height={400}

@@ -1,0 +1,14 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+# remappings = [
+#     "forge-std/=contracts/lib/forge-std/src/"
+# ]
+
+gas_reports = ["*"]
+rpc_url = "https://base-sepolia.g.alchemy.com/v2/19YfSjCDF5jiIAz_05rx1JVLLWNpWYc8"
+private-key="0xf31731d91e153fdfe2c7e4dc72e10d06d439a33e240f56cdf2dfa7dddf593487"
+etherscan-api-key="96ZXTVQRMWK7UC11HU48ZB7PNKBXQ1YT2D"
