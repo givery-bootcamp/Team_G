@@ -75,8 +75,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"id": "Object ID"}' http:/
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
-        "title": "Team 7 CreatePost Test",
-        "body": "Team 7 CreatePost Test Body",
+        "title": "Team Aoi CreatePost Test",
+        "body": "Team Aoi CreatePost Test Body",
         "image_url": "https://avatars.githubusercontent.com/u/45951565?v=4"
 }' http://localhost:80/post.v1.PostService/CreatePost
 ```
@@ -135,8 +135,8 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Googleアク
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
-        "title": "Team 7 CreatePost Test",
-        "body": "Team 7 CreatePost Test Body",
+        "title": "Team Aoi CreatePost Test",
+        "body": "Team Aoi CreatePost Test Body",
         "image_url": "https://avatars.githubusercontent.com/u/41140188?v=4"
 }' -H "Authorization: Googleアクセストークン" https://team-7_bk.member0005.track-bootcamp.run/post.v1.PostService/CreatePost
 ```
