@@ -8,7 +8,7 @@ db.Post.insert(
     "body" : "This is a test post.",
     "user_id" : "507f1f77bcf86cd799439011",
     "comments" : [],
-	"image_url": "https://www.google.com",
+	"image_url": "https://es4.eedept.kobe-u.ac.jp/wp-content/uploads/2022/05/Nagatani.jpg",
     "created_at": {
       "seconds": 0,
       "nanos": 0
@@ -26,7 +26,7 @@ db.Post.insert(
     "body" : "This is a second test post.",
     "user_id" : "507f1f77bcf86cd799439012",
     "comments" : [],
-	"image_url": "https://www.google.com",
+	"image_url": "https://es4.eedept.kobe-u.ac.jp/wp-content/uploads/2022/05/Nagatani.jpg",
     "created_at": {
       "seconds": 0,
       "nanos": 0
@@ -46,7 +46,7 @@ db.Post.insert(
     "body" : "This is a second test post.",
     "user_id" : "507f1f77bcf86cd799439012",
     "comments" : [{"_id": ObjectId("667cd7db1eb82bf6f8462c9d"), "user_id": "507f1f77bcf86cd799439011", "body": "This is a comment."}],
-	"image_url": "https://www.google.com",
+	"image_url": "https://avatars.githubusercontent.com/u/45951565?v=4",
     "created_at": {
       "seconds": 0,
       "nanos": 0
@@ -64,7 +64,7 @@ db.Post.insert(
     "body" : "This is a pen",
     "user_id" : "507f1f77bcf86cd799439012",
     "comments" : [{"_id": ObjectId("667cd7db1eb82bf6f8462c9f"), "user_id": "507f1f77bcf86cd799439011", "body": "mongodb objectID go to hell"}],
-	"image_url": "https://www.google.com",
+	"image_url": "https://avatars.githubusercontent.com/u/41140188?v=4",
     "created_at": {
       "seconds": 0,
       "nanos": 0
