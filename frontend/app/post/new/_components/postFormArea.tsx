@@ -2,9 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { postClient } from "@/lib/connect";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast, Toaster } from "sonner";
 import { DropArea } from "../../[id]/edit/_components/fileDropArea";
 import useFileDrop from "../../[id]/edit/_hooks/useFileDrop";
 
@@ -45,15 +45,20 @@ const PostFormArea = ({ params }: Props) => {
         },
       );
 
-      router.push("/post");
-      router.refresh();
+      toast.success("Post created successfully!");
+      setTimeout(() => {
+        router.push("/post");
+        router.refresh();
+      }, 1000);
     } catch (error) {
+      toast.error("Failed to create post. Please try again.");
       console.error(error);
     }
   };
 
   return (
     <div>
+      <Toaster position="top-right" />
       <DropArea imageUrl={imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
       <div>アップロードされたファイル: {file?.name}</div>
       <Input

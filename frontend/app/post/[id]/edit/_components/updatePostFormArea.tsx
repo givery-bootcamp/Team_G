@@ -6,6 +6,7 @@ import { postClient } from "@/lib/connect";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast, Toaster } from "sonner";
 import useFileDrop from "../_hooks/useFileDrop";
 import { DropArea } from "./fileDropArea";
 
@@ -49,17 +50,21 @@ const UpdatePostFormArea = ({ params }: Props) => {
           },
         },
       );
-      router.push("/post");
-      router.refresh();
+
+      toast.success("Post updated successfully!");
+      setTimeout(() => {
+        router.push("/post");
+        router.refresh();
+      }, 1000);
     } catch (error) {
+      toast.error("Failed to update post. Please try again.");
       console.error(error);
     }
-
-    console.log({ title, body });
   };
 
   return (
     <div>
+      <Toaster position="top-right" />
       <DropArea imageUrl={imageUrl} getRootProps={getRootProps} getInputProps={getInputProps} />
 
       <div>アップロードされたファイル: {file?.name}</div>

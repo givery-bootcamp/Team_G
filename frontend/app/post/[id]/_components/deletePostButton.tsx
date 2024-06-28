@@ -5,6 +5,7 @@ import { postClient } from "@/lib/connect";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast, Toaster } from "sonner";
 
 interface Props {
   params: {
@@ -29,9 +30,14 @@ const DeletePostButton = ({ params }: Props) => {
           },
         },
       );
-      router.push("/post");
-      router.refresh();
+
+      toast.success("Post deleted successfully!");
+      setTimeout(() => {
+        router.push("/post");
+        router.refresh();
+      }, 1000);
     } catch (e) {
+      toast.error("Failed to delete post. Please try again.");
       console.error(e);
     } finally {
       setIsDialogOpen(false);
@@ -44,6 +50,7 @@ const DeletePostButton = ({ params }: Props) => {
 
   return (
     <>
+      <Toaster position="top-right" />
       <Button className="bg-white p-2 hover:bg-gray-300" onClick={() => setIsDialogOpen(true)}>
         <Trash2 color="grey" />
       </Button>
