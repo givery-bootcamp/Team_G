@@ -19,7 +19,8 @@ func VerifyGoogleOAuthJwtToken(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			// 適当なユーザIDを設定
 			mockUser := oauth2.Userinfoplus{
-				Id: "507f1f77bcf86cd799439011",
+				Id:   "507f1f77bcf86cd799439011",
+				Name: "Aoi Nagatani",
 			}
 
 			r = r.WithContext(context.WithValue(r.Context(), UserKey, &mockUser))

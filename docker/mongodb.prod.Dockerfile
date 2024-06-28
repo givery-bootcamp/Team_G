@@ -3,9 +3,9 @@ FROM mongo:latest
 ENV TZ="Asia/Tokyo"
 RUN echo $TZ > /etc/timezone
 
-COPY ./docker/mongo-init.js /docker-entrypoint-initdb.d/mongo-init.js
-COPY ./docker/mongod.conf /etc/mongod.conf
+COPY ./docker/mongod_lock_renew.sh /mongod_lock_renew.sh
+RUN chmod +x /mongod_lock_renew.sh
 
 EXPOSE 27017
 
-CMD ["mongod", "--bind_ip", "0.0.0.0"]
+CMD ["sh", "mongod_lock_renew.sh"]

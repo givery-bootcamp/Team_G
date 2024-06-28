@@ -1,8 +1,9 @@
 "use client";
-import { commentClient } from "@/lib/connect";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { commentClient } from "@/lib/connect";
+import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   postId: string;
@@ -26,17 +27,19 @@ const DeleteCommentButton = ({ postId, commentId, token }: Props) => {
         },
       );
       if (result) {
+        toast.success("Comment delete successfully!");
         router.refresh();
         console.log("delete", result);
       }
     } catch (error) {
+      toast.error("Failed to delete comment. Please try again.");
       console.error(error);
     }
   };
 
   return (
     <Button className="bg-white" onClick={handleClick}>
-      <Image src="/images/delete_icon.png" alt="delete_icon" width={15} height={15} />
+      <Trash2 color="grey" />
     </Button>
   );
 };

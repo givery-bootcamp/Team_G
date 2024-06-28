@@ -39,13 +39,13 @@ func (s *PostServer) CreatePost(
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
-	userID := user.Id
 
 	post := domain.Post{
 		Id:        primitive.NewObjectID(),
 		Title:     req.Msg.Title,
 		Body:      req.Msg.Body,
-		UserId:    userID,
+		UserId:    user.Id,
+		UserName:  user.Name,
 		ImageUrl:  req.Msg.ImageUrl,
 		Comments:  []domain.Comment{},
 		CreatedAt: domain.Timestamp{Seconds: timestamppb.Now().GetSeconds(), Nanos: timestamppb.Now().GetNanos()},
@@ -101,8 +101,8 @@ func (s *PostServer) Post(
 		comments = append(comments, &postv1.Comment{
 			Id:        comment.Id.Hex(),
 			Body:      comment.Body,
+			UserName:  comment.UserName,
 			UserId:    comment.UserId,
-			PostId:    comment.PostId,
 			CreatedAt: &timestamppb.Timestamp{Seconds: comment.CreatedAt.Seconds, Nanos: comment.CreatedAt.Nanos},
 			UpdatedAt: &timestamppb.Timestamp{Seconds: comment.UpdatedAt.Seconds, Nanos: comment.UpdatedAt.Nanos},
 		})
@@ -113,6 +113,7 @@ func (s *PostServer) Post(
 			Id:        result.Id.Hex(),
 			Title:     result.Title,
 			Body:      result.Body,
+			UserName:  result.UserName,
 			UserId:    result.UserId,
 			ImageUrl:  result.ImageUrl,
 			Comments:  comments,

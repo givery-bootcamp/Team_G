@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
+import { Pencil } from "lucide-react";
 
 interface Props {
   handler: () => void;
@@ -13,7 +12,7 @@ const OpenFormButton = ({ handler }: Props) => {
   };
   return (
     <Button className="bg-white" onClick={onClick}>
-      <Image src="/images/mode_edit.png" alt="delete_icon" width={15} height={15} />
+      <Pencil color="grey" />
     </Button>
     // <form className="flex flex-col items-center space-y-2">
     //   <Textarea name="newbody" placeholder={body} />

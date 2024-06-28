@@ -57,14 +57,14 @@ func (s *CommentServer) CreateComment(
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
-	userID := user.Id
 
 	update := bson.M{
 		"$push": bson.M{
 			"comments": domain.Comment{
-				Id:     primitive.NewObjectID(),
-				UserId: userID,
-				Body:   req.Msg.Body,
+				Id:       primitive.NewObjectID(),
+				UserId:   user.Id,
+				UserName: user.Name,
+				Body:     req.Msg.Body,
 				CreatedAt: domain.Timestamp{
 					Seconds: timestamppb.Now().GetSeconds(),
 					Nanos:   timestamppb.Now().GetNanos(),

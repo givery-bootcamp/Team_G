@@ -16,8 +16,8 @@ func ConvertPostList(postlist []domain.Post) []*postv1.PostData {
 			comments = append(comments, &postv1.Comment{
 				Id:        comment.Id.Hex(),
 				Body:      comment.Body,
+				UserName:  comment.UserName,
 				UserId:    comment.UserId,
-				PostId:    comment.PostId,
 				CreatedAt: &timestamppb.Timestamp{Seconds: comment.CreatedAt.Seconds, Nanos: comment.CreatedAt.Nanos},
 				UpdatedAt: &timestamppb.Timestamp{Seconds: comment.UpdatedAt.Seconds, Nanos: comment.UpdatedAt.Nanos},
 			})
@@ -26,6 +26,7 @@ func ConvertPostList(postlist []domain.Post) []*postv1.PostData {
 			Id:        post.Id.Hex(),
 			Title:     post.Title,
 			Body:      post.Body,
+			UserName:  post.UserName,
 			UserId:    post.UserId,
 			ImageUrl:  post.ImageUrl,
 			Comments:  comments,

@@ -37,8 +37,6 @@ export const PostService = {
       kind: MethodKind.Unary,
     },
     /**
-     * Post詳細API
-     *
      * @generated from rpc post.v1.PostService.Post
      */
     post: {

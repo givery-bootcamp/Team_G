@@ -15,7 +15,6 @@ service PostService {
   // リクエストは空
   rpc PostList(google.protobuf.Empty) returns (PostListResponse) {}
 
-  // Post詳細API
   rpc Post(PostRequest) returns (PostResponse) {}
 
   // Post作成API
@@ -90,7 +89,7 @@ message DeletePostRequest { string id = 1; }
 //  id: 投稿ID
 //  title: タイトル
 //  body: 本文
-//  user_id: ユーザID
+//  user_name: ユーザネーム
 //  comments: コメント配列
 //  image_url: 画像URL
 //  created_at: 作成日時
@@ -99,26 +98,27 @@ message PostData {
   string id = 1;
   string title = 2;
   string body = 3;
-  string user_id = 4;
-  string image_url = 5;
-  repeated Comment comments = 6;
-  google.protobuf.Timestamp created_at = 7;
-  google.protobuf.Timestamp updated_at = 8;
+  string user_name = 4;
+  string user_id = 5;
+  string image_url = 6;
+  repeated Comment comments = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
 
 // コメントデータ
 // 詳細
 //  id: コメントID
 //  body: コメント本文
-//  user_id: ユーザID
+//  user_name: ユーザネーム
 //  post_id: 投稿ID
 //  created_at: 作成日時
 //  updated_at: 更新日時
 message Comment {
   string id = 1;
   string body = 2;
-  string user_id = 3;
-  string post_id = 4;
+  string user_name = 3;
+  string user_id = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
 }

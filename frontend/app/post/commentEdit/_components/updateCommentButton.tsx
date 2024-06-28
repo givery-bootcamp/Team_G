@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { commentClient } from "@/lib/connect";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   body: string;
@@ -31,10 +30,12 @@ const UpdateCommentButton = ({ body, postId, commentId, token, handler }: Props)
         },
       );
       if (result) {
+        toast.success("Comment update successfully!");
         router.refresh();
         console.log("update", result);
       }
     } catch (error) {
+      toast.error("Failed to update comment. Please try again.");
       console.error(error);
     }
   };

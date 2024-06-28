@@ -5,6 +5,8 @@ import Google from "next-auth/providers/google";
 
 import type { JWT } from "next-auth/jwt";
 
+console.log(process.env.AUTH_SECRET);
+
 declare module "next-auth/jwt" {
   interface JWT {
     id_token?: string;
@@ -35,6 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
   },
+  secret: process.env.AUTH_SECRET,
   trustHost: true,
   callbacks: {
     async jwt({ token, account }) {
