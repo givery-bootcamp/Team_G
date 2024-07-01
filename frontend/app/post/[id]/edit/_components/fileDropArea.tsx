@@ -66,12 +66,7 @@ export const DropArea: React.FC<DropAreaProps> = ({ file, getRootProps, getInput
         <input {...getInputProps()} ref={inputRef} onChange={handleFileChange} /> {/* onChange を追加 */}
         <p>ここにファイルをドラッグ&ドロップ</p>
         <p className="p-2">または</p>
-        <button
-          className="rounded bg-primary px-4 py-2 font-bold text-white hover:bg-gray-300"
-          onClick={() => (inputRef.current as HTMLInputElement | null)?.click()}
-        >
-          ファイルを選択
-        </button>
+        <Button onClick={() => (inputRef.current as HTMLInputElement | null)?.click()}>ファイルを選択</Button>
       </div>
 
       {file != null ? (
