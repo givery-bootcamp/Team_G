@@ -29,35 +29,44 @@ const CommentCard = ({ commentUserName, commentId, commentBody, postId, token, i
   };
 
   return (
-    <Card className="mb-4 w-full p-1">
-      <div className=" p-2" key={commentId}>
-        <p className="text-m ml-auto max-w-fit">{"by " + commentUserName}</p>
-
-        {isEditing ? (
-          <div>
-            <Textarea name="new body" placeholder={commentBody} onChange={(e) => handleSetComment(e.target.value)} />
-            <div className="ml-auto max-w-fit">
-              <UpdateCommentButton
-                body={String(newBody)}
-                postId={postId}
-                commentId={commentId}
-                token={token}
-                handler={handler}
-              />
-              <CloseFormButton handler={handler} />
-            </div>
-          </div>
-        ) : (
-          <div>
-            <p className="text-sm">{commentBody}</p>
-            {isOwnComment && (
-              <div className="ml-auto max-w-fit">
+    <Card className={`mb-4 w-full rounded-lg bg-white p-4 shadow-lg ${isOwnComment ? "" : "py-2"}`}>
+      <div className="flex items-start">
+        <div className="flex-1">
+          {isEditing ? (
+            <Textarea
+              name="new body"
+              placeholder={commentBody}
+              onChange={(e) => handleSetComment(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 p-2"
+            />
+          ) : (
+            <p className="text-sm text-gray-600">{commentBody}</p>
+          )}
+        </div>
+        {isOwnComment && (
+          <div className="ml-2 flex flex-col space-y-2">
+            {isEditing ? (
+              <>
+                <UpdateCommentButton
+                  body={String(newBody)}
+                  postId={postId}
+                  commentId={commentId}
+                  token={token}
+                  handler={handler}
+                />
+                <CloseFormButton handler={handler} />
+              </>
+            ) : (
+              <div className="flex">
                 <OpenFormButton handler={handler} />
                 <DeleteCommentButton postId={postId} commentId={commentId} token={token} />
               </div>
-            )}{" "}
+            )}
           </div>
         )}
+      </div>
+      <div className={`mt-2 text-right ${isOwnComment ? "" : "mt-0"}`}>
+        <p className="text-m text-gray-700">{"by " + commentUserName}</p>
       </div>
     </Card>
   );
