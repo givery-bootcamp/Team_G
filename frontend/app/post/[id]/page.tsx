@@ -63,7 +63,7 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
 
             {post.userId === session.id && <DeletePostButton id={id} token={session.accessToken} />}
           </div>
-          <PostImage post={post} />
+          <PostImage imageUrl={post.imageUrl} />
           <h2 className="text-xl font-semibold">{post.title}</h2>
           <p className="text-md mt-2">{post.body}</p>
         </div>

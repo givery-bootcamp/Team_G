@@ -18,7 +18,16 @@ const PostImage: React.FC<PostImageProps> = ({ imageUrl }) => {
     setImageSrc("/images/noimage.png");
   };
 
-  return <Image src={imageSrc} alt="Image Thumbnail" width={400} height={400} onError={handleError} />;
+  return (
+    <Image
+      src={imageSrc}
+      alt="Image Thumbnail"
+      className="h-48 w-full object-contain"
+      width={400}
+      height={400}
+      onError={handleError}
+    />
+  );
 };
 
 export default PostImage;

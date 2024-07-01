@@ -2,13 +2,13 @@ import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { postClient } from "@/lib/connect";
+import { getVoteCount } from "@/lib/viem";
 import { Plus } from "lucide-react";
 import { NextPage } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import PostImage from "./[id]/edit/_components/postIcon";
 import BreadCrumb from "./_components/breadCrumb";
-import { getVoteCount } from "@/lib/viem";
 
 const PostListPage: NextPage = async () => {
   const session = await auth();
@@ -16,7 +16,7 @@ const PostListPage: NextPage = async () => {
     redirect("/api/auth/signin");
   }
 
-  const { post: posts } = await postClient.postList(
+  let { post: posts } = await postClient.postList(
     {},
     {
       headers: {
@@ -24,6 +24,7 @@ const PostListPage: NextPage = async () => {
       },
     },
   );
+  posts = posts.reverse();
 
   const postsWithVoteCount = await Promise.all(
     posts.map(async (post) => {
@@ -58,12 +59,20 @@ const PostListPage: NextPage = async () => {
       <section className="grid grid-cols-2 gap-2 p-2">
         {postsWithVoteCount.map((post) => {
           return (
-            <Link href={`/post/${post.id}`} key={post.id} className="w-full text-center">
-              <Card className="mx-auto max-w-fit p-3">
-                <PostImage imageUrl={post.imageUrl} />
-                <p className="text-xl font-bold">{post.title}</p>
-                <p className="text-sm">{post.body}</p>
-                <div className="text-xs">{post.createdAt?.toDate().toLocaleDateString()}</div>
+            <Link href={`/post/${post.id}`} key={post.id} className="h-full w-full text-center">
+              <Card className="mx-auto flex h-full flex-col justify-between p-3">
+                <div>
+                  <PostImage imageUrl={post.imageUrl} />
+                  <p className="text-xl font-bold">{post.title}</p>
+                  <p className="text-sm">{post.body}</p>
+                </div>
+                <div className="text-xs">
+                  {post.createdAt?.toDate().toLocaleDateString("ja-JP", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
+                </div>
                 <div className="text-xs">by {post.userName}</div>
                 <div className="font-bold">投票数: {post.voteCount ?? 0}</div>
               </Card>
