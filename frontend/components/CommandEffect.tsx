@@ -2,7 +2,7 @@
 
 import useSound from "use-sound";
 import { ThreeDFBXViewer } from "./ThreeDFBXViewer";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 const tracks = [
   { name: "neko-meme-1", url: "/sounds/musics/neko-meme-1.mp3" },
@@ -17,7 +17,7 @@ const models = [
 ];
 
 const CommandEffect = () => {
-  const randomIndex = Math.floor(Math.random() * tracks.length);
+  const randomIndex = useMemo(() => Math.floor(Math.random() * tracks.length), []);
   const [play, { stop }] = useSound(tracks[randomIndex].url, { loop: true });
 
   useEffect(() => {
