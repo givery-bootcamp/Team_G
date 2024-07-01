@@ -35,7 +35,7 @@ const PostListPage: NextPage = async () => {
       <div className="mb-2 flex items-center justify-between">
         <h1 className="text-2xl font-bold">投稿一覧</h1>
         <Link href="/post/new">
-          <Button className="flex transform items-center rounded-lg bg-primary p-2 shadow-md transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gray-300">
+          <Button>
             <p className="text-l mr-2 text-white">新規作成</p>
             <Plus color="white" size={20} />
           </Button>

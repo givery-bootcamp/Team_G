@@ -6,14 +6,15 @@ import { abi } from "@/constants/abi";
 import { Spinner } from "@/components/Spinner";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+
+const CONTRACT_ADDRESS = "0x2f3169fC572Df5eD5662AeC37d45aC17Cc30072F";
 
 const VoteButton = ({ postId }: { postId: string }) => {
   const { address } = useAccount();
   const { data: balance } = useBalance({ address });
   const { data: voteCount } = useReadContract({
     abi,
-    address: "0x6b175474e89094c44da98b954eedeac495271d0f",
+    address: CONTRACT_ADDRESS,
     functionName: "getVoteCount",
     args: [postId],
   });
@@ -23,50 +24,52 @@ const VoteButton = ({ postId }: { postId: string }) => {
     data: receipt,
     isLoading: isConfirming,
     isSuccess,
+    isError,
+    failureReason,
   } = useWaitForTransactionReceipt({
     hash,
   });
-
-  const router = useRouter();
 
   useEffect(() => {
     if (receipt) {
       toast.success("Voted successfully");
       console.log("receipt", receipt);
-      // router.refresh();
     }
-  }, [isSuccess, router, receipt]);
+    if (isError && failureReason) {
+      toast.error("すでに投票しています");
+    }
+  }, [isSuccess, receipt, failureReason, isError]);
 
   const handleVote = () => {
     if (!address) {
-      toast.error("Please connect your wallet");
+      toast.error("ウォレットを接続してください");
       return;
     }
 
     if (balance?.value === BigInt(0)) {
-      toast.info("Please visit and get faucet from https://docs.base.org/docs/tools/network-faucets/");
+      toast.info("金欠みたいだから https://docs.base.org/docs/tools/network-faucets/ からここでETHをゲットしてみてね");
       return;
     }
 
     try {
       writeContract({
-        address: "0x2f3169fC572Df5eD5662AeC37d45aC17Cc30072F",
+        address: CONTRACT_ADDRESS,
         abi,
         functionName: "vote",
         args: [postId],
       });
     } catch (error) {
-      toast.error("already voted");
+      toast.error("エラーが発生しました");
     }
   };
 
   return (
     <>
-      <Button onClick={handleVote} disabled={isConfirming || isSuccess}>
-        {isConfirming ? "Voting..." : isSuccess ? "Voted" : "Vote"}
+      <Button onClick={handleVote} disabled={isConfirming && !isError}>
+        {isConfirming ? "Voting..." : isError ? "Vote failed" : "Vote"}
         {isConfirming && <Spinner />}
       </Button>
-      <p>VOTE COUNT: {voteCount?.toString() ?? 0}</p>
+      <p className="font-bold">投票数: {voteCount?.toString() ?? 0}</p>
     </>
   );
 };

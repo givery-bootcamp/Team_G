@@ -36,6 +36,7 @@ const Providers: React.FC<PropsWithChildren> = ({ children }) => {
                 fontStack: "system",
                 overlayBlur: "small",
               })}
+              locale="ja"
             >
               {children}
               <Dialog open={isOpen} onOpenChange={setIsOpen}>
