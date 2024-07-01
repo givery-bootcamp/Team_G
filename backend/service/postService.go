@@ -39,13 +39,12 @@ func (s *PostServer) CreatePost(
 	if !ok {
 		log.Printf("ユーザー情報がありません")
 	}
-	userID := user.Id
 
 	post := domain.Post{
 		Id:        primitive.NewObjectID(),
 		Title:     req.Msg.Title,
 		Body:      req.Msg.Body,
-		UserId:    userID,
+		UserId:    user.Id,
 		UserName:  user.Name,
 		ImageUrl:  req.Msg.ImageUrl,
 		Comments:  []domain.Comment{},
@@ -95,14 +94,13 @@ func (s *PostServer) Post(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	fmt.Println(result)
-
 	comments := []*postv1.Comment{}
 	for _, comment := range result.Comments {
 		comments = append(comments, &postv1.Comment{
 			Id:        comment.Id.Hex(),
 			Body:      comment.Body,
 			UserName:  comment.UserName,
+			UserId:    comment.UserId,
 			CreatedAt: &timestamppb.Timestamp{Seconds: comment.CreatedAt.Seconds, Nanos: comment.CreatedAt.Nanos},
 			UpdatedAt: &timestamppb.Timestamp{Seconds: comment.UpdatedAt.Seconds, Nanos: comment.UpdatedAt.Nanos},
 		})
@@ -114,6 +112,7 @@ func (s *PostServer) Post(
 			Title:     result.Title,
 			Body:      result.Body,
 			UserName:  result.UserName,
+			UserId:    result.UserId,
 			ImageUrl:  result.ImageUrl,
 			Comments:  comments,
 			CreatedAt: &timestamppb.Timestamp{Seconds: result.CreatedAt.Seconds, Nanos: result.CreatedAt.Nanos},

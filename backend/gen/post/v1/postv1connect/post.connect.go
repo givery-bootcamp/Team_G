@@ -76,7 +76,6 @@ type PostServiceClient interface {
 	// Post一覧API
 	// リクエストは空
 	PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error)
-	// Post詳細API
 	Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error)
 	// Post作成API
 	CreatePost(context.Context, *connect.Request[v1.CreatePostRequest]) (*connect.Response[emptypb.Empty], error)
@@ -168,7 +167,6 @@ type PostServiceHandler interface {
 	// Post一覧API
 	// リクエストは空
 	PostList(context.Context, *connect.Request[emptypb.Empty]) (*connect.Response[v1.PostListResponse], error)
-	// Post詳細API
 	Post(context.Context, *connect.Request[v1.PostRequest]) (*connect.Response[v1.PostResponse], error)
 	// Post作成API
 	CreatePost(context.Context, *connect.Request[v1.CreatePostRequest]) (*connect.Response[emptypb.Empty], error)

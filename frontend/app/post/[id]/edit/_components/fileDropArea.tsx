@@ -11,7 +11,7 @@ interface DropAreaProps {
   getRootProps: () => { ref: React.RefObject<HTMLInputElement>; style: React.CSSProperties; onClick: () => void };
   getInputProps: () => {
     ref: React.RefObject<HTMLInputElement>;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // ここに onChange を追加
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
   setFile: (file: IFileWithPreview | undefined) => void;
 }

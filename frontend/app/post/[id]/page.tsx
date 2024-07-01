@@ -42,33 +42,40 @@ const PostDetailPage: NextPage<Props> = async ({ params }) => {
   ];
 
   return (
-    <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
-      <BreadCrumb breadcrumbItems={breadcrumbItems} />
-      <h1 className="mb-4 text-2xl font-bold">Post Detail Page {id}</h1>
-      <div className="relative flex flex-col items-center">
-        <div>
-          {post.userId === session.id && (
-            <Link href={`/post/${id}/edit`} key={id} className="w-full">
-              <Button className=" bg-white p-2 hover:bg-gray-300">
-                <Pencil color="grey" />
-              </Button>
-            </Link>
-          )}
-
-          {post.userId === session.id && <DeletePostButton id={id} token={session.accessToken} />}
+    console.log("sessionid", session.user?.id + "postid", post.userId),
+    (
+      <main className="mx-auto min-h-screen max-w-xl p-1 pt-4">
+        <BreadCrumb breadcrumbItems={breadcrumbItems} />
+        <div className="flex justify-between">
+          <h1 className="mb-4 text-2xl font-bold">Post Detail Page </h1>
+          <p>{"by " + post.userName}</p>
         </div>
-        <PostImage post={post} />
-        <h2 className="text-xl font-semibold">{post.title}</h2>
-        <p className="text-md mt-2">{post.body}</p>
-      </div>
-      <div className="p-5">
-        <CommentList commentList={post.comments} />
-      </div>
-      <div className="p-5">
-        <p className="text-left text-xl font-semibold">Post Message</p>
-        <FormArea token={session.accessToken} postId={id} />
-      </div>
-    </main>
+
+        <div className="relative flex flex-col items-center">
+          <div>
+            {post.userId === session.id && (
+              <Link href={`/post/${id}/edit`} key={id} className="w-full">
+                <Button className=" bg-white p-2 hover:bg-gray-300">
+                  <Pencil color="grey" />
+                </Button>
+              </Link>
+            )}
+
+            {post.userId === session.id && <DeletePostButton id={id} token={session.accessToken} />}
+          </div>
+          <PostImage post={post} />
+          <h2 className="text-xl font-semibold">{post.title}</h2>
+          <p className="text-md mt-2">{post.body}</p>
+        </div>
+        <div className="p-5">
+          <CommentList commentList={post.comments} postId={post.id} token={session.accessToken} userId={session.id!} />
+        </div>
+        <div className="p-5">
+          <p className="text-left text-xl font-semibold">Post Message</p>
+          <FormArea token={session.accessToken} postId={id} />
+        </div>
+      </main>
+    )
   );
 };
 
