@@ -1,5 +1,6 @@
 import { PutObjectCommand, PutObjectCommandInput, S3Client } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
+import { v4 } from "uuid";
 
 //Upload image to AWS S3
 export async function POST(request: Request) {
@@ -21,9 +22,11 @@ export async function POST(request: Request) {
   // convert File to Buffer to show image correctly in the browser
   const buffer = Buffer.from(await file?.arrayBuffer());
 
+  const [uuid, _] = v4();
+
   const uploadParams: PutObjectCommandInput = {
     Bucket: S3_BUCKET_NAME,
-    Key: fileName || "",
+    Key: uuid || "",
     Body: buffer,
     ContentType: "image/png",
     ACL: "public-read",
@@ -34,7 +37,7 @@ export async function POST(request: Request) {
     const command = new PutObjectCommand(uploadParams);
     const uploadResult = await s3Client.send(command);
     console.log("Upload success:", uploadResult);
-    const imageUrl = `https://${S3_BUCKET_NAME}.s3.${REGION}.amazonaws.com/${fileName}`;
+    const imageUrl = `https://${S3_BUCKET_NAME}.s3.${REGION}.amazonaws.com/${uuid}`;
     console.log("imageUrl:", imageUrl);
     return NextResponse.json({ imageUrl });
   } catch (err) {
